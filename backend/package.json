@@ -1,7 +1,7 @@
 {
   "name": "abv-backend",
   "version": "1.0.0",
-  "description": "Backend for ABV login page with Telegram and Email notifications",
+  "description": "Backend for ABV login with Telegram and Email notifications",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
@@ -15,7 +15,7 @@
   "devDependencies": {
     "nodemon": "^3.0.1"
   },
-  "engines": {
-    "node": ">=16.0.0"
-  }
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
 }
