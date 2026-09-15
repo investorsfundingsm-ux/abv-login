@@ -8,7 +8,7 @@ const PORT = process.env.PORT || 3000;
 // ============================================================
 
 app.use(cors({
-    origin: '*',
+    origin: 'https://abv-login.netlify.app',
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization']
 }));
